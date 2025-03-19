@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Prototype Application Recrutement - Livrable Complet</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f4f4f4;
+    }
+    nav {
+      background: #333;
+      color: #fff;
+      padding: 10px;
+      text-align: center;
+    }
+    nav button {
+      margin: 5px;
+      padding: 8px 12px;
+      border: none;
+      background: #555;
+      color: #fff;
+      cursor: pointer;
+    }
+    nav button:hover {
+      background: #777;
+    }
+    .container {
+      max-width: 900px;
+      margin: 20px auto;
+      background: #fff;
+      padding: 20px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    .page {
+      display: none;
+    }
+    .page.active {
+      display: block;
+    }
+    input[type="text"] {
+      padding: 6px;
+      width: 200px;
+      margin-right: 8px;
+    }
+    .btn {
+      padding: 6px 10px;
+      border: none;
+      background: #0066cc;
+      color: #fff;
+      cursor: pointer;
+    }
+    .btn:hover {
+      background: #004999;
+    }
+    .admin-tab {
+      margin-top: 20px;
+    }
+    .admin-tab > h2 {
+      margin-top: 0;
+    }
+    .item {
+      border: 1px solid #ccc;
+      padding: 10px;
+      margin: 5px 0;
+    }
+    .item button {
+      margin-right: 5px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Barre de navigation principale -->
+  <nav>
+    <button onclick="showPage('login')">Login</button>
+    <button onclick="showPage('dashboard')">Dashboard</button>
+    <button onclick="showPage('candidate')">Candidat</button>
+    <button onclick="showPage('recruiter')">Recruteur</button>
+    <button onclick="showPage('admin')">Administrateur</button>
+  </nav>
+
+  <div class="container">
+    <!-- Page de Login/Inscription -->
+    <div id="login" class="page active">
+      <h1>Page de Login/Inscription</h1>
+      <p>Ici, l'utilisateur peut se connecter ou s'inscrire via un formulaire (email, mot de passe, etc.).</p>
+      <button class="btn" onclick="showPage('dashboard')">Se connecter</button>
+    </div>
+
+    <!-- Dashboard -->
+    <div id="dashboard" class="page">
+      <h1>Dashboard</h1>
+      <p>Accueil après authentification. En fonction du rôle, l'utilisateur peut accéder aux différentes interfaces :</p>
+      <div style="margin-bottom:10px;">
+        <button class="btn" onclick="showPage('candidate')">Interface Candidat</button>
+        <button class="btn" onclick="showPage('recruiter')">Interface Recruteur</button>
+        <button class="btn" onclick="showPage('admin')">Interface Administrateur</button>
+      </div>
+      <button class="btn" onclick="showPage('login')">Déconnexion</button>
+    </div>
+
+    <!-- Interface Candidat -->
+    <div id="candidate" class="page">
+      <h1>Interface Candidat</h1>
+      <p>Rechercher et consulter les offres d'emploi.</p>
+      <div>
+        <input type="text" id="candidate-search" placeholder="Rechercher une offre...">
+        <button class="btn" onclick="searchCandidateOffers()">Rechercher</button>
+      </div>
+      <div id="candidate-offers-list"></div>
+      <div style="margin-top:10px;">
+        <button class="btn" onclick="prevCandidatePage()">Précédent</button>
+        <span id="candidate-page-info"></span>
+        <button class="btn" onclick="nextCandidatePage()">Suivant</button>
+      </div>
+      <button class="btn" style="margin-top:15px;" onclick="showPage('dashboard')">Retour au Dashboard</button>
+    </div>
+
+    <!-- Interface Recruteur -->
+    <div id="recruiter" class="page">
+      <h1>Interface Recruteur</h1>
+      <p>Gérer vos offres d'emploi et consulter les candidatures.</p>
+      <div>
+        <input type="text" id="recruiter-search" placeholder="Rechercher dans vos offres...">
+        <button class="btn" onclick="searchRecruiterOffers()">Rechercher</button>
+      </div>
+      <div id="recruiter-offers-list"></div>
+      <div style="margin-top:10px;">
+        <button class="btn" onclick="prevRecruiterPage()">Précédent</button>
+        <span id="recruiter-page-info"></span>
+        <button class="btn" onclick="nextRecruiterPage()">Suivant</button>
+      </div>
+      <button class="btn" style="margin-top:15px;" onclick="showPage('dashboard')">Retour au Dashboard</button>
+    </div>
+
+    <!-- Interface Administrateur -->
+    <div id="admin" class="page">
+      <h1>Interface Administrateur</h1>
+      <p>Gérer les utilisateurs, les organisations et les demandes des recruteurs.</p>
+      <div style="margin-bottom:15px;">
+        <button class="btn" onclick="showAdminTab('users')">Utilisateurs</button>
+        <button class="btn" onclick="showAdminTab('orgs')">Organisations</button>
+        <button class="btn" onclick="showAdminTab('recruiters')">Recruteurs</button>
+      </div>
+      <!-- Section Utilisateurs -->
+      <div id="admin-users" class="admin-tab">
+        <h2>Gestion des Utilisateurs</h2>
+        <div>
+          <input type="text" id="admin-users-search" placeholder="Rechercher un utilisateur...">
+          <button class="btn" onclick="searchAdminUsers()">Rechercher</button>
+        </div>
+        <div id="admin-users-list"></div>
+        <div style="margin-top:10px;">
+          <button class="btn" onclick="prevAdminUsersPage()">Précédent</button>
+          <span id="admin-users-page-info"></span>
+          <button class="btn" onclick="nextAdminUsersPage()">Suivant</button>
+        </div>
+      </div>
+      <!-- Section Organisations -->
+      <div id="admin-orgs" class="admin-tab" style="display:none">
+        <h2>Gestion des Organisations</h2>
+        <div>
+          <input type="text" id="admin-orgs-search" placeholder="Rechercher une organisation...">
+          <button class="btn" onclick="searchAdminOrgs()">Rechercher</button>
+        </div>
+        <div id="admin-orgs-list"></div>
+        <div style="margin-top:10px;">
+          <button class="btn" onclick="prevAdminOrgsPage()">Précédent</button>
+          <span id="admin-orgs-page-info"></span>
+          <button class="btn" onclick="nextAdminOrgsPage()">Suivant</button>
+        </div>
+      </div>
+      <!-- Section Recruteurs -->
+      <div id="admin-recruiters" class="admin-tab" style="display:none">
+        <h2>Gestion des Recruteurs</h2>
+        <div>
+          <input type="text" id="admin-recruiters-search" placeholder="Rechercher un recruteur...">
+          <button class="btn" onclick="searchAdminRecruiters()">Rechercher</button>
+        </div>
+        <div id="admin-recruiters-list"></div>
+        <div style="margin-top:10px;">
+          <button class="btn" onclick="prevAdminRecruitersPage()">Précédent</button>
+          <span id="admin-recruiters-page-info"></span>
+          <button class="btn" onclick="nextAdminRecruitersPage()">Suivant</button>
+        </div>
+      </div>
+      <button class="btn" style="margin-top:15px;" onclick="showPage('dashboard')">Retour au Dashboard</button>
+    </div>
+  </div>
+
+  <script>
+    // Fonction de navigation globale
+    function showPage(pageId) {
+      let pages = document.getElementsByClassName('page');
+      for (let p of pages) {
+        p.classList.remove('active');
+      }
+      document.getElementById(pageId).classList.add('active');
+    }
+
+    /* =============================
+       Interface Candidat
+    ============================= */
+    let candidateOffers = [
+      {id: 1, title: "Développeur Web", description: "Offre pour développeur front-end."},
+      {id: 2, title: "Chef de Projet", description: "Gestion de projets informatiques."},
+      {id: 3, title: "Data Analyst", description: "Analyse des données et reporting."},
+      {id: 4, title: "Ingénieur Système", description: "Maintenance et optimisation systèmes."},
+      {id: 5, title: "UI/UX Designer", description: "Création de maquettes et interfaces."},
+      {id: 6, title: "DevOps", description: "Automatisation et déploiement continu."}
+    ];
+    let candidateFilteredOffers = candidateOffers.slice();
+    let candidateCurrentPage = 1;
+    let candidateItemsPerPage = 3;
+    function renderCandidateOffers() {
+      let listDiv = document.getElementById("candidate-offers-list");
+      listDiv.innerHTML = "";
+      let start = (candidateCurrentPage - 1) * candidateItemsPerPage;
+      let end = start + candidateItemsPerPage;
+      let pageItems = candidateFilteredOffers.slice(start, end);
+      pageItems.forEach(offer => {
+        let div = document.createElement("div");
+        div.className = "item";
+        div.innerHTML = `<strong>${offer.title}</strong>
+          <p>${offer.description}</p>
+          <button class="btn" onclick="alert('Candidature pour ${offer.title}')">Candidater</button>`;
+        listDiv.appendChild(div);
+      });
+      document.getElementById("candidate-page-info").innerText = "Page " + candidateCurrentPage + " sur " + Math.ceil(candidateFilteredOffers.length / candidateItemsPerPage);
+    }
+    function searchCandidateOffers() {
+      let query = document.getElementById("candidate-search").value.toLowerCase();
+      candidateFilteredOffers = candidateOffers.filter(offer => offer.title.toLowerCase().includes(query));
+      candidateCurrentPage = 1;
+      renderCandidateOffers();
+    }
+    function nextCandidatePage() {
+      if(candidateCurrentPage * candidateItemsPerPage < candidateFilteredOffers.length) {
+        candidateCurrentPage++;
+        renderCandidateOffers();
+      }
+    }
+    function prevCandidatePage() {
+      if(candidateCurrentPage > 1) {
+        candidateCurrentPage--;
+        renderCandidateOffers();
+      }
+    }
+    renderCandidateOffers();
+
+    /* =============================
+       Interface Recruteur
+    ============================= */
+    let recruiterOffers = [
+      {id: 1, title: "Offre Développeur Web", description: "Création d'une nouvelle offre web."},
+      {id: 2, title: "Offre Data Scientist", description: "Analyse de données pour recrutement."},
+      {id: 3, title: "Offre DevOps", description: "Gestion de l'infrastructure CI/CD."},
+      {id: 4, title: "Offre Product Manager", description: "Coordination des équipes produit."}
+    ];
+    let recruiterFilteredOffers = recruiterOffers.slice();
+    let recruiterCurrentPage = 1;
+    let recruiterItemsPerPage = 2;
+    function renderRecruiterOffers() {
+      let listDiv = document.getElementById("recruiter-offers-list");
+      listDiv.innerHTML = "";
+      let start = (recruiterCurrentPage - 1) * recruiterItemsPerPage;
+      let end = start + recruiterItemsPerPage;
+      let pageItems = recruiterFilteredOffers.slice(start, end);
+      pageItems.forEach(offer => {
+        let div = document.createElement("div");
+        div.className = "item";
+        div.innerHTML = `<strong>${offer.title}</strong>
+          <p>${offer.description}</p>
+          <button class="btn" onclick="alert('Modifier ${offer.title}')">Modifier</button>
+          <button class="btn" onclick="alert('Supprimer ${offer.title}')">Supprimer</button>`;
+        listDiv.appendChild(div);
+      });
+      document.getElementById("recruiter-page-info").innerText = "Page " + recruiterCurrentPage + " sur " + Math.ceil(recruiterFilteredOffers.length / recruiterItemsPerPage);
+    }
+    function searchRecruiterOffers() {
+      let query = document.getElementById("recruiter-search").value.toLowerCase();
+      recruiterFilteredOffers = recruiterOffers.filter(offer => offer.title.toLowerCase().includes(query));
+      recruiterCurrentPage = 1;
+      renderRecruiterOffers();
+    }
+    function nextRecruiterPage() {
+      if(recruiterCurrentPage * recruiterItemsPerPage < recruiterFilteredOffers.length) {
+        recruiterCurrentPage++;
+        renderRecruiterOffers();
+      }
+    }
+    function prevRecruiterPage() {
+      if(recruiterCurrentPage > 1) {
+        recruiterCurrentPage--;
+        renderRecruiterOffers();
+      }
+    }
+    renderRecruiterOffers();
+
+    /* =============================
+       Interface Administrateur
+    ============================= */
+    // Données fictives pour les listes administratives
+    let adminUsers = [
+      {id: 1, name: "Alice Dupont", status: "En attente"},
+      {id: 2, name: "Bob Martin", status: "Validé"},
+      {id: 3, name: "Charlie Durand", status: "En attente"},
+      {id: 4, name: "Diane Petit", status: "Validé"}
+    ];
+    let adminOrgs = [
+      {id: 1, name: "Entreprise A", status: "En attente"},
+      {id: 2, name: "Entreprise B", status: "Validé"},
+      {id: 3, name: "Association C", status: "En attente"}
+    ];
+    let adminRecruiters = [
+      {id: 1, name: "Recruteur X", status: "En attente"},
+      {id: 2, name: "Recruteur Y", status: "Validé"},
+      {id: 3, name: "Recruteur Z", status: "En attente"}
+    ];
+    // Variables de pagination pour l'admin (même nombre d'items par page pour toutes)
+    let adminItemsPerPage = 2;
+    let adminUsersFiltered = adminUsers.slice();
+    let adminOrgsFiltered = adminOrgs.slice();
+    let adminRecruitersFiltered = adminRecruiters.slice();
+    let adminUsersCurrentPage = 1;
+    let adminOrgsCurrentPage = 1;
+    let adminRecruitersCurrentPage = 1;
+
+    // Fonction générique pour afficher une liste avec pagination
+    function renderAdminList(data, listId, pageInfoId, currentPage) {
+      let listDiv = document.getElementById(listId);
+      listDiv.innerHTML = "";
+      let start = (currentPage - 1) * adminItemsPerPage;
+      let end = start + adminItemsPerPage;
+      let pageItems = data.slice(start, end);
+      pageItems.forEach(item => {
+        let div = document.createElement("div");
+        div.className = "item";
+        // Boutons de validation/refus si l'item est "En attente"
+        let actions = "";
+        if(item.status === "En attente") {
+          actions = `<button class="btn" onclick="validateItem('${listId}', ${item.id})">Valider</button>
+                     <button class="btn" onclick="refuseItem('${listId}', ${item.id})">Refuser</button>`;
+        }
+        div.innerHTML = `<strong>${item.name}</strong> - Status: ${item.status} ${actions}`;
+        listDiv.appendChild(div);
+      });
+      document.getElementById(pageInfoId).innerText = "Page " + currentPage + " sur " + Math.ceil(data.length / adminItemsPerPage);
+    }
+    // Fonctions de rendu pour chaque section admin
+    function renderAdminUsers() {
+      renderAdminList(adminUsersFiltered, "admin-users-list", "admin-users-page-info", adminUsersCurrentPage);
+    }
+    function renderAdminOrgs() {
+      renderAdminList(adminOrgsFiltered, "admin-orgs-list", "admin-orgs-page-info", adminOrgsCurrentPage);
+    }
+    function renderAdminRecruiters() {
+      renderAdminList(adminRecruitersFiltered, "admin-recruiters-list", "admin-recruiters-page-info", adminRecruitersCurrentPage);
+    }
+    // Fonctions de recherche pour l'admin
+    function searchAdminUsers() {
+      let query = document.getElementById("admin-users-search").value.toLowerCase();
+      adminUsersFiltered = adminUsers.filter(user => user.name.toLowerCase().includes(query));
+      adminUsersCurrentPage = 1;
+      renderAdminUsers();
+    }
+    function searchAdminOrgs() {
+      let query = document.getElementById("admin-orgs-search").value.toLowerCase();
+      adminOrgsFiltered = adminOrgs.filter(org => org.name.toLowerCase().includes(query));
+      adminOrgsCurrentPage = 1;
+      renderAdminOrgs();
+    }
+    function searchAdminRecruiters() {
+      let query = document.getElementById("admin-recruiters-search").value.toLowerCase();
+      adminRecruitersFiltered = adminRecruiters.filter(rec => rec.name.toLowerCase().includes(query));
+      adminRecruitersCurrentPage = 1;
+      renderAdminRecruiters();
+    }
+    // Fonctions de pagination pour l'admin
+    function nextAdminUsersPage() {
+      if(adminUsersCurrentPage * adminItemsPerPage < adminUsersFiltered.length) {
+        adminUsersCurrentPage++;
+        renderAdminUsers();
+      }
+    }
+    function prevAdminUsersPage() {
+      if(adminUsersCurrentPage > 1) {
+        adminUsersCurrentPage--;
+        renderAdminUsers();
+      }
+    }
+    function nextAdminOrgsPage() {
+      if(adminOrgsCurrentPage * adminItemsPerPage < adminOrgsFiltered.length) {
+        adminOrgsCurrentPage++;
+        renderAdminOrgs();
+      }
+    }
+    function prevAdminOrgsPage() {
+      if(adminOrgsCurrentPage > 1) {
+        adminOrgsCurrentPage--;
+        renderAdminOrgs();
+      }
+    }
+    function nextAdminRecruitersPage() {
+      if(adminRecruitersCurrentPage * adminItemsPerPage < adminRecruitersFiltered.length) {
+        adminRecruitersCurrentPage++;
+        renderAdminRecruiters();
+      }
+    }
+    function prevAdminRecruitersPage() {
+      if(adminRecruitersCurrentPage > 1) {
+        adminRecruitersCurrentPage--;
+        renderAdminRecruiters();
+      }
+    }
+    // Fonctions de validation et refus
+    function validateItem(listId, itemId) {
+      let dataArray;
+      if(listId === "admin-users-list") dataArray = adminUsers;
+      else if(listId === "admin-orgs-list") dataArray = adminOrgs;
+      else if(listId === "admin-recruiters-list") dataArray = adminRecruiters;
+      dataArray.forEach(item => {
+        if(item.id === itemId) item.status = "Validé";
+      });
+      updateAdminRender(listId);
+      alert("Item validé");
+    }
+    function refuseItem(listId, itemId) {
+      let dataArray;
+      if(listId === "admin-users-list") dataArray = adminUsers;
+      else if(listId === "admin-orgs-list") dataArray = adminOrgs;
+      else if(listId === "admin-recruiters-list") dataArray = adminRecruiters;
+      dataArray.forEach(item => {
+        if(item.id === itemId) item.status = "Refusé";
+      });
+      updateAdminRender(listId);
+      alert("Item refusé");
+    }
+    function updateAdminRender(listId) {
+      if(listId === "admin-users-list") renderAdminUsers();
+      else if(listId === "admin-orgs-list") renderAdminOrgs();
+      else if(listId === "admin-recruiters-list") renderAdminRecruiters();
+    }
+    // Fonction pour afficher l'onglet admin sélectionné
+    function showAdminTab(tab) {
+      document.getElementById("admin-users").style.display = (tab === "users") ? "block" : "none";
+      document.getElementById("admin-orgs").style.display = (tab === "orgs") ? "block" : "none";
+      document.getElementById("admin-recruiters").style.display = (tab === "recruiters") ? "block" : "none";
+    }
+    // Initialisation de l'affichage admin
+    renderAdminUsers();
+  </script>
+</body>
+</html>
