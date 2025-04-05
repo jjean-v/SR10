@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+    <body>
+        <table border>
+            <thead>
+                <tr>
+                    <th>siren</th>
+                    <th>nom</th>
+                    <th>type</th>
+                    <th>adresse</th>
+                    <th>etat_orga</th>
+                </tr>
+            </thead> 
+            
+            <tbody>
+                <% organisation.forEach((organisation)=> { %>
+            <tr>
+                <td>
+                    <%= organisation.siren %>
+                </td>
+                <td>
+                    <%= organisation.nom %>
+                </td>
+                <td>
+                    <%= organisation.type %>
+                </td>
+                <td>
+                    <%= organisation.adresse %>
+                </td>
+                <td>
+                    <%= organisation.etat_orga %>
+                </td>
+            </tr>
+            <% }) %>
+        </table>
+
+    </body>
+</html>
