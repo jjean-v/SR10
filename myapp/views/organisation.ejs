@@ -1,42 +1,108 @@
+
+           
+
 <!DOCTYPE html>
 <html>
-  <head>
-    <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-  </head>
+    <head><script src="/assets/js/color-modes.js"></script>
+
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+       
+        <title>Administrateur</title>  
+    
+    <link href="/assets/dist/css/bootstrap.min.css" rel="stylesheet">
+      
+        
+        <!-- Custom styles for this template -->
+      </head>
     <body>
-        <table border>
-            <thead>
-                <tr>
-                    <th>siren</th>
-                    <th>nom</th>
-                    <th>type</th>
-                    <th>adresse</th>
-                    <th>etat_orga</th>
-                </tr>
-            </thead> 
+        <%- include('component/header') %> 
+
+        <div class="container marketing">
+
+            <div class="bg-body-tertiary p-5 rounded ">
+                <h2>Espace Administrateur</h2>
+            </div>
+           
+            <div class="d-flex gap-2 justify-content-center py-5">
+                <button class="col with gx-4 gutters btn btn-primary d-inline-flex align-items-center justify-content-center" type="button">
+                  Gestion des Organisations
+                </button>
+                <button class="col with gx-4 btn btn-primary d-inline-flex align-items-center justify-content-center" type="button">
+                  Gestion des Recruteur
+                </button>
+                <button class="col with gx-4 btn btn-primary d-inline-flex align-items-center justify-content-center" type="button">
+                  Gestion des Organisations
+                  </button>
+            </div>
+        </div>
+            <!-- START THE FEATURETTES -->
+        
             
-            <tbody>
-                <% organisation.forEach((organisation)=> { %>
-            <tr>
-                <td>
-                    <%= organisation.siren %>
-                </td>
-                <td>
-                    <%= organisation.nom %>
-                </td>
-                <td>
-                    <%= organisation.type %>
-                </td>
-                <td>
-                    <%= organisation.adresse %>
-                </td>
-                <td>
-                    <%= organisation.etat_orga %>
-                </td>
-            </tr>
-            <% }) %>
-        </table>
+        <div class="container marketing">
+    
+        <div class="bg-body-tertiary p-5 rounded">
+            <div class="row">
+                <div class="col-md-8">    
+                    <h2>Gestion des Organisations</h2>
+                </div>
+            
+        
+                <div class="col-md-4 align-items-center">
+                    <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
+                        <input type="search" class="form-control form-control-dark text-bg-dark" placeholder="Search..." aria-label="Search">
+                    </form>
+                </div>
+            </div>
+            <hr class="featurette-divider">
+    
+    
+            <div class="align-items-center justify-content-center">
+                <div class="list-group">
+
+                    <% organisation.forEach((organisation)=> { %>
+
+                    <a href="#" class="list-group-item list-group-item-action d-flex gap-3 py-3" aria-current="true">
+                    <img src="img/photo_jean.jpg" alt="twbs" width="32" height="32" class="rounded-circle flex-shrink-0">
+                    <div class="d-flex gap-2 w-100">
+                        <div class="col-2">
+                            <h6 class="mb-0"> <%= organisation.nom %> </h6>
+                            <p class="mb-0 opacity-75"> <%= organisation.etat_orga %> </p>
+                        </div>
+                        <div class = "col-1">
+                            <h6 class="mb-0"><%= organisation.type %></h6>
+                        </div>
+                        <div class = "col-3">
+                            <h6 class="mb-0"> <%= organisation.adresse %></h6>
+                        </div>
+                        <div class = "col-1">
+                            <h6 class="mb-0"> <%= organisation.siren %></h6>
+                        </div>
+                    </div>
+                        
+                    <div class=" d-flex gap-3">
+                        <div>
+                            <button class="col with gx-4 gutters btn btn-primary d-inline-flex align-items-center justify-content-center" type="button">
+                                Modifier
+                            </button>
+                        </div>
+                        <div>
+                            <button class="col with gx-4 btn btn-primary d-inline-flex align-items-center justify-content-center" type="button">
+                                Supprimer
+                            </button>
+                        </div>
+                    </div>
+                    </a>
+
+                    <% }) %>
+
+
+                </div>
+            </div>
+        </div>
+   
 
     </body>
 </html>
+
+
