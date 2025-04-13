@@ -59,8 +59,5 @@ module.exports = {
         });
     },
 
-        creat: function (email, nom, prenom, pwd, type, callback) {
-            //todo
-            return false;
+
     }
-}
