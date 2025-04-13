@@ -11,27 +11,54 @@ module.exports = {
             });
         });
     },
-    readall: function (callback) {
-        db.query("select * from Utilisateur", function (err, results) {
-            if (err) throw err;
-            callback(results);
+
+    readall: function () {
+        return new Promise(function (resolve, reject) {
+            db.query("select * from Organisation", function (err, results) {
+                if (err) {
+                    return reject(err);
+                }
+                resolve(results);
+            });
 
         });
-
     },
-    areValid: function (email, password, callback) {
-        sql = "SELECT pwd FROM USERS WHERE email = ?";
-        rows = db.query(sql, email, function (err, results) {
-            if (err) throw err;
-            if (rows.length == 1 && rows[0].pwd === password) {
-                callback(true)
-            } else {
-                callback(false);
-            }
+
+    areValid: function () {
+        return new Promise(function (resolve, reject) {;
+            db.query("SELECT * FROM Organisation WHERE etat_orga = 'validé' ", function (err, results) {
+                if (err) {
+                    return reject(err);
+                }
+                resolve(results);
+            });
+
         });
+    },
 
+    areNotValid: function () {
+        return new Promise(function (resolve, reject) {
+            db.query("SELECT * FROM Organisation WHERE etat_orga = 'refusé' ", function (err, results) {
+                if (err) {
+                    return reject(err);
+                }
+                resolve(results);
+            });
 
-        },
+        });
+    },
+
+    areWaiting: function () {
+        return new Promise(function (resolve,reject) {
+            db.query("SELECT * FROM Organisation WHERE etat_orga = 'refusé' ", function(err,results){
+                if (err) {
+                    return reject(err);
+                }
+                resolve(results);
+            });
+        });
+    },
+
         creat: function (email, nom, prenom, pwd, type, callback) {
             //todo
             return false;

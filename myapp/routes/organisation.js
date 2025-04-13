@@ -6,15 +6,15 @@ var router = express.Router();
 
 router.get('/', function(req, res, next) {
 
-    promiseO=organisation.read("Mon Organisation");
+    promiseO=organisation.readall();
     promiseO.then( (data) =>{
 
-        res.render('organisation_nom', { title: 'Organisation', organisation: data });
+        res.render('organisation', { title: 'Organisation', organisation: data });
     });
     promiseO.catch( (err) => {
         console.log(err);
         res.status(500).send('Error retrieving organisation data');
-    });
+    }); 
 });
 
 module.exports = router;
