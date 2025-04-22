@@ -14,6 +14,8 @@ const utilisateursRouter = require('./routes/utilisateurs');
 const candidaturesRouter = require('./routes/candidatures');
 const piecesRouter = require('./routes/pieces');
 
+var offreRouter = require('./routes/offre');
+
 var app = express();
 
 // view engine setup
@@ -35,6 +37,8 @@ app.use('/candidatures', candidaturesRouter);
 app.use('/pieces', piecesRouter);
 app.use('/organisations',organisationRouter)
 app.use('/fiche_de_poste',fiche_de_posteRouter)
+
+app.use('/offre',offreRouter)
 
 
 // catch 404 and forward to error handler
