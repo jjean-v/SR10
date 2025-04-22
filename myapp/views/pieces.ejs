@@ -1,0 +1,17 @@
+<h1><%= title %></h1>
+<table>
+  <thead>
+    <tr><th>ID</th><th>Nom</th><th>Type</th><th>Taille</th><th>Candidature</th></tr>
+  </thead>
+  <tbody>
+    <% pieces.forEach(p => { %>
+      <tr>
+        <td><%= p.id_piece_jointe %></td>
+        <td><%= p.nom %></td>
+        <td><%= p.type %></td>
+        <td><%= p.taille %></td>
+        <td><%= p.candidature_id %></td>
+      </tr>
+    <% }) %>
+  </tbody>
+</table>

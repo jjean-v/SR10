@@ -1,5 +1,12 @@
 {
   "dependencies": {
     "mkdirp": "^1.0.4"
-  }
+  },
+
+  "scripts": {
+  "start": "node ./bin/www",
+  "dev":   "nodemon ./bin/www"
+}
+
+
 }

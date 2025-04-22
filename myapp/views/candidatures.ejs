@@ -1,0 +1,16 @@
+<h1><%= title %></h1>
+<table>
+  <thead>
+    <tr><th>ID</th><th>Date</th><th>Utilisateur</th><th>Offre</th></tr>
+  </thead>
+  <tbody>
+    <% candidatures.forEach(c => { %>
+      <tr>
+        <td><%= c.id_candidature %></td>
+        <td><%= c.date_candidature.toISOString().split('T')[0] %></td>
+        <td><%= c.utilisateur_id %></td>
+        <td><%= c.id_offre %></td>
+      </tr>
+    <% }) %>
+  </tbody>
+</table>
