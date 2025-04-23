@@ -5,6 +5,7 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
 var loginRouter = require('./routes/login');
+var new_userRouter = require('./routes/new_user');
 var usersRouter = require('./routes/utilisateurs');
 var organisationRouter = require('./routes/organisation');
 var fiche_de_posteRouter = require('./routes/fiche_de_poste');
@@ -30,6 +31,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // Routage principal
 app.use('/', loginRouter);
+app.use('/new_user', new_userRouter);
 app.use('/users', usersRouter);
 
 app.use('/utilisateurs', utilisateursRouter);
