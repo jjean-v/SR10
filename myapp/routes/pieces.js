@@ -1,17 +1,21 @@
-const express = require('express');
+// routes/pieces.js
+
+const express     = require('express');
+const router      = express.Router();
 const pieceJointe = require('../model/pieceJointe');
-const router = express.Router();
 
 // GET /pieces
-router.get('/', (req, res, next) => {
-  pieceJointe.readAll()
-    .then(data => {
-      res.render('pieces', { title: 'Pièces Jointes', pieces: data });
-    })
-    .catch(err => {
-      console.error(err);
-      res.status(500).send('Erreur récupération pièces jointes');
+router.get('/', async (req, res) => {
+  try {
+    const pieces = await pieceJointe.readAllDetailed();
+    res.render('pieces', {
+      title: 'Gestion des Pièces Jointes',
+      pieces
     });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send(`Erreur récupération pièces jointes : ${err.message}`);
+  }
 });
 
 module.exports = router;
