@@ -5,7 +5,8 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
 // Routeurs
-var indexRouter = require('./routes/index');
+var loginRouter = require('./routes/login');
+var new_userRouter = require('./routes/new_user');
 var organisationRouter = require('./routes/organisation');
 var fiche_de_posteRouter = require('./routes/fiche_de_poste');
 const utilisateursRouter = require('./routes/utilisateurs');
@@ -26,7 +27,8 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Routage principal
-app.use('/', indexRouter);
+app.use('/', loginRouter);
+app.use('/new_user', new_userRouter);
 app.use('/utilisateurs', utilisateursRouter);
 app.use('/candidatures', candidaturesRouter);
 app.use('/pieces', piecesRouter);
