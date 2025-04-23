@@ -1,16 +1,92 @@
-<h1><%= title %></h1>
-<table>
-  <thead>
-    <tr><th>ID</th><th>Date</th><th>Utilisateur</th><th>Offre</th></tr>
-  </thead>
-  <tbody>
-    <% candidatures.forEach(c => { %>
-      <tr>
-        <td><%= c.id_candidature %></td>
-        <td><%= c.date_candidature.toISOString().split('T')[0] %></td>
-        <td><%= c.utilisateur_id %></td>
-        <td><%= c.id_offre %></td>
-      </tr>
-    <% }) %>
-  </tbody>
-</table>
+<!-- views/candidatures.ejs -->
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="/assets/js/color-modes.js"></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="/stylesheets/style.css"           rel="stylesheet">
+    <link href="/assets/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>Recruteur</title>
+  </head>
+  <body>
+    <%- include('component/header') %>
+
+    <div class="container marketing">
+      <div class="bg-body-tertiary p-5 rounded">
+        <h2>Espace Recruteur</h2>
+      </div>
+      <div class="d-flex gap-2 justify-content-center py-5">
+        <button class="col with gx-4 gutters btn btn-primary d-inline-flex align-items-center justify-content-center">
+          Gestion des Offres
+        </button>
+        <button class="col with gx-4 btn btn-primary d-inline-flex align-items-center justify-content-center">
+          Gestion des Fiche de poste
+        </button>
+        <button class="col with gx-4 btn btn-primary d-inline-flex align-items-center justify-content-center">
+          Gestion des Candidatures
+        </button>
+      </div>
+    </div>
+
+    <div class="container marketing">
+      <div class="bg-body-tertiary p-5 rounded">
+        <div class="row">
+          <div class="col-md-8">
+            <h2>Gestion des Candidatures</h2>
+          </div>
+          <div class="col-md-4 align-items-center">
+            <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
+              <input type="search"
+                     class="form-control form-control-dark text-bg-dark"
+                     placeholder="Search..."
+                     aria-label="Search">
+            </form>
+          </div>
+        </div>
+        <hr class="featurette-divider">
+
+        <div class="align-items-center justify-content-center">
+          <div class="list-group">
+            <% candidatures.forEach(c => { %>
+              <a href="#"
+                 class="list-group-item list-group-item-action d-flex gap-3 py-3"
+                 aria-current="true">
+                <div class="d-flex gap-2 w-100">
+                  <div class="col-2">
+                    <h6 class="mb-0"><%= c.id_candidature %></h6>
+                    <p class="mb-0 opacity-75">
+                      <%= c.date_candidature.toISOString().split('T')[0] %>
+                    </p>
+                  </div>
+                  <div class="col-3">
+                    <h6 class="mb-0">
+                      <%= c.prenom_utilisateur %> <%= c.nom_utilisateur %>
+                    </h6>
+                  </div>
+                  <div class="col-4 text-truncate">
+                    <h6 class="mb-0"><%= c.intitule_fiche_poste %></h6>
+                  </div>
+                </div>
+                <div class="d-flex gap-3">
+                  <button class="col with gx-4 gutters btn btn-primary d-inline-flex align-items-center justify-content-center"
+                          type="button">
+                    Modifier
+                  </button>
+                  <button class="col with gx-4 btn btn-primary d-inline-flex align-items-center justify-content-center"
+                          type="button">
+                    Supprimer
+                  </button>
+                </div>
+              </a>
+            <% }) %>
+          </div>
+        </div>
+      </div>
+
+      <%- include('component/dark_light_mode') %>
+      <%- include('component/footer') %>
+    </div>
+  </body>
+</html>
