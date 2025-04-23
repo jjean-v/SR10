@@ -4,16 +4,13 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
+// Routeurs
 var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/utilisateurs');
 var organisationRouter = require('./routes/organisation');
 var fiche_de_posteRouter = require('./routes/fiche_de_poste');
-
-// Nouveaux routers
 const utilisateursRouter = require('./routes/utilisateurs');
 const candidaturesRouter = require('./routes/candidatures');
 const piecesRouter = require('./routes/pieces');
-
 var offreRouter = require('./routes/offre');
 
 var app = express();
@@ -30,15 +27,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // Routage principal
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
-
 app.use('/utilisateurs', utilisateursRouter);
 app.use('/candidatures', candidaturesRouter);
 app.use('/pieces', piecesRouter);
 app.use('/organisations',organisationRouter)
 app.use('/fiche_de_poste',fiche_de_posteRouter)
-
-app.use('/offre',offreRouter)
+app.use('/offre', offreRouter)
 
 
 // catch 404 and forward to error handler
