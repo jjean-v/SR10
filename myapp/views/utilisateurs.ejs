@@ -17,7 +17,7 @@
       </div>
 
       <div class="d-flex gap-2 justify-content-center py-5">
-        <button class="col with gx-4 gutters btn btn-primary d-inline-flex align-items-center justify-content-center" type="button">
+        <button class="col with gx-4 gutters btn btn-secondary d-inline-flex align-items-center justify-content-center" type="button">
           Gestion des Utilisateurs
         </button>
         <button class="col with gx-4 btn btn-primary d-inline-flex align-items-center justify-content-center" type="button">
@@ -48,25 +48,21 @@
             <% utilisateurs.forEach((utilisateurs) => { %>
               <a href="#" class="list-group-item list-group-item-action d-flex gap-3 py-3" aria-current="true">
 
-                <!-- Partie corrigée : photo retirée -->
-                <div class="d-flex align-items-center w-100">
-                  <div class="me-3 flex-shrink-0">
-                    <h6 class="mb-0"><%= utilisateurs.id_user %></h6>
+              
+               
+                <div class="d-flex gap-2 w-100">
+                  <div class="col-3">
+                      <h6 class="mb-0"> <%= utilisateurs.prenom %> <%= utilisateurs.nom %> </h6>
+                      <p class="mb-0 opacity-75"><%= utilisateurs.etat_compte %>  </p>
                   </div>
-                  <div class="me-3 flex-shrink-0">
-                    <h6 class="mb-0"><%= utilisateurs.nom %></h6>
+                  <div class = "col-3">
+                      <h6 class="mb-0"><%= utilisateurs.email %></h6>
                   </div>
-                  <div class="me-3 flex-shrink-0">
-                    <h6 class="mb-0"><%= utilisateurs.prenom %></h6>
+                  <div class = "col-2">
+                      <h6 class="mb-0"> <%= utilisateurs.role %></h6>
                   </div>
-                  <div class="flex-grow-1 text-truncate">
-                    <h6 class="mb-0"><%= utilisateurs.email %></h6>
-                  </div>
-                  <div class="ms-auto flex-shrink-0 text-end">
-                    <h6 class="mb-0"><%= utilisateurs.role %></h6>
-                  </div>
+                 
                 </div>
-                <!-- /Fin partie corrigée -->
 
                 <div class="d-flex gap-3">
                   <button class="btn btn-primary d-inline-flex align-items-center justify-content-center" type="button">
