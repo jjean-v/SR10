@@ -72,10 +72,18 @@
                 </div>
 
                 <div class="d-flex gap-3">
-                  <button class="btn btn-primary d-inline-flex align-items-center justify-content-center"
+                 
+                  <% if (organisation.etat_orga == 'validé') { %>
+                    <button class="btn btn-primary d-inline-flex align-items-center justify-content-center"
+                        type="button">
+                      Modifier
+                    </button>
+                    <% } else if (organisation.etat_orga == 'attente') { %>
+                      <button class="btn btn-primary d-inline-flex align-items-center justify-content-center"
                           type="button">
-                    Modifier
-                  </button>
+                        Accepter
+                      </button>
+                    <% } %>
                   <button class="btn btn-primary d-inline-flex align-items-center justify-content-center"
                           type="button">
                     Supprimer
