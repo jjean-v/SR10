@@ -1,20 +1,11 @@
 var db = require('./db.js');
 
 module.exports = {
-    read: function (intitule) {
-        return new Promise(function (resolve, reject) {
-            db.query("select * from Offre where intitule LIKE %?%", [intitule], function (err, results) {
-                if (err) {
-                    return reject(err);
-                }
-                resolve(results);
-            });
-        });
-    },
+    
 
     readall: function () {
         return new Promise(function (resolve, reject) {
-            db.query("select * from Offre", function (err, results) {
+            db.query("select * from Offre INNER JOIN Fiche_de_Poste On Offre.id_fiche_poste = Fiche_de_Poste.id_fiche", function (err, results) {
                 if (err) {
                     return reject(err);
                 }
@@ -61,7 +52,7 @@ module.exports = {
             });
 
         });
-    },
+    }
 
 
 
