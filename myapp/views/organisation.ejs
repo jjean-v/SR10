@@ -58,16 +58,16 @@
                 <div class="d-flex gap-2 w-100">
                   <div class="col-2">
                     <h6 class="mb-0"><%= organisation.nom %></h6>
-                    <p class="mb-0 opacity-75"><%= organisation.etat_orga %></p>
+                    <p class="mb-0 opacity-75"><%= organisation.siren %></p>
                   </div>
                   <div class="col-1">
                     <h6 class="mb-0"><%= organisation.type %></h6>
                   </div>
-                  <div class="col-3">
+                  <div class="col-4">
                     <h6 class="mb-0"><%= organisation.adresse %></h6>
                   </div>
                   <div class="col-1">
-                    <h6 class="mb-0"><%= organisation.siren %></h6>
+                    <h6 class="mb-0"><%= organisation.etat_orga %></h6>
                   </div>
                 </div>
 
@@ -78,7 +78,7 @@
                         type="button">
                       Modifier
                     </button>
-                    <% } else if (organisation.etat_orga == 'attente') { %>
+                    <% } else { %>
                       <button class="btn btn-primary d-inline-flex align-items-center justify-content-center"
                           type="button">
                         Accepter
