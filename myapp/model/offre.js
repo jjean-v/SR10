@@ -24,51 +24,6 @@ module.exports = {
         });
     },
 
-    readStatus: function (statut) {
-        return new Promise(function (resolve, reject) {
-            db.query("select * from Offre where statut_poste LIKE %?%", [statut], function (err, results) {
-                if (err) {
-                    return reject(err);
-                }
-                resolve(results);
-            });
-        });
-    },
-
-
-    readJob: function (job) {
-        return new Promise(function (resolve, reject) {
-            db.query("select * from Offre where type_metier LIKE %?%", [job], function (err, results) {
-                if (err) {
-                    return reject(err);
-                }
-                resolve(results);
-            });
-        });
-    },
-
-
-    readPlace: function (lieu) {
-        return new Promise(function (resolve, reject) {
-            db.query("select * from Offre where lieu LIKE %?%", [lieu], function (err, results) {
-                if (err) {
-                    return reject(err);
-                }
-                resolve(results);
-            });
-        });
-    },
-
-    readWages: function (salaire) {
-        return new Promise(function (resolve, reject) {
-            db.query("select * from Offre where salaire >= ? ", [salaire], function (err, results) {
-                if (err) {
-                    return reject(err);
-                }
-                resolve(results);
-            });
-        });
-    },
 
 
     arePublish: function () {

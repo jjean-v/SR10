@@ -6,7 +6,7 @@ var router = express.Router();
 
 router.get('/', function(req, res, next) {
 
-    promiseO=fiche_de_poste.readtype('infrastructure');
+    promiseO=fiche_de_poste.readall();
     promiseO.then( (data) =>{
 
         res.render('fiche_de_poste', { title: 'Fiche_de_Poste', fiche_de_poste: data });
