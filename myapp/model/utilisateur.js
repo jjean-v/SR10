@@ -8,7 +8,7 @@ const query = promisify(db.query).bind(db);
 module.exports = {
   // Lire tous les utilisateurs
   readAll() {
-    return query("SELECT * FROM Utilisateur");
+    return query("SELECT * FROM Utilisateur");git 
   },
 
   // Lire un utilisateur par son ID
