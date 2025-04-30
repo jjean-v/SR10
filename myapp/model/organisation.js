@@ -24,6 +24,35 @@ module.exports = {
         });
     },
 
+    create(orga, cb) {
+        const {
+        siren,
+        nom,
+        type_orga,
+        adresse,
+        etat_orga = 'attente'
+        } = orga;
+    
+        const sql = `
+          INSERT INTO Organisation
+            ( siren,nom,type_orga,adresse,etat_orga)
+          VALUES (?, ?, ?, ?, ?)
+        `;
+        const params = [siren,nom, type_orga, adresse, etat_orga];
+    
+        if (typeof cb === 'function') {
+          // version callback
+          db.query(sql, params, (err, result) => {
+            if (err) return cb(err);
+            cb(null, { statusCode: 200, insertId: result.insertId });
+          });
+        } else {
+          // version Promise
+          return query(sql, params)
+            .then(result => ({ statusCode: 200, insertId: result.insertId }));
+        }
+    },
+
     areValid: function () {
         return new Promise(function (resolve, reject) {;
             db.query("SELECT * FROM Organisation WHERE etat_orga = 'validé' ", function (err, results) {
