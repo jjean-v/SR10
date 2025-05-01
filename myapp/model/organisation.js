@@ -88,5 +88,16 @@ module.exports = {
         });
     },
 
+    deleteOrga: function (nom) {
+        return new Promise(function (resolve,reject) {
+            db.query("Delete FROM Organisation WHERE nom = ? ",[nom], function(err,results){
+                if (err) {
+                    return reject(err);
+                }
+                resolve(results);
+            });
+        });
+    },
+
 
     }

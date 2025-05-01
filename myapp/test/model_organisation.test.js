@@ -4,6 +4,7 @@ const model = require("../model/organisation.js");
 describe("Model CRUD Tests", () => {
     beforeAll(() => {
         // Par exemple : initialiser une connexion, nettoyer la table, etc.
+        model.deleteOrga("orgaTest") // on supprime la ligne de test
     });
 
     afterAll((done) => {
@@ -37,4 +38,17 @@ describe("Model CRUD Tests", () => {
             }
         });
     });
+
+    test("read Organisation", async () => {
+        const resultat = await model.read("orgaTest");
+        const siren = resultat[0].siren;
+        expect(siren).toBe(54879652);
+    });
+
+    test("Read all Organisation",async () => {
+        const resultat = await model.readall();
+        expect(resultat).toBeInstanceOf(Array);
+        expect(resultat.length).toBeGreaterThan(0);
+    });
+    
 });
