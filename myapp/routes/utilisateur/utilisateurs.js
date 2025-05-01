@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const utilisateur = require('../model/utilisateur');
+const utilisateur = require('../../model/utilisateur');
 
 // GET /utilisateurs
 router.get('/', (req, res, next) => {
@@ -14,3 +14,4 @@ router.get('/', (req, res, next) => {
 
 
 module.exports = router;
+
