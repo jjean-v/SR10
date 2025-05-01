@@ -5,16 +5,17 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
 // Routeurs
-var loginRouter = require('./routes/login');
-var new_userRouter = require('./routes/new_user');
-var organisationRouter = require('./routes/organisation');
-var fiche_de_posteRouter = require('./routes/fiche_de_poste');
-const utilisateursRouter = require('./routes/utilisateurs');
+const loginRouter = require('./routes/login');
+const new_userRouter = require('./routes/new_user');
+const organisationRouter = require('./routes/organisation');
+const fiche_de_posteRouter = require('./routes/fiche_de_poste');
+const utilisateursRouter = require('./routes/utilisateur/utilisateurs');
+//const recruteurRouter = require('./routes/utilisateurs/recruteur')
 const candidaturesRouter = require('./routes/candidatures');
 const piecesRouter = require('./routes/pieces');
-var offreRouter = require('./routes/offre');
+const offreRouter = require('./routes/offre');
 
-var app = express();
+const app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -30,6 +31,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', loginRouter);
 app.use('/new_user', new_userRouter);
 app.use('/utilisateurs', utilisateursRouter);
+//app.use('/utilisateurs/recruteur', recruteurRouter);
 app.use('/candidatures', candidaturesRouter);
 app.use('/pieces', piecesRouter);
 app.use('/organisations',organisationRouter)

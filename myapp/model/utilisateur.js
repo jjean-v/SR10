@@ -71,5 +71,16 @@ module.exports = {
   read(field, value) {
     const sql = `SELECT * FROM Utilisateur WHERE ${field} = ?`;
     return query(sql, [value]);
+  },
+
+  readRecruteur(){
+    const sql = 'SELECT * FROM Utilisateur WHERE role = "recruteur"';
+    return query(sql);
+  },
+
+  readRecruteur(){
+    const sql = 'SELECT * FROM Utilisateur WHERE role = "recruteur"';
+    return query(sql);
   }
+
 };
