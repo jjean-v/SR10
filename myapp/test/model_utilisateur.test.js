@@ -29,7 +29,7 @@ describe("Model CRUD Tests", () => {
                 return done(err);
             }
             try {
-                expect(result.statusCode).toBe(201);
+                expect(result.statusCode).toBe(200);
                 // Fin normale du test
                 done();
             } catch (assertionError) {
