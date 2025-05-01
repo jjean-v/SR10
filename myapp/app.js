@@ -10,7 +10,7 @@ const new_userRouter = require('./routes/new_user');
 const organisationRouter = require('./routes/organisation');
 const fiche_de_posteRouter = require('./routes/fiche_de_poste');
 const utilisateursRouter = require('./routes/utilisateur/utilisateurs');
-//const recruteurRouter = require('./routes/utilisateurs/recruteur')
+const recruteurRouter = require('./routes/utilisateur/recruteur')
 const candidaturesRouter = require('./routes/candidatures');
 const piecesRouter = require('./routes/pieces');
 const offreRouter = require('./routes/offre');
@@ -31,7 +31,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', loginRouter);
 app.use('/new_user', new_userRouter);
 app.use('/utilisateurs', utilisateursRouter);
-//app.use('/utilisateurs/recruteur', recruteurRouter);
+app.use('/utilisateurs/recruteur', recruteurRouter);
 app.use('/candidatures', candidaturesRouter);
 app.use('/pieces', piecesRouter);
 app.use('/organisations',organisationRouter)
