@@ -7,10 +7,11 @@ var logger = require('morgan');
 // Routeurs
 const loginRouter = require('./routes/login');
 const new_userRouter = require('./routes/new_user');
-const organisationRouter = require('./routes/organisation');
+const organisationRouter = require('./routes/organisation/organisation');
 const fiche_de_posteRouter = require('./routes/fiche_de_poste');
 const utilisateursRouter = require('./routes/utilisateur/utilisateurs');
 const recruteurRouter = require('./routes/utilisateur/recruteur')
+//const liste_recruteurRouter = require('./routes/utilisateur/liste_recruteur')
 const candidaturesRouter = require('./routes/candidatures');
 const piecesRouter = require('./routes/pieces');
 const offreRouter = require('./routes/offre');
@@ -32,6 +33,7 @@ app.use('/', loginRouter);
 app.use('/new_user', new_userRouter);
 app.use('/utilisateurs', utilisateursRouter);
 app.use('/utilisateurs/recruteur', recruteurRouter);
+//app.use('/utilisateurs/liste_recruteur',liste_recruteurRouter)
 app.use('/candidatures', candidaturesRouter);
 app.use('/pieces', piecesRouter);
 app.use('/organisations',organisationRouter)

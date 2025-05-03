@@ -1,5 +1,5 @@
 var express = require('express');
-const organisation = require('../model/organisation');
+const organisation = require('../../model/organisation');
 var router = express.Router();
 
 /* GET Organisation listing. */
