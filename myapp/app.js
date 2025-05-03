@@ -10,8 +10,8 @@ const new_userRouter = require('./routes/new_user');
 const organisationRouter = require('./routes/organisation/organisation');
 const fiche_de_posteRouter = require('./routes/fiche_de_poste');
 const utilisateursRouter = require('./routes/utilisateur/utilisateurs');
-const recruteurRouter = require('./routes/utilisateur/recruteur')
-//const liste_recruteurRouter = require('./routes/utilisateur/liste_recruteur')
+const recruteurRouter = require('./routes/utilisateur/recruteur');
+const liste_recruteur_fiche_posteRouter = require('./routes/offre/creer_offre');
 const candidaturesRouter = require('./routes/candidatures');
 const piecesRouter = require('./routes/pieces');
 const offreRouter = require('./routes/offre/offre');
@@ -33,7 +33,7 @@ app.use('/', loginRouter);
 app.use('/new_user', new_userRouter);
 app.use('/utilisateurs', utilisateursRouter);
 app.use('/utilisateurs/recruteur', recruteurRouter);
-//app.use('/utilisateurs/liste_recruteur',liste_recruteurRouter)
+app.use('/new_offre',liste_recruteur_fiche_posteRouter);
 app.use('/candidatures', candidaturesRouter);
 app.use('/pieces', piecesRouter);
 app.use('/organisations',organisationRouter)
