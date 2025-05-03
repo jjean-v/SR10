@@ -14,7 +14,7 @@ const recruteurRouter = require('./routes/utilisateur/recruteur')
 //const liste_recruteurRouter = require('./routes/utilisateur/liste_recruteur')
 const candidaturesRouter = require('./routes/candidatures');
 const piecesRouter = require('./routes/pieces');
-const offreRouter = require('./routes/offre');
+const offreRouter = require('./routes/offre/offre');
 
 const app = express();
 

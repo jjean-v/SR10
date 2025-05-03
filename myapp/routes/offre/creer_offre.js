@@ -1,8 +1,7 @@
-var express = require('express');
-const offre = require('../model/offre.js');
+const express = require('express');
+const recruteur = require('../../model/recruteur');
+const offre = require('../../model/offre');
 var router = express.Router();
-
-/* GET Organisation listing. */
 
 router.get('/', function(req, res, next) {
 
