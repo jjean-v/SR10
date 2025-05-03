@@ -13,7 +13,7 @@ module.exports = {
         } = orga;
 
         const sql = `
-        INSERT INTO Organisation
+        INSERT INTO Orga
             ( siren,nom,type_orga,adresse,etat_orga)
         VALUES (?, ?, ?, ?, ?)
         `;

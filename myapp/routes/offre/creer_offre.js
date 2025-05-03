@@ -1,19 +1,21 @@
 const express = require('express');
-const recruteur = require('../../model/recruteur');
-const offre = require('../../model/offre');
+const recruteur = require('../../model/utilisateur');
+const fiche_de_poste = require('../../model/fiche_de_poste');
 var router = express.Router();
 
-router.get('/', function(req, res, next) {
-
-    promiseO=offre.readall();
-    promiseO.then( (data) =>{
-
-        res.render('offre', { title: 'Offre', offre: data });
-    });
-    promiseO.catch( (err) => {
-        console.log(err);
-        res.status(500).send('Error retrieving Offre data');
-    }); 
-});
+router.get('/', async (req, res) => {
+    try {
+      const [responsables] = await recruteur.readAll();
+      const [fichesPoste] = await fiche_de_poste.readAll();
+  
+      res.render('creerOrganisation', {
+        responsables,
+        fichesPoste
+      });
+    } catch (error) {
+      console.error(error);
+      res.status(500).send("Erreur lors du chargement des données.");
+    }
+  });
 
 module.exports = router;
