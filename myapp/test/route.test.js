@@ -1,5 +1,7 @@
 const request = require("supertest");
 const app = require("../app");
+
+
 describe("Test the organisation path", () => {
     test("It should response the GET method", done => {
         request(app)
@@ -83,6 +85,17 @@ describe("Test the utilisateurs path", () => {
     test("It should response the GET method", done => {
         request(app)
             .get("/utilisateurs")
+            .then(response => {
+                expect(response.statusCode).toBe(200);
+                done();
+            });
+    });
+});
+
+describe("Test the recruteur path", () => {
+    test("It should response the GET method", done => {
+        request(app)
+            .get("/utilisateurs/recruteur")
             .then(response => {
                 expect(response.statusCode).toBe(200);
                 done();

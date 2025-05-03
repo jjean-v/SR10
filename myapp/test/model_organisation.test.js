@@ -16,7 +16,7 @@ describe("Model CRUD Tests", () => {
 
     test("Create Organisation", (done) => {
         const newOrga = {
-            siren: "54879652",
+            siren: "54877652",
             nom: "orgaTest",type_orga: "PME",
             adresse: "2 rue des Canons, Lyon",
             etat_orga: "attente"
@@ -42,7 +42,7 @@ describe("Model CRUD Tests", () => {
     test("read Organisation", async () => {
         const resultat = await model.read("orgaTest");
         const siren = resultat[0].siren;
-        expect(siren).toBe(54879652);
+        expect(siren).toBe(54877652);
     });
 
     test("Read all Organisation",async () => {
