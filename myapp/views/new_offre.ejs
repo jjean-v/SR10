@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en" data-bs-theme="auto">
+  <head>
+    <script src="/assets/js/color-modes.js"></script>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="/assets/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/stylesheets/login.css" rel="stylesheet">
+
+   
+    <title>Creation de l'Offre</title>
+
+    
+    <!-- Custom styles for this template -->
+  </head>
+
+  <body>
+  
+    <%- include('component/header') %> 
+
+  <div class="container marketing">
+
+      <div class="bg-body-tertiary p-5 rounded ">
+          <h2>Espace Recruteur</h2>
+      </div>
+     
+      <div class="d-flex gap-2 justify-content-center py-5">
+          <button class="col with gx-4 gutters btn btn-secondary d-inline-flex align-items-center justify-content-center" type="button" onclick="window.location.href='/offre'">
+            Gestion des Offres
+          </button>
+          <button class="col with gx-4 btn btn-primary d-inline-flex align-items-center justify-content-center" type="button" onclick="window.location.href='/fiche_de_poste'">
+            Gestion des Fiche de poste
+          </button>
+          <button class="col with gx-4 btn btn-primary d-inline-flex align-items-center justify-content-center" type="button" onclick="window.location.href='/candidatures'">
+            Gestion des Candidatures
+            </button>
+      </div>
+  </div>
+   
+
+   
+        
+    <div class="container">
+        
+    <main>
+        <form class="needs-validation" action ="/creation_offre" method="POST">
+
+        <div class="bg-body-tertiary p-5 rounded ">
+
+            <div class="col-md-10">    
+                <h2>Création d'une Offre</h2>
+                <p class="lead">Veuillez remplir les différentes informations</p>
+
+            </div>
+            <hr class="featurette-divider">
+
+            <div class="row g-5">
+            <div class="col-12">
+                    <div class="row g-3">
+
+                        <div class="col-sm-6">
+                            <label for="fiche_de_poste" class = "form-label">Veuillez indiquer à quel fiche de poste fait référence votre offre</label>
+                            <select name="id_fiche_poste" class = "form-control" required>
+                            <% fichesPoste.forEach((fichesPoste) => { %>
+                                <option value="<%= fichesPoste.id_fiche %>"><%=  fichesPoste.intitule %></option>
+                            <% }); %>
+                            </select>
+                        </div>
+
+                        <div class="col-sm-3">
+                            <label for="resp_hierarchique" class = "form-label">Responsable hiérarchique</label>
+                            <select name="resp_hierarchique" class = "form-control" required>
+                            <% responsables.forEach((responsables) => { %>
+                                <option value="<%= responsables.id_user %>"><%=  responsables.prenom %> <%= responsables.nom %></option>
+                            <% }); %>
+                            </select>
+                        </div>
+
+                        
+                        <div class="col-4">
+                            <label for="date_validite" class="form-label">Date de validité </label>
+                            <div class="input-group has-validation">
+                                <input type="date" class="form-control" id="date_validite" name="date_validite" required>
+                                <div class="invalid-feedback">
+                                Please enter a valid Date.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-4">
+                            <label for="nb_piece_demande" class="form-label">Indiquer le nombre de pièces demandées</label>
+                            <div class="input-group has-validation">
+                                <input type="number" class="form-control" id="nb_piece_demande" name="nb_piece_demande" required>
+                                <div class="invalid-feedback">
+                                Please enter a valid Date.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-8">
+                            <label for="liste_piece_demande" class="form-label">Description des pièces demandées</label>
+                            <input type="text" class="form-control" id="pieces" name="liste_piece_demande" placeholder="CV + lettre de motivation" required>
+                            <div class="invalid-feedback">
+                                Please enter a description.
+                            </div>
+                        </div>
+                    </div>
+                     
+            </div>
+            </div>
+        </div>
+        <p></p>
+        <div class = "bg-body-tertiary p-5 rounded ">
+            <button class="w-100 btn btn-primary btn-lg" type="submit">Continue to checkout</button>
+        </div>
+        </form>
+
+      
+    </main>
+   
+    <%- include('component/dark_light_mode') %>
+    <%- include('component/footer') %>
+   
+    </div>
+
+    <script src="checkout.js"></script>
+</body>
+</html>

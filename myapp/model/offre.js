@@ -1,4 +1,8 @@
 var db = require('./db.js');
+const { promisify } = require('util');
+
+// Promisify pour les méthodes génériques
+const query = promisify(db.query).bind(db);
 
 module.exports = {
     
@@ -16,6 +20,34 @@ module.exports = {
     },
 
 
+    createOffre(offre, cb) {
+        const {
+        etat,
+        date_validite,
+        liste_piece_demande,
+        nb_piece_demande,
+        resp_hierarchique,
+        id_fiche_poste
+        } = offre;
+
+        const sql = `
+        INSERT INTO Offre (etat, date_validite, liste_piece_demande, nb_piece_demande, resp_hierarchique, id_fiche_poste)
+        VALUES (?, ?, ?, ?, ?, ?)
+        `;
+        const params = [etat, date_validite, liste_piece_demande, nb_piece_demande, resp_hierarchique, id_fiche_poste];
+
+        if (typeof cb === 'function') {
+        // version callback
+        db.query(sql, params, (err, result) => {
+            if (err) return cb(err);
+            cb(null, { statusCode: 200, insertId: result.insertId });
+        });
+        } else {
+        // version Promise
+        return query(sql, params)
+            .then(result => ({ statusCode: 200, insertId: result.insertId }));
+        }
+    },
 
     arePublish: function () {
         return new Promise(function (resolve, reject) {;

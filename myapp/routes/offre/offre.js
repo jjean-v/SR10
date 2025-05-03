@@ -1,19 +1,19 @@
 var express = require('express');
-const organisation = require('../model/organisation');
+const offre = require('../../model/offre.js');
 var router = express.Router();
 
 /* GET Organisation listing. */
 
 router.get('/', function(req, res, next) {
 
-    promiseO=organisation.readall();
+    promiseO=offre.readall();
     promiseO.then( (data) =>{
 
-        res.render('organisation', { title: 'Organisation', organisation: data });
+        res.render('offre', { title: 'Offre', offre: data });
     });
     promiseO.catch( (err) => {
         console.log(err);
-        res.status(500).send('Error retrieving organisation data');
+        res.status(500).send('Error retrieving Offre data');
     }); 
 });
 
