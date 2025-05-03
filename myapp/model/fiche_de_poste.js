@@ -12,7 +12,7 @@ module.exports = {
         });
     },
 
-    readall: function () {
+    readAll: function () {
         return new Promise(function (resolve, reject) {
             db.query("select * from Fiche_de_Poste", function (err, results) {
                 if (err) {
