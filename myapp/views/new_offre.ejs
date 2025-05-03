@@ -44,7 +44,7 @@
     <div class="container">
         
     <main>
-        <form class="needs-validation" action ="/new_offre/" method="POST">
+        <form class="needs-validation" action ="/creation_offre" method="POST">
 
         <div class="bg-body-tertiary p-5 rounded ">
 
@@ -61,27 +61,27 @@
 
                         <div class="col-sm-6">
                             <label for="fiche_de_poste" class = "form-label">Veuillez indiquer à quel fiche de poste fait référence votre offre</label>
-                            <select name="fiche_de_poste" class = "form-control" required>
+                            <select name="id_fiche_poste" class = "form-control" required>
                             <% fichesPoste.forEach((fichesPoste) => { %>
-                                <option value="<%= fichesPoste.id %>"><%=  fichesPoste.intitule %></option>
+                                <option value="<%= fichesPoste.id_fiche %>"><%=  fichesPoste.intitule %></option>
                             <% }); %>
                             </select>
                         </div>
 
                         <div class="col-sm-3">
-                            <label for="responsable" class = "form-label">Responsable hiérarchique</label>
-                            <select name="responsable" class = "form-control" required>
+                            <label for="resp_hierarchique" class = "form-label">Responsable hiérarchique</label>
+                            <select name="resp_hierarchique" class = "form-control" required>
                             <% responsables.forEach((responsables) => { %>
-                                <option value="<%= responsables.id %>"><%=  responsables.prenom %> <%= responsables.nom %></option>
+                                <option value="<%= responsables.id_user %>"><%=  responsables.prenom %> <%= responsables.nom %></option>
                             <% }); %>
                             </select>
                         </div>
 
                         
                         <div class="col-4">
-                            <label for="date" class="form-label">Date de validité </label>
+                            <label for="date_validite" class="form-label">Date de validité </label>
                             <div class="input-group has-validation">
-                                <input type="date" class="form-control" id="date" name="date" required>
+                                <input type="date" class="form-control" id="date_validite" name="date_validite" required>
                                 <div class="invalid-feedback">
                                 Please enter a valid Date.
                                 </div>
@@ -89,9 +89,9 @@
                         </div>
 
                         <div class="col-4">
-                            <label for="nb_piece" class="form-label">Indiquer le nombre de pièces demandées</label>
+                            <label for="nb_piece_demande" class="form-label">Indiquer le nombre de pièces demandées</label>
                             <div class="input-group has-validation">
-                                <input type="number" class="form-control" id="nb_piece" name="nb_piece" required>
+                                <input type="number" class="form-control" id="nb_piece_demande" name="nb_piece_demande" required>
                                 <div class="invalid-feedback">
                                 Please enter a valid Date.
                                 </div>
@@ -99,8 +99,8 @@
                         </div>
 
                         <div class="col-8">
-                            <label for="pieces" class="form-label">Description des pièces demandées</label>
-                            <input type="text" class="form-control" id="pieces" name="pieces" placeholder="CV + lettre de motivation" required>
+                            <label for="liste_piece_demande" class="form-label">Description des pièces demandées</label>
+                            <input type="text" class="form-control" id="pieces" name="liste_piece_demande" placeholder="CV + lettre de motivation" required>
                             <div class="invalid-feedback">
                                 Please enter a description.
                             </div>
