@@ -38,7 +38,7 @@ module.exports = {
 
     readJob: function (job) {
         return new Promise(function (resolve, reject) {
-            db.query("select * from Fiche_de_Poste where type_metier LIKE %?%", [`%${job}%`], function (err, results) {
+            db.query("select * from Fiche_de_Poste where type_metier LIKE ?", [`%${job}%`], function (err, results) {
                 if (err) {
                     return reject(err);
                 }
@@ -50,7 +50,7 @@ module.exports = {
 
     readPlace: function (lieu) {
         return new Promise(function (resolve, reject) {
-            db.query("select * from Fiche_de_Poste where lieu LIKE %?%", [`%${lieu}%`], function (err, results) {
+            db.query("select * from Fiche_de_Poste where lieu LIKE ?", [`%${lieu}%`], function (err, results) {
                 if (err) {
                     return reject(err);
                 }
