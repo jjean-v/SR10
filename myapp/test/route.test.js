@@ -70,6 +70,28 @@ describe("Test the offre path", () => {
     });
 });
 
+describe("Test the creer_offre path", () => {
+    test("It should response the GET method", done => {
+        request(app)
+            .get("/creation_offre")
+            .then(response => {
+                expect(response.statusCode).toBe(200);
+                done();
+            });
+    });
+});
+
+describe("Test the new offre path", () => {
+    test("It should response the GET method", done => {
+        request(app)
+            .get("/new_offre")
+            .then(response => {
+                expect(response.statusCode).toBe(200);
+                done();
+            });
+    });
+});
+
 describe("Test the piece path", () => {
     test("It should response the GET method", done => {
         request(app)
