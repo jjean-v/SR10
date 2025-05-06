@@ -1,45 +1,35 @@
-// model_pieceJointe.test.js
-const DB = require("../model/db.js");
+// test/model_pieceJointe.test.js
+const db = require("../model/db.js");
 const modelPJ = require("../model/pieceJointe.js");
 
-describe("PieceJointe Model Tests", () => {
-    beforeAll(() => {
-        // Par exemple : initialiser une connexion, nettoyer la table, etc.
-    });
+describe("PieceJointe Model CRUD (as implemented)", () => {
+  let createdId;
 
-    afterAll((done) => {
-        // Terminer proprement la connexion à la base
-        DB.end((err) => {
-            done(err);
-        });
-    });
+  afterAll((done) => {
+    // Ferme la connexion
+    db.end(done);
+  });
 
-    test("readAllDetailed should return an array of detailed attachments", (done) => {
-        modelPJ.readAllDetailed()
-            .then((results) => {
-                expect(Array.isArray(results)).toBe(true);
-                done();
-            })
-            .catch((err) => done(err));
-    });
+  test("readAllDetailed() renvoie un tableau", async () => {
+    const all = await modelPJ.readAllDetailed();
+    expect(Array.isArray(all)).toBe(true);
+  });
 
-    test("create should insert a new piece jointe", (done) => {
-        const data = { nom: "test.pdf", type: "application/pdf", taille: 1024, candidature_id: 1 };
-        modelPJ.create(data)
-            .then((result) => {
-                expect(result.affectedRows).toBe(1);
-                done();
-            })
-            .catch((err) => done(err));
-    });
+  test("create() insère une pièce jointe", async () => {
+    const payload = {
+      nom: "doc_test.pdf",
+      type: "application/pdf",
+      taille: 1234,
+      candidature_id: 1  // assure-toi qu'il existe une candidature id=1
+    };
+    const result = await modelPJ.create(payload);
+    expect(result.affectedRows).toBe(1);
+    expect(typeof result.insertId).toBe("number");
+    createdId = result.insertId;
+  });
 
-    test("delete should remove a piece jointe by id", (done) => {
-        const id = 1;
-        modelPJ.delete(id)
-            .then((result) => {
-                expect(result.affectedRows).toBe(1);
-                done();
-            })
-            .catch((err) => done(err));
-    });
+  test("delete() supprime la pièce jointe créée", async () => {
+    const { affectedRows } = await modelPJ.delete(createdId);
+    expect(affectedRows).toBe(1);
+  });
 });

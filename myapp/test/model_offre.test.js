@@ -1,45 +1,43 @@
-// model_pieceJointe.test.js
-const DB = require("../model/db.js");
-const modelPJ = require("../model/pieceJointe.js");
+// test/model_offre.test.js
+const db = require("../model/db.js");
+const modelOffre = require("../model/offre.js");
 
-describe("PieceJointe Model Tests", () => {
-    beforeAll(() => {
-        // Par exemple : initialiser une connexion, nettoyer la table, etc.
-    });
+describe("Offre Model CRUD (selon ce qui existe)", () => {
+  let createdId;
 
-    afterAll((done) => {
-        // Terminer proprement la connexion à la base
-        DB.end((err) => {
-            done(err);
-        });
-    });
+  afterAll((done) => {
+    if (createdId) {
+      // nettoyage manuel si createOffre a créé quelque chose
+      db.query("DELETE FROM Offre WHERE id_offre = ?", [createdId], () => {
+        db.end(done);
+      });
+    } else {
+      db.end(done);
+    }
+  });
 
-    test("readAllDetailed should return an array of detailed attachments", (done) => {
-        modelPJ.readAllDetailed()
-            .then((results) => {
-                expect(Array.isArray(results)).toBe(true);
-                done();
-            })
-            .catch((err) => done(err));
-    });
+  test("readall() renvoie un tableau d'offres", async () => {
+    const all = await modelOffre.readall();
+    expect(Array.isArray(all)).toBe(true);
+  });
 
-    test("create should insert a new piece jointe", (done) => {
-        const data = { nom: "test.pdf", type: "application/pdf", taille: 1024, candidature_id: 1 };
-        modelPJ.create(data)
-            .then((result) => {
-                expect(result.affectedRows).toBe(1);
-                done();
-            })
-            .catch((err) => done(err));
-    });
+  test("areExpired() renvoie un tableau (peut être vide) d'offres expirées", async () => {
+    const expired = await modelOffre.areExpired();
+    expect(Array.isArray(expired)).toBe(true);
+  });
 
-    test("delete should remove a piece jointe by id", (done) => {
-        const id = 1;
-        modelPJ.delete(id)
-            .then((result) => {
-                expect(result.affectedRows).toBe(1);
-                done();
-            })
-            .catch((err) => done(err));
-    });
+  test("createOffre() insère une nouvelle offre", async () => {
+    const payload = {
+      etat: "publiée", // Utilisez une valeur valide pour la colonne `etat`
+      date_validite: "2025-12-31",
+      liste_piece_demande: "CV, lettre",
+      nb_piece_demande: 2,
+      resp_hierarchique: 2, // Assurez-vous que cet ID existe dans la table `Utilisateur`
+      id_fiche_poste: 1     // Assurez-vous que cet ID existe dans la table `Fiche_de_Poste`
+    };
+    const { insertId, statusCode } = await modelOffre.createOffre(payload);
+    expect(statusCode).toBe(200);
+    expect(typeof insertId).toBe("number");
+    createdId = insertId;
+  });
 });
