@@ -42,14 +42,31 @@ module.exports = {
   },
 
   /** Crée une nouvelle candidature */
-  create({ date_candidature, utilisateur_id, id_offre }) {
+  createCandidature(candidature, cb) {
+    const {
+    date_candidature,
+    utilisateur_id,
+    id_offre
+    } = candidature;
+
     const sql = `
-      INSERT INTO Candidature
-        (date_candidature, utilisateur_id, id_offre)
-      VALUES (?, ?, ?)
+    INSERT INTO Candidature (date_candidature,utilisateur_id,id_offre)
+    VALUES (?, ?, ?)
     `;
-    return query(sql, [date_candidature, utilisateur_id, id_offre]);
-  },
+    const params = [date_candidature,utilisateur_id,id_offre];
+
+    if (typeof cb === 'function') {
+    // version callback
+    db.query(sql, params, (err, result) => {
+        if (err) return cb(err);
+        cb(null, { statusCode: 200, insertId: result.insertId });
+    });
+    } else {
+    // version Promise
+    return query(sql, params)
+        .then(result => ({ statusCode: 200, insertId: result.insertId }));
+    }
+},
 
   /** Supprime une candidature par son ID */
   delete(id) {
@@ -57,5 +74,16 @@ module.exports = {
       "DELETE FROM Candidature WHERE id_candidature = ?",
       [id]
     );
+  },
+
+  delete_by_user_offre(id_user,id_offre) {
+    return new Promise(function (resolve, reject) {
+        db.query("DELETE FROM Candidature WHERE utilisateur_id = ? AND id_offre = ?", [id_user,id_offre], function (err, results) {
+            if (err) {
+                return reject(err);
+            }
+            resolve(results);
+        });
+    });
   }
 };
