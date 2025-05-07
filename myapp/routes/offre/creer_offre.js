@@ -6,7 +6,6 @@ var router = express.Router();
 router.get('/', async (req, res) => {
     try {
       const responsables = await recruteur.readRecruteur();
-      console.log(responsables);
       const fichesPoste = await fiche_de_poste.readAll();
   
       res.render('new_offre',{ title : 'test', responsables :responsables, fichesPoste : fichesPoste});

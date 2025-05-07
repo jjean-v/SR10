@@ -4,7 +4,6 @@ const model = require("../model/organisation.js");
 describe("Model CRUD Tests", () => {
     beforeAll(() => {
         // Par exemple : initialiser une connexion, nettoyer la table, etc.
-        model.deleteOrga("orgaTest") // on supprime la ligne de test
     });
 
     afterAll((done) => {
@@ -51,4 +50,10 @@ describe("Model CRUD Tests", () => {
         expect(resultat.length).toBeGreaterThan(0);
     });
     
+
+    test("delete() supprime la pièce jointe créée", async () => {
+        const { affectedRows } = await model.deleteOrga("orgaTest");
+        expect(affectedRows).toBe(1);
+    });
+
 });
