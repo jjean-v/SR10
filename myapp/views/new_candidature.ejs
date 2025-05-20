@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nouvelle Candidature</title>
+</head>
+<body>
+    <h1>Nouvelle Candidature</h1>
+    <form action="/new_candidature/" method="POST">
+        <div>
+            <label for="date_candidature">Date de Candidature:</label>
+            <input type="date" id="date_candidature" name="date_candidature" required>
+        </div>
+        <div>
+            <label for="utilisateur_id">ID Utilisateur:</label>
+            <input type="number" id="utilisateur_id" name="utilisateur_id" required>
+        </div>
+        <div>
+            <label for="id_offre">ID Offre:</label>
+            <input type="number" id="id_offre" name="id_offre" required>
+        </div>
+        <button type="submit">Soumettre</button>
+    </form>
+</body>
+</html>
