@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nouvelle Fiche de Poste</title>
+</head>
+<body>
+    <h1>Créer une Nouvelle Fiche de Poste</h1>
+    <form action="/fiche-de-poste/create" method="POST">
+        <div>
+            <label for="intitule">Intitulé :</label>
+            <input type="text" id="intitule" name="intitule" maxlength="50" required>
+        </div>
+        <div>
+            <label for="statut_poste">Statut du Poste :</label>
+            <select id="statut_poste" name="statut_poste" required>
+                <option value="Cadre">Cadre</option>
+                <option value="Etam">Etam</option>
+                <option value="Intermitant">Intermitant</option>
+                <option value="Stagiaire">Stagiaire</option>
+                <option value="Alternant">Alternant</option>
+            </select>
+        </div>
+        <div>
+            <label for="type_metier">Type de Métier :</label>
+            <input type="text" id="type_metier" name="type_metier" maxlength="50" required>
+        </div>
+        <div>
+            <label for="salaire">Salaire :</label>
+            <input type="number" id="salaire" name="salaire" step="0.01" required>
+        </div>
+        <div>
+            <label for="rythme">Rythme :</label>
+            <input type="number" id="rythme" name="rythme" required>
+        </div>
+        <div>
+            <label for="lieu">Lieu :</label>
+            <input type="text" id="lieu" name="lieu" maxlength="255" required>
+        </div>
+        <div>
+            <label for="description">Description :</label>
+            <textarea id="description" name="description" maxlength="255" required></textarea>
+        </div>
+        <div>
+            <button type="submit">Créer</button>
+        </div>
+    </form>
+</body>
+</html>
