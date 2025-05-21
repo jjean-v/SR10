@@ -1,26 +1,55 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!doctype html>
+<html lang="en" data-bs-theme="auto">
+  <head>
+    <script src="/assets/js/color-modes.js"></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="/assets/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/stylesheets/login.css" rel="stylesheet">
     <title>Nouvelle Candidature</title>
-</head>
-<body>
-    <h1>Nouvelle Candidature</h1>
-    <form action="/new_candidature" method="POST">
-        <div>
-            <label for="date_candidature">Date de Candidature:</label>
-            <input type="date" id="date_candidature" name="date_candidature" required>
+  </head>
+
+  <body class="d-flex align-items-center py-4 bg-body-tertiary">
+    <main class="form-signin w-100 m-auto">
+      <form action="/new_candidature" method="POST">
+        <img class="mb-4" src="/assets/brand/bootstrap-logo.svg" alt="" width="72" height="57">
+        <h1 class="h3 mb-3 fw-normal">Nouvelle Candidature</h1>
+
+        <div class="form-floating mb-3">
+          <input type="date"
+                 class="form-control"
+                 id="floatingDate"
+                 name="date_candidature"
+                 placeholder="Date de Candidature"
+                 required>
+          <label for="floatingDate">Date de Candidature</label>
         </div>
-        <div>
-            <label for="utilisateur_id">ID Utilisateur:</label>
-            <input type="number" id="utilisateur_id" name="utilisateur_id" required>
+
+        <div class="form-floating mb-3">
+          <input type="number"
+                 class="form-control"
+                 id="floatingUtilisateur"
+                 name="utilisateur_id"
+                 placeholder="ID Utilisateur"
+                 required>
+          <label for="floatingUtilisateur">ID Utilisateur</label>
         </div>
-        <div>
-            <label for="id_offre">ID Offre:</label>
-            <input type="number" id="id_offre" name="id_offre" required>
+
+        <div class="form-floating mb-3">
+          <input type="number"
+                 class="form-control"
+                 id="floatingOffre"
+                 name="id_offre"
+                 placeholder="ID Offre"
+                 required>
+          <label for="floatingOffre">ID Offre</label>
         </div>
-        <button type="submit">Soumettre</button>
-    </form>
-</body>
+
+        <button class="btn btn-primary w-100 py-2" type="submit">Soumettre</button>
+        <p class="mt-5 mb-3 text-body-secondary">&copy; 2017–2025</p>
+      </form>
+    </main>
+
+    <%- include('component/dark_light_mode') %>
+  </body>
 </html>
