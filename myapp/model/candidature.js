@@ -43,10 +43,12 @@ module.exports = {
 
   /** Crée une nouvelle candidature */
   create(candidature, cb) {
+
+    console.log('Candidature reçue :', candidature);
     const {
-    date_candidature,
-    utilisateur_id,
-    id_offre
+        date_candidature,
+        utilisateur_id,
+        id_offre
     } = candidature;
 
     const sql = `

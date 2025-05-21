@@ -1,74 +1,100 @@
 var db = require('./db.js');
 
 module.exports = {
-    readname: function (intitule) {
-        return new Promise(function (resolve, reject) {
-            db.query("select * from Fiche_de_Poste where intitule LIKE ?", [`%${intitule}%`], function (err, results) {
-                if (err) {
-                    return reject(err);
-                }
-                resolve(results);
-            });
-        });
-    },
+  readname: function (intitule) {
+    return new Promise(function (resolve, reject) {
+      db.query(
+        "SELECT * FROM Fiche_de_Poste WHERE intitule LIKE ?",
+        [`%${intitule}%`],
+        function (err, results) {
+          if (err) return reject(err);
+          resolve(results);
+        }
+      );
+    });
+  },
 
-    readAll: function () {
-        return new Promise(function (resolve, reject) {
-            db.query("select * from Fiche_de_Poste", function (err, results) {
-                if (err) {
-                    return reject(err);
-                }
-                resolve(results);
-            });
+  readAll: function () {
+    return new Promise(function (resolve, reject) {
+      db.query("SELECT * FROM Fiche_de_Poste", function (err, results) {
+        if (err) return reject(err);
+        resolve(results);
+      });
+    });
+  },
 
-        });
-    },
+  readStatus: function (statut) {
+    return new Promise(function (resolve, reject) {
+      db.query(
+        "SELECT * FROM Fiche_de_Poste WHERE statut_poste LIKE ?",
+        [`%${statut}%`],
+        function (err, results) {
+          if (err) return reject(err);
+          resolve(results);
+        }
+      );
+    });
+  },
 
-    readStatus: function (statut) {
-        return new Promise(function (resolve, reject) {
-            db.query("select * from Fiche_de_Poste where statut_poste LIKE ?", [`%${statut}%`], function (err, results) {
-                if (err) {
-                    return reject(err);
-                }
-                resolve(results);
-            });
-        });
-    },
+  readJob: function (job) {
+    return new Promise(function (resolve, reject) {
+      db.query(
+        "SELECT * FROM Fiche_de_Poste WHERE type_metier LIKE ?",
+        [`%${job}%`],
+        function (err, results) {
+          if (err) return reject(err);
+          resolve(results);
+        }
+      );
+    });
+  },
 
+  readPlace: function (lieu) {
+    return new Promise(function (resolve, reject) {
+      db.query(
+        "SELECT * FROM Fiche_de_Poste WHERE lieu LIKE ?",
+        [`%${lieu}%`],
+        function (err, results) {
+          if (err) return reject(err);
+          resolve(results);
+        }
+      );
+    });
+  },
 
-    readJob: function (job) {
-        return new Promise(function (resolve, reject) {
-            db.query("select * from Fiche_de_Poste where type_metier LIKE ?", [`%${job}%`], function (err, results) {
-                if (err) {
-                    return reject(err);
-                }
-                resolve(results);
-            });
-        });
-    },
+  readWages: function (salaire) {
+    return new Promise(function (resolve, reject) {
+      db.query(
+        "SELECT * FROM Fiche_de_Poste WHERE salaire >= ?",
+        [salaire],
+        function (err, results) {
+          if (err) return reject(err);
+          resolve(results);
+        }
+      );
+    });
+  },
 
-
-    readPlace: function (lieu) {
-        return new Promise(function (resolve, reject) {
-            db.query("select * from Fiche_de_Poste where lieu LIKE ?", [`%${lieu}%`], function (err, results) {
-                if (err) {
-                    return reject(err);
-                }
-                resolve(results);
-            });
-        });
-    },
-
-    readWages: function (salaire) {
-        return new Promise(function (resolve, reject) {
-            db.query("select * from Fiche_de_Poste where salaire >= ? ", [salaire], function (err, results) {
-                if (err) {
-                    return reject(err);
-                }
-                resolve(results);
-            });
-        });
-    }
-
-
-    }
+  create: function (ficheData) {
+    return new Promise(function (resolve, reject) {
+      const sql = `
+        INSERT INTO Fiche_de_Poste
+          (intitule, statut_poste, type_metier, salaire, rythme, lieu, description)
+        VALUES (?, ?, ?, ?, ?, ?, ?)
+      `;
+      const params = [
+        ficheData.intitule,
+        ficheData.statut_poste,
+        ficheData.type_metier,
+        ficheData.salaire,
+        ficheData.rythme,
+        ficheData.lieu,
+        ficheData.description
+      ];
+      db.query(sql, params, function (err, result) {
+        if (err) return reject(err);
+        resolve(result.insertId);
+      });
+    });
+  }
+};

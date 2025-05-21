@@ -9,8 +9,8 @@ router.get('/', function(req, res, next) {
 });
 
 router.post('/', function(req, res, next) {
-    const { titre, description, date_limite, utilisateurId } = req.body;
-    const promise = candidature.create({ titre, description, date_limite, utilisateurId });
+    const { date_candidature, utilisateur_id, id_offre } = req.body;
+    const promise = candidature.create({ date_candidature, utilisateur_id, id_offre });
 
     promise.then((data) => {
         res.render('creation_candidature', { title: 'Création de la candidature', candidature: data });
@@ -20,6 +20,6 @@ router.post('/', function(req, res, next) {
         console.log(err);
         res.status(500).send('Error creating new candidature');
     });
-});
-
+    });
+    
 module.exports = router;
