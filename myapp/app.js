@@ -6,6 +6,7 @@ var logger = require('morgan');
 const express = require('express'); 
 // gestion de session
 var session = require('./session');
+const new_organisationRouter = require('./routes/organisation/new_organisation');
 
 const app = express();
 
@@ -96,14 +97,8 @@ app.use('/fiche_de_poste',fiche_de_posteRouter)
 app.use('/offre', offreRouter)
 app.use('/new_candidature', new_candidatureRouter);
 app.use('/new_fiche_de_poste', new_fiche_de_posteRouter);
+app.use('/new_organisation', new_organisationRouter);
 
-app.use('/authentification', connexionRouter);
-
-
-
-
-
-//app.use(flash());
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
