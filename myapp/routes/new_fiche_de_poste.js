@@ -9,14 +9,15 @@ router.get('/', function(req, res, next) {
 });
 
 router.post('/', function(req, res, next) {
-    const { titre, description, salaire, localisation, typeContrat } = req.body;
+    const { intitule, statut_poste, type_metier, salaire, rythme, lieu, description } = req.body;
     const promise = ficheDePoste.create({
-        titre,
-        description,
+        intitule,
+        statut_poste,
+        type_metier,
         salaire,
-        localisation,
-        typeContrat,
-        dateCreation: new Date()
+        rythme,
+        lieu,
+        description
     });
 
     promise.then((data) => {
