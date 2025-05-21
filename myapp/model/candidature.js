@@ -42,7 +42,7 @@ module.exports = {
   },
 
   /** Crée une nouvelle candidature */
-  createCandidature(candidature, cb) {
+  create(candidature, cb) {
     const {
     date_candidature,
     utilisateur_id,

@@ -1,5 +1,5 @@
 var express = require('express');
-const ficheDePoste = require('../model/ficheDePoste');
+const ficheDePoste = require('../model/fiche_de_poste');
 
 var router = express.Router();
 
