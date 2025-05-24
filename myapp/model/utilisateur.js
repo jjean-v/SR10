@@ -76,6 +76,21 @@ module.exports = {
   readRecruteur(){
     const sql = 'SELECT * FROM Utilisateur WHERE role = "recruteur"';
     return query(sql);
-  }
+  },
 
+  // Fonction pour vérifier l'authentification (email et mot de passe)
+  authenticateUser(email, password) {
+    return new Promise((resolve, reject) => {
+      db.query(`SELECT * FROM Utilisateur WHERE email = ? AND motDePasse = ?`,[email, password],
+        (err, row) => {
+          if (err) {
+            console.error("Erreur lors de l'authentification :", err);
+            reject(err);
+          } else {
+            resolve(row); // Renvoie l'utilisateur authentifié ou null
+          }
+        }
+      );
+    })
+  }
 };
