@@ -70,6 +70,8 @@ const piecesRouter = require('./routes/pieces');
 const offreRouter = require('./routes/offre/offre');
 const liste_recruteur_fiche_posteRouter = require('./routes/offre/creer_offre');
 const new_offreRouter = require('./routes/offre/new_offre');
+const new_candidatureRouter = require('./routes/new_candidature');
+const new_fiche_de_posteRouter = require('./routes/new_fiche_de_poste');
 
 
 
@@ -89,6 +91,8 @@ app.use('/fiche_de_poste',fiche_de_posteRouter)
 app.use('/offre', offreRouter)
 app.use('/new_offre',liste_recruteur_fiche_posteRouter);
 app.use('/creation_offre',new_offreRouter);
+app.use('/new_candidature', new_candidatureRouter);
+app.use('/new_fiche_de_poste', new_fiche_de_posteRouter);
 
 
 // catch 404 and forward to error handler

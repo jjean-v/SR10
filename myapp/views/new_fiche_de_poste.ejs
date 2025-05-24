@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="en" data-bs-theme="auto">
+  <head>
+    <script src="/assets/js/color-modes.js"></script>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="/assets/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/stylesheets/login.css" rel="stylesheet">
+
+   
+    <title>Creation de la fiche de poste</title>
+
+    
+    <!-- Custom styles for this template -->
+  </head>
+
+  <body>
+  
+    <%- include('component/header') %> 
+
+  <div class="container marketing">
+
+      <div class="bg-body-tertiary p-5 rounded ">
+          <h2>Espace Recruteur</h2>
+      </div>
+     
+      <div class="d-flex gap-2 justify-content-center py-5">
+          <button class="col with gx-4 gutters btn btn-secondary d-inline-flex align-items-center justify-content-center" type="button" onclick="window.location.href='/offre'">
+            Gestion des Offres
+          </button>
+          <button class="col with gx-4 btn btn-primary d-inline-flex align-items-center justify-content-center" type="button" onclick="window.location.href='/fiche_de_poste'">
+            Gestion des Fiche de poste
+          </button>
+          <button class="col with gx-4 btn btn-primary d-inline-flex align-items-center justify-content-center" type="button" onclick="window.location.href='/candidatures'">
+            Gestion des Candidatures
+            </button>
+      </div>
+  </div>
+   
+
+   
+        
+    <div class="container">
+        
+    <main>
+        <form class="needs-validation" action ="/new_fiche_de_poste" method="POST">
+
+        <div class="bg-body-tertiary p-5 rounded ">
+
+            <div class="col-md-10">    
+                <h2>Création de la fiche de poste</h2>
+                <p class="lead">Veuillez remplir les différentes informations</p>
+
+            </div>
+            <hr class="featurette-divider">
+
+            <div class="row g-5">
+            <div class="col-12">
+                    <div class="row g-3">
+
+                        <div class="form-floating mb-3">
+                          <input type="text"
+                                class="form-control"
+                                id="floatingIntitule"
+                                name="intitule"
+                                placeholder="Intitulé"
+                                maxlength="50"
+                                required>
+                          <label for="floatingIntitule">Intitulé</label>
+                        </div>
+
+                        <div class="form-floating mb-3">
+                          <select class="form-select"
+                                  id="floatingStatut"
+                                  name="statut_poste"
+                                  aria-label="Statut du Poste"
+                                  required>
+                            <option value="" disabled selected>Choisir le statut</option>
+                            <option value="Cadre">Cadre</option>
+                            <option value="Etam">Etam</option>
+                            <option value="Intermitant">Intermittent</option>
+                            <option value="Stagiaire">Stagiaire</option>
+                            <option value="Alternant">Alternant</option>
+                          </select>
+                          <label for="floatingStatut">Statut du Poste</label>
+                        </div>
+
+                        
+                        <div class="form-floating mb-3">
+                          <input type="text"
+                                class="form-control"
+                                id="floatingTypeMetier"
+                                name="type_metier"
+                                placeholder="Type de Métier"
+                                maxlength="50"
+                                required>
+                          <label for="floatingTypeMetier">Type de Métier</label>
+                        </div>
+
+                        <div class="form-floating mb-3">
+                          <input type="number"
+                                class="form-control"
+                                id="floatingSalaire"
+                                name="salaire"
+                                placeholder="Salaire"
+                                step="0.01"
+                                required>
+                          <label for="floatingSalaire">Salaire (€)</label>
+                        </div>
+
+                        <div class="form-floating mb-3">
+                          <input type="number"
+                                class="form-control"
+                                id="floatingRythme"
+                                name="rythme"
+                                placeholder="Rythme"
+                                required>
+                          <label for="floatingRythme">Rythme</label>
+                        </div>
+
+                        <div class="form-floating mb-3">
+                          <input type="text"
+                                class="form-control"
+                                id="floatingLieu"
+                                name="lieu"
+                                placeholder="Lieu"
+                                maxlength="255"
+                                required>
+                          <label for="floatingLieu">Lieu</label>
+                        </div>
+
+                        <div class="form-floating mb-4">
+                          <textarea class="form-control"
+                                    placeholder="Description"
+                                    id="floatingDescription"
+                                    name="description"
+                                    style="height: 100px"
+                                    maxlength="255"
+                                    required></textarea>
+                          <label for="floatingDescription">Description</label>
+                        </div>
+
+                    </div>
+                     
+            </div>
+            </div>
+        </div>
+        <p></p>
+        <div class = "bg-body-tertiary p-5 rounded ">
+            <button class="w-100 btn btn-primary btn-lg" type="submit">Créer</button>
+        </div>
+        </form>
+
+      
+    </main>
+   
+    <%- include('component/dark_light_mode') %>
+    <%- include('component/footer') %>
+   
+    </div>
+
+    <script src="checkout.js"></script>
+</body>
+</html>

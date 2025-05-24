@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en" data-bs-theme="auto">
+  <head>
+    <script src="/assets/js/color-modes.js"></script>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="/assets/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/stylesheets/login.css" rel="stylesheet">
+
+   
+    <title>Nouvelle candidature</title>
+
+    
+    <!-- Custom styles for this template -->
+  </head>
+
+  <body>
+  
+    <%- include('component/header') %> 
+
+  <div class="container marketing">
+
+      <div class="bg-body-tertiary p-5 rounded ">
+          <h2>Espace Candidat</h2>
+      </div>
+     
+      <div class="d-flex gap-2 justify-content-center py-5">
+          <button class="col with gx-4 gutters btn btn-secondary d-inline-flex align-items-center justify-content-center" type="button" onclick="window.location.href='/offre'">
+            Gestion des Offres
+          </button>
+          <button class="col with gx-4 btn btn-primary d-inline-flex align-items-center justify-content-center" type="button" onclick="window.location.href='/fiche_de_poste'">
+            Gestion des Fiche de poste
+          </button>
+          <button class="col with gx-4 btn btn-primary d-inline-flex align-items-center justify-content-center" type="button" onclick="window.location.href='/candidatures'">
+            Gestion des Candidatures
+            </button>
+      </div>
+  </div>
+   
+
+   
+        
+    <div class="container">
+        
+    <main>
+        <form class="needs-validation" action ="/new_candidature" method="POST">
+
+        <div class="bg-body-tertiary p-5 rounded ">
+
+            <div class="col-md-10">    
+                <h2>Nouvelle Candidature</h2>
+                <p class="lead">Veuillez remplir les différentes informations</p>
+
+            </div>
+            <hr class="featurette-divider">
+
+            <div class="row g-5">
+            <div class="col-12">
+                    <div class="row g-3">
+
+                        <div class="form-floating mb-3">
+                          <input type="date"
+                                class="form-control"
+                                id="floatingDate"
+                                name="date_candidature"
+                                placeholder="Date de Candidature"
+                                required>
+                          <label for="floatingDate">Date de Candidature</label>
+                        </div>
+
+                        <div class="form-floating mb-3">
+                          <input type="number"
+                                class="form-control"
+                                id="floatingUtilisateur"
+                                name="utilisateur_id"
+                                placeholder="ID Utilisateur"
+                                required>
+                          <label for="floatingUtilisateur">ID Utilisateur</label>
+                        </div>
+
+                        
+                        <div class="form-floating mb-3">
+                          <input type="number"
+                                class="form-control"
+                                id="floatingOffre"
+                                name="id_offre"
+                                placeholder="ID Offre"
+                                required>
+                          <label for="floatingOffre">ID Offre</label>
+                        </div>
+                     
+            </div>
+            </div>
+        </div>
+        <p></p>
+        <div class = "bg-body-tertiary p-5 rounded ">
+            <button class="w-100 btn btn-primary btn-lg" type="submit">Soumettre</button>
+        </div>
+        </form>
+
+      
+    </main>
+   
+    <%- include('component/dark_light_mode') %>
+    <%- include('component/footer') %>
+   
+    </div>
+
+    <script src="checkout.js"></script>
+</body>
+</html>
