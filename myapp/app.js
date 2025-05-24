@@ -29,21 +29,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 
 
-// Routeurs
-const loginRouter = require('./routes/login');
-const new_userRouter = require('./routes/new_user');
 
-const organisationRouter = require('./routes/organisation/organisation');
-const fiche_de_posteRouter = require('./routes/fiche_de_poste');
-const utilisateursRouter = require('./routes/utilisateur/utilisateurs');
-const recruteurRouter = require('./routes/utilisateur/recruteur');
-const candidaturesRouter = require('./routes/candidatures');
-const piecesRouter = require('./routes/pieces');
 
-const offreRouter = require('./routes/offre/offre');
-const liste_recruteur_fiche_posteRouter = require('./routes/offre/creer_offre');
-const new_offreRouter = require('./routes/offre/new_offre');
-const connexionRouter = require('./routes/connexion');
 
 
 app.all("*", function (req, res, next) {
@@ -79,8 +66,11 @@ const candidaturesRouter = require('./routes/candidatures');
 const piecesRouter = require('./routes/pieces');
 
 const offreRouter = require('./routes/offre/offre');
-const liste_recruteur_fiche_posteRouter = require('./routes/offre/creer_offre');
-const new_offreRouter = require('./routes/offre/new_offre');
+const connexionRouter = require('./routes/connexion');
+
+const new_candidatureRouter = require('./routes/new_candidature');
+const new_fiche_de_posteRouter = require('./routes/new_fiche_de_poste');
+
 
 
 
@@ -98,8 +88,6 @@ app.use('/organisations',organisationRouter)
 app.use('/fiche_de_poste',fiche_de_posteRouter)
 
 app.use('/offre', offreRouter)
-app.use('/new_offre',liste_recruteur_fiche_posteRouter);
-app.use('/creation_offre',new_offreRouter);
 app.use('/new_candidature', new_candidatureRouter);
 app.use('/new_fiche_de_poste', new_fiche_de_posteRouter);
 
@@ -111,13 +99,6 @@ app.use('/authentification', connexionRouter);
 
 //app.use(flash());
 
-app.get('/organisations', (req, res) => { 
-    if (req.session.user) { 
-        res.send('Bienvenue sur votre profil, ' + req.session.user + '!'); 
-    } else { 
-        res.redirect('/'); 
-    }
-  });
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
