@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const utilisateur = require('../../model/utilisateur');
 
+
 // GET /utilisateurs
 router.get('/', (req, res, next) => {
   utilisateur.readAll()
@@ -11,6 +12,10 @@ router.get('/', (req, res, next) => {
       res.status(500).send('Erreur lors de la récupération des utilisateurs');
     });
 });
+
+
+
+
 
 
 module.exports = router;

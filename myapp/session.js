@@ -11,9 +11,8 @@ module.exports = {
     },
 
     creatSession: function (session, mail, role) {
-        console.log("mail",mail);
-        session.userid = mail;
         session.role = role;
+        session.userid = mail;
         session.save(function (err) {
             console.log(err);
         });

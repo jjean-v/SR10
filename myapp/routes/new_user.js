@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 const utilisateur = require('../model/utilisateur');
+const session = require("../session");
 
 
 /* GET home page. */
@@ -13,6 +14,7 @@ router.post('/', function(req, res, next) {
   promise = utilisateur.create({nom ,prenom, email , motDePasse:password, role:'candidat',role_recruteur: null,etat_compte:'alive',siren:null})
   promise.then( (data) =>{
 
+    session.creatSession(req.session, email, 'candidat'); 
     res.render('creation_compte', { title: 'creation du compte', user: data });
 
   });
