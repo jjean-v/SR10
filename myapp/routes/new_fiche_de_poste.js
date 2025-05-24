@@ -21,7 +21,7 @@ router.post('/', function(req, res, next) {
     });
 
     promise.then((data) => {
-        res.render('fiche_de_poste_cree', { title: 'Fiche de poste créée', fiche: data });
+        res.render('creation_X', { title: 'Fiche de poste créée', fiche: data, objet:"fiche de poste" });
     });
 
     promise.catch((err) => {

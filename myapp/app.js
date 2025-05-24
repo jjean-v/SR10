@@ -60,12 +60,11 @@ const new_userRouter = require('./routes/new_user');
 
 const organisationRouter = require('./routes/organisation/organisation');
 const fiche_de_posteRouter = require('./routes/fiche_de_poste');
-const utilisateursRouter = require('./routes/utilisateur/utilisateurs');
-const recruteurRouter = require('./routes/utilisateur/recruteur');
+const utilisateursRouter = require('./routes/utilisateur');
 const candidaturesRouter = require('./routes/candidatures');
 const piecesRouter = require('./routes/pieces');
 
-const offreRouter = require('./routes/offre/offre');
+const offreRouter = require('./routes/offre');
 const connexionRouter = require('./routes/connexion');
 
 const new_candidatureRouter = require('./routes/new_candidature');
@@ -81,7 +80,6 @@ app.use('/creation_compte',new_userRouter);
 
 
 app.use('/utilisateurs', utilisateursRouter);
-app.use('/utilisateurs/recruteur', recruteurRouter);
 app.use('/candidatures', candidaturesRouter);
 app.use('/pieces', piecesRouter);
 app.use('/organisations',organisationRouter)

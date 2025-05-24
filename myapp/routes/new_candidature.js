@@ -13,7 +13,7 @@ router.post('/', function(req, res, next) {
     const promise = candidature.create({ date_candidature, utilisateur_id, id_offre });
 
     promise.then((data) => {
-        res.render('creation_candidature', { title: 'Création de la candidature', candidature: data });
+        res.render('creation_X', { title: 'Création de la candidature', candidature: data, objet : "candidature", url : "/candidatures"  });
     });
 
     promise.catch((err) => {
