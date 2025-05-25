@@ -10,9 +10,14 @@ module.exports = {
         });
     },
 
-    creatSession: function (session, mail, role) {
+    creatSession: function (session, mail, nom, prenom, role) {
         session.role = role;
         session.userid = mail;
+        session.nom = nom;
+        session.prenom = prenom;
+
+
+
         session.save(function (err) {
             console.log(err);
         });

@@ -54,6 +54,14 @@ app.all("*", function (req, res, next) {
   }
 });
 
+// Middleware global
+app.use((req, res, next) => {
+    res.locals.nom = req.session.nom || null;
+    res.locals.prenom = req.session.prenom || null;
+    next();
+});
+
+
 // Routeurs
 const loginRouter = require('./routes/login');
 const new_userRouter = require('./routes/new_user');

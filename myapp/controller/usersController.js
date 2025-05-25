@@ -8,7 +8,7 @@ exports.login = async (req, res) => {
         const user = await UserModel.authenticateUser(email, password);
         if (user) {
 
-            session.creatSession(req.session,user[0].email,user[0].role);
+            session.creatSession(req.session,user[0].email,user[0].nom,user[0].prenom,user[0].role);
             console.log("maintenant j'ai une session");
 
             //return res.status(200).json({ message: "Connexion réussie !" });
