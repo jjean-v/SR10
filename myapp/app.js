@@ -99,6 +99,8 @@ app.use('/new_candidature', new_candidatureRouter);
 app.use('/new_fiche_de_poste', new_fiche_de_posteRouter);
 app.use('/new_organisation', new_organisationRouter);
 
+app.use('/authentification', connexionRouter);
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="/assets/js/color-modes.js"></script>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="/stylesheets/style.css" rel="stylesheet">
+        <title>Espace Recruteur</title>  
+        <link href="/assets/dist/css/bootstrap.min.css" rel="stylesheet">
+ 
+      </head>
+    <body>
+        <%- include('component/header') %> 
+        
+
+        <div class="container marketing">
+
+            <div class="bg-body-tertiary p-5 rounded ">
+                <h2>Espace Recruteur</h2>
+            </div>
+           
+            <div class="d-flex gap-2 justify-content-center py-5">
+                <button class="col with gx-4 gutters btn btn-secondary d-inline-flex align-items-center justify-content-center" type="button" onclick="window.location.href='/offre'">
+                  Gestion des Offres
+                </button>
+                <button class="col with gx-4 btn btn-primary d-inline-flex align-items-center justify-content-center" type="button" onclick="window.location.href='/fiche_de_poste'">
+                  Gestion des Fiche de poste
+                </button>
+                <button class="col with gx-4 btn btn-primary d-inline-flex align-items-center justify-content-center" type="button" onclick="window.location.href='/candidatures'">
+                  Gestion des Candidatures
+                  </button>
+            </div>
+        </div>
+            <!-- START THE FEATURETTES -->
+        
+            
+        <div class="container marketing">
+    
+        <div class="bg-body-tertiary p-5 rounded">
+
+            <div class="row">
+                <div class="col-md-10">    
+                    <h2>Gestion des Offres d'Emploi</h2>
+                </div>
+            
+        
+                <div class="col-md-2 align-items-center">
+                    <button class="col with gx-4 gutters btn btn-primary d-inline-flex align-items-center justify-content-center" type="button" onclick="window.location.href='/offre/new_offre'">
+                        Ajouter une Offre
+                    </button>
+                </div>
+            </div>
+            <hr class="featurette-divider">
+    
+    
+            <div class="align-items-center justify-content-center">
+                <div class="list-group">
+
+                    <% offre.forEach((offre)=> { %>
+
+                    <a href="#" class="list-group-item list-group-item-action d-flex gap-3 py-3" aria-current="true">
+
+                        <div class="d-flex gap-2 w-100">
+                            <div class="col-3">
+                                <h6 class="mb-0"> <%= offre.intitule %> </h6>
+                                <p class="mb-0 opacity-75"> <%= offre.date_validite %> </p>
+                            </div>
+                            <div class = "col-2">
+                                <h6 class="mb-0"><%= offre.etat %></h6>
+                            </div>
+                            <div class = "col-3">
+                                <h6 class="mb-0"> <%= offre.liste_piece_demande %></h6>
+                            </div>
+                           
+                        </div>
+                            
+                        <div class=" d-flex gap-3">
+                            <div>
+                                <button class="col with gx-4 gutters btn btn-primary d-inline-flex align-items-center justify-content-center" type="button">
+                                    Modifier
+                                </button>
+                            </div>
+                            <div>
+                                <button class="col with gx-4 btn btn-primary d-inline-flex align-items-center justify-content-center" type="button">
+                                    Supprimer
+                                </button>
+                            </div>
+                        </div>
+                    </a>
+                    
+
+                    <% }) %>
+
+
+                </div>
+            </div>
+        </div>
+   
+        <%- include('component/dark_light_mode') %>
+        <%- include('component/footer') %>
+    </body>
+</html>
+
+
