@@ -51,4 +51,21 @@ router.post('/creation_X', function(req, res, next) {
 
 });
 
+// Ajout d'une route pour l'espace recruteur
+router.get('/espace_recruteur', function(req, res) {
+    if (req.session && req.session.role === 'recruteur') {
+        // Affiche la vue recruteur
+        promiseO = offre.readall();
+        promiseO.then((data) => {
+            res.render('offre_recruteur', { title: 'Espace Recruteur', offre: data });
+        });
+        promiseO.catch((err) => {
+            console.log(err);
+            res.status(500).send('Erreur lors de la récupération des offres');
+        });
+    } else {
+        res.status(403).render('error', { message: "Vous n'êtes pas recruteur.", error: {} });
+    }
+});
+
 module.exports = router;
