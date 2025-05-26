@@ -11,7 +11,7 @@ router.get('/', function(req, res, next) {
     promiseO=offre.readall();
     promiseO.then( (data) =>{
 
-        res.render('offre', { title: 'Offre', offre: data });
+        res.render('offre_candidat', { title: 'Offre', offre: data });
     });
     promiseO.catch( (err) => {
         console.log(err);
