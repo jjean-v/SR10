@@ -7,7 +7,8 @@ exports.login = async (req, res) => {
     try {
         const user = await UserModel.authenticateUser(email, password);
         if (user) {
-            session.creatSession(req.session, user[0].email, user[0].nom, user[0].prenom, user[0].role);
+            // Correction : stocker l'id numérique de l'utilisateur dans la session
+            session.creatSession(req.session, user[0].id_user, user[0].nom, user[0].prenom, user[0].role);
             // On attend la sauvegarde de la session avant de rediriger
             req.session.save(function(err) {
                 if (err) {

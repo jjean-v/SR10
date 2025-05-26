@@ -68,4 +68,32 @@ router.get('/espace_recruteur', function(req, res) {
     }
 });
 
+// Route pour postuler à une offre
+router.post('/postuler', function(req, res) {
+    // Récupération des infos nécessaires
+    const id_offre = req.body.id_offre;
+    const id_user = req.session.userid;
+    const date_postulation = new Date();
+
+    // Vérification des champs
+    if (!id_offre || !id_user) {
+        return res.status(400).render('error', { message: "Erreur : informations manquantes pour la candidature.", error: {} });
+    }
+
+    // Appel au modèle pour créer la candidature
+    const candidatureModel = require('../model/candidature');
+    candidatureModel.create({
+        date_candidature: date_postulation,
+        utilisateur_id: id_user,
+        id_offre: id_offre
+    })
+    .then(() => {
+        res.render('confirmation_postulation', { id_offre });
+    })
+    .catch((err) => {
+        console.log(err);
+        res.status(500).render('error', { message: "Erreur lors de la postulation.", error: err });
+    });
+});
+
 module.exports = router;
