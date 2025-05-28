@@ -15,10 +15,13 @@ exports.login = async (req, res) => {
                     console.error('Erreur lors de la sauvegarde de la session :', err);
                     return res.status(500).json({ message: "Erreur serveur." });
                 }
-                if (user[0].role === "candidat")
-                    res.redirect("/offre");
-                else (user[0].role === "recruteur")
-                    res.redirect("/offre/espace_recruteur");
+                if (user[0].role === "candidat") {
+                    return res.redirect("/offre");
+                } else if (user[0].role === "recruteur") {
+                    return res.redirect("/offre/espace_recruteur");
+                } else {
+                    return res.redirect("/");
+                }
             });
         } else {
             return res.status(401).json({ message: "Identifiants incorrects." });

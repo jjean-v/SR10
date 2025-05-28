@@ -2,6 +2,7 @@ var express = require('express');
 const offre = require('../model/offre.js');
 const recruteur = require('../model/utilisateur');
 const fiche_de_poste = require('../model/fiche_de_poste');
+const organisation = require('../model/organisation');
 var router = express.Router();
 
 /* GET Organisation listing. */
@@ -52,7 +53,7 @@ router.post('/creation_X', function(req, res, next) {
 });
 
 // Ajout d'une route pour l'espace recruteur
-router.get('/espace_recruteur', function(req, res) {
+router.get('/espace_recruteur', async function(req, res) {
     if (req.session && req.session.role === 'recruteur') {
         // Affiche la vue recruteur
         promiseO = offre.readall();
@@ -63,8 +64,34 @@ router.get('/espace_recruteur', function(req, res) {
             console.log(err);
             res.status(500).send('Erreur lors de la récupération des offres');
         });
+    } else if (req.session && req.session.role === 'candidat') {
+        // Affiche le formulaire de demande pour devenir recruteur
+        try {
+            const organisations = await organisation.readall();
+            res.render('demande_recruteur', { organisations });
+        } catch (err) {
+            console.log(err);
+            res.status(500).send('Erreur lors de la récupération des organisations');
+        }
     } else {
-        res.status(403).render('error', { message: "Vous n'êtes pas recruteur.", error: {} });
+        res.status(403).render('error', { message: "Accès refusé.", error: {} });
+    }
+});
+
+// Route pour traiter la demande de passage recruteur
+router.post('/demande_recruteur', async function(req, res) {
+    if (!req.session || req.session.role !== 'candidat') {
+        return res.status(403).render('error', { message: "Accès refusé.", error: {} });
+    }
+    const userId = req.session.userId;
+    const siren = req.body.siren;
+    try {
+        console.log('userId:', userId, 'siren:', siren);
+        await recruteur.update(userId, { role_recruteur: 'attente', siren });
+        res.render('confirmation_postulation', { message: "Votre demande pour devenir recruteur a bien été envoyée. Elle sera validée par un administrateur." });
+    } catch (err) {
+        console.log('Erreur update recruteur:', err);
+        res.status(500).render('error', { message: "Erreur lors de la demande.", error: err });
     }
 });
 

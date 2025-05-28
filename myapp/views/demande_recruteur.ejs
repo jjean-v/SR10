@@ -1,0 +1,16 @@
+<%- include('component/header') %>
+<div class="container mt-5">
+  <h2>Demande pour devenir recruteur</h2>
+  <form action="/offre/demande_recruteur" method="post">
+    <div class="mb-3">
+      <label for="organisation" class="form-label">Organisation</label>
+      <select class="form-select" id="organisation" name="siren" required>
+        <% organisations.forEach(function(orga) { %>
+          <option value="<%= orga.siren %>"><%= orga.nom %> - <%= orga.adresse %></option>
+        <% }) %>
+      </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Envoyer la demande</button>
+  </form>
+</div>
+<%- include('component/footer') %>
