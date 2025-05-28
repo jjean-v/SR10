@@ -88,10 +88,23 @@ router.post('/demande_recruteur', async function(req, res) {
     if (!req.session || req.session.role !== 'candidat') {
         return res.status(403).render('error', { message: "Accès refusé.", error: {} });
     }
-    const userId = req.session.userId;
+    const userId = req.session.userid;
     const siren = req.body.siren;
     try {
-        console.log('userId:', userId, 'siren:', siren);
+        // Vérifier le rôle actuel de l'utilisateur
+        const users = await recruteur.read('id_user', userId);
+        const user = Array.isArray(users) ? users[0] : users;
+        if (!user) {
+            return res.status(404).render('error', { message: "Utilisateur non trouvé.", error: {} });
+        }
+        console.log('DEBUG role_recruteur:', user.role_recruteur); // Ajout debug
+        if ((user.role_recruteur || '').toLowerCase() === 'validé') {
+            return res.render('confirmation_postulation', { message: "Vous êtes déjà recruteur." });
+        }
+        if ((user.role_recruteur || '').toLowerCase() === 'attente') {
+            return res.render('confirmation_postulation', { message: "Votre demande pour devenir recruteur est déjà en attente de validation." });
+        }
+        // Si refusé ou jamais demandé (null), on autorise la demande
         await recruteur.update(userId, { role_recruteur: 'attente', siren });
         res.render('confirmation_postulation', { message: "Votre demande pour devenir recruteur a bien été envoyée. Elle sera validée par un administrateur." });
     } catch (err) {
