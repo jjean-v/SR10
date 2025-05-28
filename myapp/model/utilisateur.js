@@ -73,8 +73,8 @@ module.exports = {
     return query(sql, [value]);
   },
 
-  readRecruteur(){
-    const sql = 'SELECT * FROM Utilisateur WHERE role = "recruteur"';
+  readRecruteur() {
+    const sql = 'SELECT * FROM Utilisateur WHERE role_recruteur IN ("validé", "attente")';
     return query(sql);
   },
 

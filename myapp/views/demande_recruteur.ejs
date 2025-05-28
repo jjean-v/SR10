@@ -1,37 +1,32 @@
-<%- include('component/header') %>
-<body class="d-flex align-items-center py-4 bg-body-tertiary">
+<%- include('component/header', {
+      pageTitle: 'Demande pour devenir recruteur',
+      current: 'demande',
+      prenom: prenom, nom: nom, role: role
+    }) %>
 
-  <main class="form-signin w-100 m-auto">
-    <form action="/offre/demande_recruteur" method="post">
-      <!-- Logo / branding -->
-      <div class="text-center mb-4">
-        <img src="/assets/brand/bootstrap-logo.svg" alt="Logo" width="72" height="57">
-      </div>
+<main class="form-signin w-100 m-auto">
+  <form action="/offre/demande_recruteur" method="post">
+    <div class="text-center mb-4">
+      <img src="/assets/brand/bootstrap-logo.svg" alt="Logo" width="72" height="57">
+    </div>
+    <h1 class="h3 mb-3 fw-normal text-center text-primary">Demande pour devenir recruteur</h1>
 
-      <h1 class="h3 mb-3 fw-normal text-center text-primary">Demande pour devenir recruteur</h1>
+    <div class="form-floating mb-3">
+      <select class="form-select" id="organisation" name="siren" required aria-label="Organisation">
+        <option value="" disabled selected>Choisissez votre organisation</option>
+        <% organisations.forEach(orga => { %>
+          <option value="<%= orga.siren %>">
+            <%= orga.nom %> – <%= orga.adresse %>
+          </option>
+        <% }) %>
+      </select>
+      <label for="organisation">Organisation</label>
+    </div>
 
-      <!-- Floating select -->
-      <div class="form-floating mb-3">
-        <select class="form-select" id="organisation" name="siren" required aria-label="Organisation">
-          <option value="" disabled selected>Choisissez votre organisation</option>
-          <% organisations.forEach(function(orga) { %>
-            <option value="<%= orga.siren %>"><%= orga.nom %> – <%= orga.adresse %></option>
-          <% }) %>
-        </select>
-        <label for="organisation">Organisation</label>
-      </div>
+    <button class="w-100 btn btn-lg btn-primary" type="submit">
+      <i class="bi bi-send me-2"></i>Envoyer la demande
+    </button>
+  </form>
+</main>
 
-      <!-- Submit -->
-      <button class="w-100 btn btn-lg btn-primary" type="submit">
-        <i class="bi bi-send me-2"></i>Envoyer la demande
-      </button>
-
-      <!-- Footer text -->
-      <p class="mt-5 mb-3 text-body-secondary text-center">&copy; 2022–2025</p>
-    </form>
-  </main>
-
-  <%- include('component/dark_light_mode') %>
-  <%- include('component/footer') %>
-
-</body>
+<%- include('component/footer') %>

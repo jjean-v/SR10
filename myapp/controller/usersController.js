@@ -19,8 +19,11 @@ exports.login = async (req, res) => {
                     return res.redirect("/offre/candidat");
                 } else if (user[0].role === "recruteur") {
                     return res.redirect("/offre/espace_recruteur");
-                } else {
-                    return res.redirect("/");
+                } else if (user[0].role === "admin") {
+                    return res.redirect("/organisations");
+                }
+                else {
+                    return res.status(403).json({ message: "Rôle non reconnu." });
                 }
             });
         } else {
