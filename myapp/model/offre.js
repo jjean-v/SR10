@@ -19,6 +19,32 @@ module.exports = {
         });
     },
 
+    
+    read_pas_postuler: function (userid) {
+        return new Promise(function (resolve, reject) {
+            db.query("SELECT DISTINCT Offre.id_offre, Offre.etat, Offre.date_validite, Offre.liste_piece_demande, Fiche_de_Poste.intitule FROM Offre INNER JOIN Fiche_de_Poste ON Offre.id_fiche_poste = Fiche_de_Poste.id_fiche WHERE Offre.id_offre NOT IN ( SELECT id_offre FROM Candidature WHERE utilisateur_id = ? ) AND Offre.etat = 'publiée';", 
+                [userid],function (err, results) {
+                    if (err) {
+                        return reject(err);
+                    }
+                    resolve(results);
+                });
+
+        });
+    },
+
+    
+    readsingle: function (id_offre) {
+        return new Promise(function (resolve, reject) {
+            db.query("select * from Offre INNER JOIN Fiche_de_Poste On Offre.id_fiche_poste = Fiche_de_Poste.id_fiche WHERE Offre.id_offre = ?", [id_offre],function (err, results) {
+                if (err) {
+                    return reject(err);
+                }
+                resolve(results);
+            });
+
+        });
+    },
 
     createOffre(offre, cb) {
         const {

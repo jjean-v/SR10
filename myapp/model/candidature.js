@@ -16,6 +16,7 @@ module.exports = {
       SELECT
         c.id_candidature,
         c.date_candidature,
+        o.id_offre AS id_offre
         u.nom            AS nom_utilisateur,
         u.prenom         AS prenom_utilisateur,
         f.intitule       AS intitule_fiche_poste
@@ -35,10 +36,21 @@ module.exports = {
 
   /** Lit une candidature par son ID */
   readById(id) {
-    return query(
-      "SELECT * FROM Candidature WHERE id_candidature = ?",
-      [id]
-    );
+   const sql = `
+      SELECT
+        c.id_candidature,
+        c.date_candidature,
+        c.etat as etat_candidature,
+        f.statut_poste AS statut_poste,
+        f.salaire AS salaire,
+        f.lieu as lieu,
+        f.intitule       AS intitule_fiche_poste
+      FROM Candidature c
+      JOIN Utilisateur    u ON c.utilisateur_id   = u.id_user
+      JOIN Offre          o ON c.id_offre          = o.id_offre
+      JOIN Fiche_de_Poste f ON o.id_fiche_poste     = f.id_fiche
+      WHERE c.utilisateur_id = ? ORDER BY c.date_candidature DESC `;
+    return query(sql,id);
   },
 
   /** Crée une nouvelle candidature */

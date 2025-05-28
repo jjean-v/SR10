@@ -37,7 +37,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.all("*", function (req, res, next) {
 
   const nonSecurePaths = ["/","/new_user","/authentification","/creation_compte"]; //list des urls non sécurisées
-  const adminPaths = ["/organisations"]; //list des urls admin
+  const adminPaths = []; //list des urls admin
   if (nonSecurePaths.includes(req.path)) return next();
 
   //authenticate user

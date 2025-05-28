@@ -8,8 +8,13 @@ var router = express.Router();
 /* GET Organisation listing. */
 
 router.get('/', function(req, res, next) {
+    const userid = req.session.userid;
+    if (!userid) {
+        return res.redirect('/'); 
+    }
 
-    promiseO=offre.readall();
+
+    promiseO=offre.read_pas_postuler(userid);
     promiseO.then( (data) =>{
 
         res.render('offre_candidat', { title: 'Offre', offre: data });
@@ -34,14 +39,14 @@ router.get('/new_offre', async (req, res) => {
   });
 
 
-router.post('/creation_X', function(req, res, next) {
+router.post('/creation_offre', function(req, res, next) {
   const {date_validite, liste_piece_demande, nb_piece_demande, resp_hierarchique, id_fiche_poste} = req.body;
 
 
   promise = offre.createOffre({etat : 'publiée', date_validite, liste_piece_demande, nb_piece_demande, resp_hierarchique, id_fiche_poste})
   promise.then( (data) =>{
 
-    res.render('creation_offre', { title: 'creation de l offre', user: data , objet : "offre", url : "/offre"});
+    res.render('creation_X', { title: 'creation de l offre', user: data , objet : "offre", url : "/offre"});
 
   });
 
