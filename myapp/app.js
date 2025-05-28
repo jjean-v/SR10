@@ -59,6 +59,8 @@ app.all("*", function (req, res, next) {
 app.use((req, res, next) => {
     res.locals.nom = req.session.nom || null;
     res.locals.prenom = req.session.prenom || null;
+    res.locals.role = req.session.role || null;
+
     next();
 });
 
