@@ -36,7 +36,21 @@ module.exports = {
     
     readsingle: function (id_offre) {
         return new Promise(function (resolve, reject) {
-            db.query("select * from Offre INNER JOIN Fiche_de_Poste On Offre.id_fiche_poste = Fiche_de_Poste.id_fiche WHERE Offre.id_offre = ?", [id_offre],function (err, results) {
+            db.query(`SELECT  
+                Offre.id_offre,
+                Fiche_de_Poste.intitule AS intitule_fiche,
+                Fiche_de_Poste.statut_poste,
+                Fiche_de_Poste.salaire,
+                Fiche_de_Poste.rythme,
+                Fiche_de_Poste.lieu,
+                Fiche_de_Poste.description,
+                Offre.liste_piece_demande,
+                Organisation.nom AS nom_orga
+                from Offre INNER JOIN Fiche_de_Poste On Offre.id_fiche_poste = Fiche_de_Poste.id_fiche 
+                INNER JOIN Utilisateur on Offre.resp_hierarchique = Utilisateur.id_user 
+                INNER JOIN Organisation on Organisation.siren = Utilisateur.siren
+                WHERE Offre.id_offre = ?;`, 
+                [id_offre],function (err, results) {
                 if (err) {
                     return reject(err);
                 }

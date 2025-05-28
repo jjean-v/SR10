@@ -16,7 +16,7 @@ module.exports = {
       SELECT
         c.id_candidature,
         c.date_candidature,
-        o.id_offre AS id_offre
+        o.id_offre AS id_offre,
         u.nom            AS nom_utilisateur,
         u.prenom         AS prenom_utilisateur,
         f.intitule       AS intitule_fiche_poste
@@ -38,6 +38,7 @@ module.exports = {
   readById(id) {
    const sql = `
       SELECT
+        c.id_offre,
         c.id_candidature,
         c.date_candidature,
         c.etat as etat_candidature,
