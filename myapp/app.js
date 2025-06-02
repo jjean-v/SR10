@@ -36,7 +36,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.all("*", function (req, res, next) {
 
-  const nonSecurePaths = ["/","/new_user","/authentification","/creation_compte"]; //list des urls non sécurisées
+  const nonSecurePaths = ["/","/utilisateurs/new_user","/authentification","/utilisateurs/creation_compte"]; //list des urls non sécurisées
   const adminPaths = []; //list des urls admin
   if (nonSecurePaths.includes(req.path)) return next();
 
@@ -67,7 +67,6 @@ app.use((req, res, next) => {
 
 // Routeurs
 const loginRouter = require('./routes/login');
-const new_userRouter = require('./routes/new_user');
 
 const organisationRouter = require('./routes/organisation/organisation');
 const fiche_de_posteRouter = require('./routes/fiche_de_poste');
@@ -86,8 +85,6 @@ const new_fiche_de_posteRouter = require('./routes/new_fiche_de_poste');
 
 // Routage principal
 app.use('/', loginRouter);
-app.use('/new_user', new_userRouter);
-app.use('/creation_compte',new_userRouter);
 
 
 app.use('/utilisateurs', utilisateursRouter);

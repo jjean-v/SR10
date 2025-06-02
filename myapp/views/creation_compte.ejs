@@ -1,60 +1,24 @@
-<!-- views/pieces.ejs -->
-
 <!DOCTYPE html>
 <html>
-  <head>
-    <script src="/assets/js/color-modes.js"></script>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="/stylesheets/style.css"             rel="stylesheet">
-    <link href="/assets/dist/css/bootstrap.min.css" rel="stylesheet">
-    <title>Recruteur</title>
-  </head>
-  <body>
-    <%- include('component/header') %>
+    <head>
+        <script src="/assets/js/color-modes.js"></script>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="/stylesheets/style.css"             rel="stylesheet">
+        <link href="/assets/dist/css/bootstrap.min.css" rel="stylesheet">
+        <title>Recruteur</title>
+    </head>
+    <body>
+        <div class="container marketing">
 
-    <div class="container marketing">
-      <div class="bg-body-tertiary p-5 rounded">
-        <h2>Espace Candidat</h2>
-      </div>
-      <div class="d-flex gap-2 justify-content-center py-5">
-        <button class="col with gx-4 gutters btn btn-primary d-inline-flex align-items-center justify-content-center" type="button">
-          Gestion des Offres
-        </button>
-        <button class="col with gx-4 btn btn-primary d-inline-flex align-items-center justify-content-center" type="button">
-          Gestion de vos Candidatures
-        </button>
-        <button class="col with gx-4 btn btn-secondary d-inline-flex align-items-center justify-content-center" type="button">
-          Gestion de votre Dossier
-          </button>
-    </div>
-    </div>
-
-    <div class="container marketing">
-      <div class="bg-body-tertiary p-5 rounded">
-        <div class="row mb-3">
-          <div class="col-md-8">
-            <h2>Votre compte a été crée</h2>
-          </div>
-          <div class="col-md-4">
-            <form class="d-flex" role="search">
-              <input
-                type="search"
-                class="form-control form-control-dark text-bg-dark"
-                placeholder="Search..."
-                aria-label="Search">
-            </form>
-          </div>
+            <div class="bg-body-tertiary p-5 rounded ">
+                <div> Votre compte a été crée </div>
+                <div> Vous pouvez maintenant vous connecter </div>
+                <div class="col-md-2 align-items-center">
+                    <button class="col with gx-4 gutters btn btn-primary d-inline-flex align-items-center justify-content-center" type="button" onclick="window.location.href='/'">
+                        Revenir à la page de connexion
+                    </button>
+                </div>
+            </div>
         </div>
-        <hr class="featurette-divider">
-
-        <div class="list-group">
-          votre compte a été crée avec succès
-        </div>
-      </div>
-
-      <%- include('component/dark_light_mode') %>
-      <%- include('component/footer') %>
-    </div>
-  </body>
-</html>
+    </body>
