@@ -7,7 +7,7 @@ var router = express.Router();
 
 /* GET Organisation listing. */
 
-router.get('/', function(req, res, next) {
+router.get('/candidat', function(req, res, next) {
     const userid = req.session.userid;
     if (!userid) {
         return res.redirect('/'); 

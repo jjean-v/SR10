@@ -16,7 +16,7 @@ exports.login = async (req, res) => {
                     return res.status(500).json({ message: "Erreur serveur." });
                 }
                 if (user[0].role === "candidat") {
-                    return res.redirect("/offre");
+                    return res.redirect("/offre/candidat");
                 } else if (user[0].role === "recruteur") {
                     return res.redirect("/offre/espace_recruteur");
                 } else {
