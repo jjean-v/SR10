@@ -37,18 +37,26 @@
                         <% offre.forEach((offre)=> { %>
                         <a href="#" class="list-group-item list-group-item-action d-flex gap-3 py-3" aria-current="true">
                             <div class="d-flex gap-2 w-100">
-                                <div class="col-4">
+                                <div class="col-5">
                                     <h6 class="mb-0"> <%= offre.intitule %> </h6>
                                     <p class="mb-0 opacity-75"> <%= offre.date_validite.toISOString().split('T')[0] %> </p>
                                 </div>
-                                <div class = "col-2">
+                                <div class = "col-3">
                                     <h6 class="mb-0"><%= offre.etat %></h6>
                                 </div>
-                                <div class = "col-3">
+                                <div class = "col-2">
                                     <h6 class="mb-0"> <%= offre.liste_piece_demande %></h6>
                                 </div>
                             </div>
-                            <div class="d-flex gap-3">
+                            <div class="d-flex col-2 gutters">
+                                <form action="/candidatures/visualiser_offre" method="post" style="margin:0;">
+                                    <input type="hidden" name="id_offre" value="<%= offre.id_offre %>">
+                                    <button class="col with gx-4 gutters btn btn-primary d-inline-flex align-items-center justify-content-center" type="submit">
+                                        Visualiser l'Offre
+                                    </button>
+                                </form>
+                            </div>
+                            <div class="d-flex  col-1 gutters">
                                 <form action="/offre/postuler" method="post" style="margin:0;">
                                     <input type="hidden" name="id_offre" value="<%= offre.id_offre %>">
                                     <button class="col with gx-4 gutters btn btn-success d-inline-flex align-items-center justify-content-center" type="submit">

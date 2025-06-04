@@ -59,9 +59,11 @@ router.post('/creation_offre', function(req, res, next) {
 
 // Ajout d'une route pour l'espace recruteur
 router.get('/espace_recruteur', async function(req, res) {
+    const siren = req.session.siren;
+    console.log("siren :", siren);
     if (req.session && req.session.role === 'recruteur') {
         // Affiche la vue recruteur
-        promiseO = offre.readall();
+        promiseO = offre.read_recruteur(siren);
         promiseO.then((data) => {
             res.render('offre_recruteur', { title: 'Espace Recruteur', offre: data });
         });

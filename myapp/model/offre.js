@@ -19,7 +19,22 @@ module.exports = {
         });
     },
 
-    
+     read_recruteur: function (id_siren) {
+        return new Promise(function (resolve, reject) {
+            db.query(`select * 
+                from Offre 
+                INNER JOIN Fiche_de_Poste On Offre.id_fiche_poste = Fiche_de_Poste.id_fiche 
+                WHERE Offre.resp_hierarchique IN ( SELECT  id_user FROM Utilisateur WHERE siren = ?)`,
+                [id_siren], function (err, results) {
+                if (err) {
+                    return reject(err);
+                }
+                resolve(results);
+            });
+
+        });
+    },
+
     read_pas_postuler: function (userid) {
         return new Promise(function (resolve, reject) {
             db.query("SELECT DISTINCT Offre.id_offre, Offre.etat, Offre.date_validite, Offre.liste_piece_demande, Fiche_de_Poste.intitule FROM Offre INNER JOIN Fiche_de_Poste ON Offre.id_fiche_poste = Fiche_de_Poste.id_fiche WHERE Offre.id_offre NOT IN ( SELECT id_offre FROM Candidature WHERE utilisateur_id = ? ) AND Offre.etat = 'publiée';", 
