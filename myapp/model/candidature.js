@@ -1,5 +1,6 @@
 // model/candidature.js
 
+const { rejects } = require('assert');
 const db = require('./db.js');
 const { promisify } = require('util');
 const query = promisify(db.query).bind(db);
@@ -92,7 +93,7 @@ module.exports = {
     }
 },
 
-  accepter(id_user,id_offre) {
+admis(id_user,id_offre) {
     return new Promise(function (resolve, reject) {
         db.query("UPDATE Candidature SET etat = 'admis' WHERE utilisateur_id = ? AND id_offre = ?", [id_user,id_offre], function (err, results) {
             if (err) {
@@ -102,13 +103,31 @@ module.exports = {
         });
     });
   },
+  
+  accepter(id_user,id_offre) {
+    return new Promise(function (resolve, reject) {
+        db.query("UPDATE Candidature SET etat = 'validé' WHERE utilisateur_id = ? AND id_offre = ?", [id_user,id_offre], function (err, results) {
+            if (err) {
+                return reject(err);
+            }
+            resolve(results);
+        });
+    });
+  },
 
-  /** Supprime une candidature par son ID */
-  delete(id) {
-    return query(
-      "DELETE FROM Candidature WHERE id_offre = ?",
-      [id]
-    );
+  /** Supprime une candidature par id de l'offre,
+   * on laisse en accepter seulement la candidature de id_user */
+
+  refuse(id_user, id_offre) {
+    return new Promise(function(resolve, reject) {
+      db.query("UPDATE Candidature SET etat = 'refusé' WHERE id_offre = ? AND utilisateur_id != ?",
+      [id_offre,id_user],function(err, results) {
+        if (err) {
+          return reject(err);
+        }
+        resolve(results);
+      });
+    });
   },
 
   delete_by_user_offre(id_user,id_offre) {

@@ -51,11 +51,11 @@ router.post('/visualiser_offre', function(req, res, next) {
 
 });
 
+
 router.post('/accepter', function(req, res, next) {
   const {id_offre, id_user} = req.body;
 
-
-  promise = candidature.accepter(id_user, id_offre)
+  promise = candidature.admis(id_user, id_offre)
   promise.then( (data) =>{
     console.log(data[0]);
     res.render('accepter_candidature', { title: 'Candidature accepté'});
@@ -66,6 +66,35 @@ router.post('/accepter', function(req, res, next) {
       res.status(500).send('Error retrieving  offre data');
   }); 
 
+});
+
+
+router.post('/valider_offre', function(req, res, next) {
+  const {id_offre, id_user} = req.body;
+
+
+  promise = candidature.accepter(id_user, id_offre)
+  promise.then( (data) =>{
+    promise2 = candidature.refuse(id_user, id_offre)
+    promise2.then( (data) =>{
+        res.render('accepter_offre', { title: 'Offre accepté'});
+
+    });
+    promise2.catch( (err) => {
+        console.log(err);
+        res.status(500).send('Error retrieving  candidature data');
+    });
+  });
+
+  promise.catch( (err) => {
+      console.log(err);
+      res.status(500).send('Error retrieving  candidature data');
+  }); 
+
+});
+
+router.get("/accepter_offre", function(req, res, next){
+  res.render("accepter_offre", {title:"offre acceptée"});
 });
 
 module.exports = router;
