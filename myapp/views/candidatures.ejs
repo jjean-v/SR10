@@ -62,14 +62,14 @@
                 </div>
                 <div class="d-flex gap-3">
                   <form action="/candidatures/accepter" method="post" style="margin:0;">
-                      <input type="hidden" name="id_user" value="<%= c.id_user %>">
+                      <input type="hidden" name="id_user" value="<%= c.utilisateur_id %>">
                       <input type="hidden" name="id_offre" value="<%= c.id_offre %>">
                       <button class="col with gx-4 gutters btn btn-success d-inline-flex align-items-center justify-content-center" type="submit">
                           Accepter
                       </button>
                   </form>
                   <form action="/candidature/accepter" method="post" style="margin:0;">
-                      <input type="hidden" name="id_offre" value="<%= c.id_user %>">
+                      <input type="hidden" name="id_offre" value="<%= c.utilisateur_id %>">
                       <button class="col with gx-4 gutters btn btn-primary d-inline-flex align-items-center justify-content-center" type="submit">
                           Refuser
                       </button>
