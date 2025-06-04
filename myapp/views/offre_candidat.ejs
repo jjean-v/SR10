@@ -49,12 +49,9 @@
                                 </div>
                             </div>
                             <div class="d-flex gap-3">
-                                <form action="/offre/postuler" method="post" style="margin:0;">
-                                    <input type="hidden" name="id_offre" value="<%= offre.id_offre %>">
-                                    <button class="col with gx-4 gutters btn btn-success d-inline-flex align-items-center justify-content-center" type="submit">
-                                        Postuler
-                                    </button>
-                                </form>
+                                <a href="/offre/postuler/<%= offre.id_offre %>" class="col with gx-4 gutters btn btn-success d-inline-flex align-items-center justify-content-center">
+                                    Postuler
+                                </a>
                             </div>
                         </a>
                         <% }) %>

@@ -1,0 +1,20 @@
+<%- include('component/header', { pageTitle: 'Postuler à une offre', current: 'offre', prenom: prenom, nom: nom, role: role }) %>
+
+<main class="form-signin w-100 m-auto">
+  <form action="/offre/postuler/<%= offre.id_offre %>" method="post" enctype="multipart/form-data">
+    <h1 class="h3 mb-3 fw-normal text-center text-primary">Postuler à l'offre : <%= offre.intitule %></h1>
+    <p class="text-center">Documents demandés : <%= offre.liste_piece_demande %></p>
+    <% const pieces = (offre.liste_piece_demande || '').split(',').map(p => p.trim()); %>
+    <% pieces.forEach(function(piece, i) { %>
+      <div class="form-floating mb-3">
+        <input type="file" class="form-control" name="pieces" required aria-label="<%= piece %>">
+        <label>Pièce jointe : <%= piece %></label>
+      </div>
+    <% }); %>
+    <button class="w-100 btn btn-lg btn-primary" type="submit">
+      <i class="bi bi-send me-2"></i>Envoyer la candidature
+    </button>
+  </form>
+</main>
+
+<%- include('component/footer') %>
