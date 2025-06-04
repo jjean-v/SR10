@@ -52,7 +52,8 @@ module.exports = {
         f.statut_poste AS statut_poste,
         f.salaire AS salaire,
         f.lieu as lieu,
-        f.intitule       AS intitule_fiche_poste
+        f.intitule       AS intitule_fiche_poste,
+        u.id_user AS id_user
       FROM Candidature c
       JOIN Utilisateur    u ON c.utilisateur_id   = u.id_user
       JOIN Offre          o ON c.id_offre          = o.id_offre
@@ -90,10 +91,21 @@ module.exports = {
     }
 },
 
+  accepter(id_user,id_offre) {
+    return new Promise(function (resolve, reject) {
+        db.query("UPDATE Candidature SET etat = 'admis' WHERE utilisateur_id = ? AND id_offre = ?", [id_user,id_offre], function (err, results) {
+            if (err) {
+                return reject(err);
+            }
+            resolve(results);
+        });
+    });
+  },
+
   /** Supprime une candidature par son ID */
   delete(id) {
     return query(
-      "DELETE FROM Candidature WHERE id_candidature = ?",
+      "DELETE FROM Candidature WHERE id_offre = ?",
       [id]
     );
   },
@@ -108,4 +120,8 @@ module.exports = {
         });
     });
   }
+
+
+
+
 };

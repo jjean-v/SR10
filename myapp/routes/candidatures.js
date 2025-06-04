@@ -52,14 +52,13 @@ router.post('/visualiser_offre', function(req, res, next) {
 });
 
 router.post('/accepter', function(req, res, next) {
-  const id_offre = req.body.id_offre;
-  console.log("ID de l'offre à visualiser :", id_offre);
+  const {id_offre, id_user} = req.body;
 
 
-  promise = offre.readsingle(id_offre)
+  promise = candidature.accepter(id_user, id_offre)
   promise.then( (data) =>{
     console.log(data[0]);
-    res.render('visualiser_offre', { title: 'Visualisation de l offre', data: data[0]});
+    res.render('accepter_candidature', { title: 'Candidature accepté'});
   });
 
   promise.catch( (err) => {
