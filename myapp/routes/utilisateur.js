@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const utilisateur = require('../model/utilisateur');
 const session = require("../session");
+const organisation = require('../model/organisation');
 
 
 // GET /utilisateurs
@@ -93,6 +94,21 @@ router.post('/demande_recruteur', async function(req, res) {
     }
 });
 
+// Route pour afficher le formulaire de demande pour devenir recruteur
+router.get('/devenir_recruteur', async function(req, res) {
+    console.log('Session:', req.session);
+    if (req.session && req.session.role === 'candidat') {
+        try {
+            const organisations = await organisation.readall();
+            res.render('demande_recruteur', { organisations });
+        } catch (err) {
+            console.log(err);
+            res.status(500).send('Erreur lors de la récupération des organisations');
+        }
+    } else {
+        res.status(403).render('error', { message: "Accès refusé.", error: {} });
+    }
+});
 
 
 
