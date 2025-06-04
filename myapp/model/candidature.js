@@ -11,23 +11,30 @@ module.exports = {
    *  - intitulé de la fiche de poste (via la jointure Offre → Fiche_de_Poste).
    * @returns {Promise<Array>}
    */
-  readAllDetailed() {
-    const sql = `
-      SELECT
-        c.id_candidature,
-        c.date_candidature,
-        o.id_offre AS id_offre,
-        u.nom            AS nom_utilisateur,
-        u.prenom         AS prenom_utilisateur,
-        f.intitule       AS intitule_fiche_poste
-      FROM Candidature c
-      JOIN Utilisateur    u ON c.utilisateur_id   = u.id_user
-      JOIN Offre          o ON c.id_offre          = o.id_offre
-      JOIN Fiche_de_Poste f ON o.id_fiche_poste     = f.id_fiche
-      ORDER BY c.date_candidature DESC
-    `;
-    return query(sql);
-  },
+  readAllDetailed(id_siren) {
+    return new Promise(function (resolve, reject) {
+      db.query(`
+        SELECT
+          c.id_candidature,
+          c.date_candidature,
+          o.id_offre AS id_offre,
+          u.nom            AS nom_utilisateur,
+          u.prenom         AS prenom_utilisateur,
+          f.intitule       AS intitule_fiche_poste
+        FROM Candidature c
+        JOIN Utilisateur    u ON c.utilisateur_id   = u.id_user
+        JOIN Offre          o ON c.id_offre          = o.id_offre
+        JOIN Fiche_de_Poste f ON o.id_fiche_poste     = f.id_fiche
+        WHERE o.resp_hierarchique IN ( SELECT  id_user FROM Utilisateur WHERE siren = ?)
+        ORDER BY c.date_candidature DESC` ,[id_siren], function (err, results) {
+        if (err) {
+            return reject(err);
+        }
+        resolve(results);
+    });
+
+  });
+},
 
   /** (conserve si besoin) Lit les candidatures « brutes » sans jointures */
   readAll() {
