@@ -103,7 +103,7 @@ admis(id_user,id_offre) {
         });
     });
   },
-  
+
   accepter(id_user,id_offre) {
     return new Promise(function (resolve, reject) {
         db.query("UPDATE Candidature SET etat = 'validé' WHERE utilisateur_id = ? AND id_offre = ?", [id_user,id_offre], function (err, results) {
@@ -129,6 +129,7 @@ admis(id_user,id_offre) {
       });
     });
   },
+
 
   delete_by_user_offre(id_user,id_offre) {
     return new Promise(function (resolve, reject) {
