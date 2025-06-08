@@ -78,16 +78,12 @@
 
               <!-- Boutons d'action -->
               <div class="d-flex gap-3">
-                <button
-                  class="btn btn-primary d-inline-flex align-items-center justify-content-center"
-                  type="button">
-                  Modifier
-                </button>
-                <button
-                  class="btn btn-primary d-inline-flex align-items-center justify-content-center"
-                  type="button">
-                  Supprimer
-                </button>
+                <!-- Pas de modification pour pièce jointe, juste suppression -->
+                <form action="/pieces/delete/<%= p.id_piece_jointe %>" method="post" style="margin:0;" onsubmit="return confirm('Voulez-vous vraiment supprimer cette pièce jointe ?');">
+                  <button class="btn btn-primary d-inline-flex align-items-center justify-content-center" type="submit">
+                    Supprimer
+                  </button>
+                </form>
               </div>
             </a>
           <% }) %>

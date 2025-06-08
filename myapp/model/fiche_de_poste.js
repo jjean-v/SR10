@@ -96,5 +96,36 @@ module.exports = {
         resolve(result.insertId);
       });
     });
-  }
+  },
+
+  // Suppression d'une fiche de poste
+  delete: function(id) {
+    return new Promise(function (resolve, reject) {
+      db.query("DELETE FROM Fiche_de_Poste WHERE id_fiche = ?", [id], function (err, result) {
+        if (err) return reject(err);
+        resolve(result);
+      });
+    });
+  },
+  // Lecture par ID
+  readById: function(id) {
+    return new Promise(function (resolve, reject) {
+      db.query("SELECT * FROM Fiche_de_Poste WHERE id_fiche = ?", [id], function (err, results) {
+        if (err) return reject(err);
+        resolve(results);
+      });
+    });
+  },
+  // Mise à jour d'une fiche de poste
+  update: function(id, fields) {
+    return new Promise(function (resolve, reject) {
+      const cols = Object.keys(fields).map(k => `${k} = ?`).join(', ');
+      const vals = [...Object.values(fields), id];
+      const sql = `UPDATE Fiche_de_Poste SET ${cols} WHERE id_fiche = ?`;
+      db.query(sql, vals, function (err, result) {
+        if (err) return reject(err);
+        resolve(result);
+      });
+    });
+  },
 };

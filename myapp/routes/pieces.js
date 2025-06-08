@@ -18,4 +18,16 @@ router.get('/', async (req, res) => {
   }
 });
 
+// Suppression d'une pièce jointe
+router.post('/delete/:id', async (req, res) => {
+  try {
+    const id = req.params.id;
+    await pieceJointe.delete(id);
+    res.redirect('/pieces');
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Erreur lors de la suppression de la pièce jointe");
+  }
+});
+
 module.exports = router;

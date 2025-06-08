@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Modifier la fiche de poste</title>
+    <link href="/assets/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h2>Modifier la fiche de poste</h2>
+        <form action="/fiche_de_poste/edit/<%= fiche.id_fiche %>" method="post">
+            <div class="mb-3">
+                <label for="intitule" class="form-label">Intitulé</label>
+                <input type="text" class="form-control" id="intitule" name="intitule" value="<%= fiche.intitule %>" required>
+            </div>
+            <div class="mb-3">
+                <label for="statut_poste" class="form-label">Statut</label>
+                <input type="text" class="form-control" id="statut_poste" name="statut_poste" value="<%= fiche.statut_poste %>" required>
+            </div>
+            <div class="mb-3">
+                <label for="type_metier" class="form-label">Type de métier</label>
+                <input type="text" class="form-control" id="type_metier" name="type_metier" value="<%= fiche.type_metier %>" required>
+            </div>
+            <div class="mb-3">
+                <label for="salaire" class="form-label">Salaire</label>
+                <input type="number" class="form-control" id="salaire" name="salaire" value="<%= fiche.salaire %>" required>
+            </div>
+            <div class="mb-3">
+                <label for="rythme" class="form-label">Rythme</label>
+                <input type="text" class="form-control" id="rythme" name="rythme" value="<%= fiche.rythme %>" required>
+            </div>
+            <div class="mb-3">
+                <label for="lieu" class="form-label">Lieu</label>
+                <input type="text" class="form-control" id="lieu" name="lieu" value="<%= fiche.lieu %>" required>
+            </div>
+            <div class="mb-3">
+                <label for="description" class="form-label">Description</label>
+                <textarea class="form-control" id="description" name="description" required><%= fiche.description %></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Enregistrer</button>
+            <a href="/fiche_de_poste" class="btn btn-secondary">Annuler</a>
+        </form>
+    </div>
+</body>
+</html>

@@ -1,6 +1,3 @@
-
-           
-
 <!DOCTYPE html>
 <html>
     <head>
@@ -59,38 +56,35 @@
                 <div class="list-group">
 
                     <% fiche_de_poste.forEach((fiche_de_poste)=> { %>
-
                     <a href="#" class="list-group-item list-group-item-action d-flex gap-3 py-3" aria-current="true">
-                    <div class="d-flex gap-2 w-100">
+                      <div class="d-flex gap-2 w-100">
                         <div class="col-2">
-                            <h6 class="mb-0"> <%= fiche_de_poste.intitule %> </h6>
-                            <p class="mb-0 opacity-75"> <%= fiche_de_poste.statut %> </p>
+                          <h6 class="mb-0"> <%= fiche_de_poste.intitule %> </h6>
+                          <p class="mb-0 opacity-75"> <%= fiche_de_poste.statut %> </p>
                         </div>
                         <div class = "col-2">
-                            <h6 class="mb-0"> <%= fiche_de_poste.type_metier %></h6>
+                          <h6 class="mb-0"> <%= fiche_de_poste.type_metier %></h6>
                         </div>
                         <div class = "col-2">
-                            <h6 class="mb-0"> <%= fiche_de_poste.salaire %> / mois</h6>
+                          <h6 class="mb-0"> <%= fiche_de_poste.salaire %> / mois</h6>
                         </div>
                         <div class = "col-2">
-                            <h6 class="mb-0"> <%= fiche_de_poste.lieu %></h6>
+                          <h6 class="mb-0"> <%= fiche_de_poste.lieu %></h6>
                         </div>
-                    </div>
-                        
-                    <div class=" d-flex gap-3">
-                        <div>
-                            <button class="col with gx-4 gutters btn btn-primary d-inline-flex align-items-center justify-content-center" type="button">
-                                Modifier
-                            </button>
-                        </div>
-                        <div>
-                            <button class="col with gx-4 btn btn-primary d-inline-flex align-items-center justify-content-center" type="button">
-                                Supprimer
-                            </button>
-                        </div>
-                    </div>
+                      </div>
+                      <div class=" d-flex gap-3">
+                        <form action="/fiche_de_poste/edit/<%= fiche_de_poste.id_fiche %>" method="get" style="margin:0;">
+                          <button class="col with gx-4 gutters btn btn-primary d-inline-flex align-items-center justify-content-center" type="submit">
+                            Modifier
+                          </button>
+                        </form>
+                        <form action="/fiche_de_poste/delete/<%= fiche_de_poste.id_fiche %>" method="post" style="margin:0;" onsubmit="return confirm('Voulez-vous vraiment supprimer cette fiche de poste ?');">
+                          <button class="col with gx-4 btn btn-primary d-inline-flex align-items-center justify-content-center" type="submit">
+                            Supprimer
+                          </button>
+                        </form>
+                      </div>
                     </a>
-
                     <% }) %>
 
 

@@ -139,8 +139,18 @@ module.exports = {
             });
 
         });
+    },
+
+    // Suppression d'une offre
+    delete: function(id) {
+        return query("DELETE FROM Offre WHERE id_offre = ?", [id]);
+    },
+    // Mise à jour d'une offre
+    update: function(id, fields) {
+        const cols = Object.keys(fields).map(k => `${k} = ?`).join(', ');
+        const vals = [...Object.values(fields), id];
+        const sql = `UPDATE Offre SET ${cols} WHERE id_offre = ?`;
+        return query(sql, vals);
     }
-
-
 
     }

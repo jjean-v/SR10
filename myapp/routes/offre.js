@@ -161,4 +161,42 @@ router.get('/postuler/:id_offre', async function(req, res) {
     }
 });
 
+// Route pour supprimer une offre
+router.post('/delete/:id', async (req, res) => {
+  try {
+    const id = req.params.id;
+    await offre.delete(id);
+    res.redirect('/offre/espace_recruteur');
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Erreur lors de la suppression de l\'offre');
+  }
+});
+
+// Route pour afficher le formulaire de modification d'une offre
+router.get('/edit/:id', async (req, res) => {
+  try {
+    const id = req.params.id;
+    const data = await offre.readsingle(id);
+    if (!data || !data[0]) return res.status(404).send('Offre non trouvée');
+    res.render('edit_offre', { offre: data[0] });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Erreur lors du chargement de l\'offre');
+  }
+});
+
+// Route pour traiter la modification d'une offre
+router.post('/edit/:id', async (req, res) => {
+  try {
+    const id = req.params.id;
+    const { date_validite, liste_piece_demande, nb_piece_demande, etat } = req.body;
+    await offre.update(id, { date_validite, liste_piece_demande, nb_piece_demande, etat });
+    res.redirect('/offre/espace_recruteur');
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Erreur lors de la modification de l\'offre');
+  }
+});
+
 module.exports = router;

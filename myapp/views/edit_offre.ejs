@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Modifier l'offre</title>
+    <link href="/assets/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h2>Modifier l'offre</h2>
+        <form action="/offre/edit/<%= offre.id_offre %>" method="post">
+            <div class="mb-3">
+                <label for="date_validite" class="form-label">Date de validité</label>
+                <input type="date" class="form-control" id="date_validite" name="date_validite" value="<%= offre.date_validite ? offre.date_validite.toISOString().substring(0,10) : '' %>" required>
+            </div>
+            <div class="mb-3">
+                <label for="liste_piece_demande" class="form-label">Pièces demandées</label>
+                <input type="text" class="form-control" id="liste_piece_demande" name="liste_piece_demande" value="<%= offre.liste_piece_demande %>" required>
+            </div>
+            <div class="mb-3">
+                <label for="nb_piece_demande" class="form-label">Nombre de pièces demandées</label>
+                <input type="number" class="form-control" id="nb_piece_demande" name="nb_piece_demande" value="<%= offre.nb_piece_demande %>" required>
+            </div>
+            <div class="mb-3">
+                <label for="etat" class="form-label">État</label>
+                <input type="text" class="form-control" id="etat" name="etat" value="<%= offre.etat %>" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Enregistrer</button>
+            <a href="/offre/espace_recruteur" class="btn btn-secondary">Annuler</a>
+        </form>
+    </div>
+</body>
+</html>
