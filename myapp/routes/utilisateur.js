@@ -110,7 +110,12 @@ router.get('/devenir_recruteur', async function(req, res) {
     }
 });
 
-
+// Déconnexion
+router.post('/logout', (req, res) => {
+    req.session.destroy(() => {
+        res.redirect('/');
+    });
+});
 
 
 module.exports = router;

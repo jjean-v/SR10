@@ -101,6 +101,14 @@ app.use('/new_organisation', new_organisationRouter);
 app.use('/authentification', connexionRouter);
 
 
+// Ajout de la vraie route de déconnexion
+app.post('/logout', (req, res) => {
+  req.session.destroy(() => {
+    res.redirect('/');
+  });
+});
+
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
