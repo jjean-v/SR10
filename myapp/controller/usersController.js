@@ -18,7 +18,7 @@ exports.login = async (req, res) => {
                 if (user[0].role === "candidat") {
                     return res.redirect("/offre/candidat");
                 } else if (user[0].role === "recruteur") {
-                    return res.redirect("/offre/espace_recruteur");
+                    return res.redirect("/utilisateur/espace_recruteur");
                 } else if (user[0].role === "admin") {
                     return res.redirect("/organisations");
                 }

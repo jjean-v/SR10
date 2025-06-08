@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const utilisateur = require('../model/utilisateur');
 const session = require("../session");
+const organisation = require('../model/organisation');
 
 
 // GET /utilisateurs
@@ -47,6 +48,67 @@ router.post('/creation_compte', function(req, res, next) {
 
 });
 
+// Ajout d'une route pour l'espace recruteur
+router.get('/espace_recruteur', async function(req, res) {
+    if (req.session && req.session.role === 'candidat') {
+        // Affiche le formulaire de demande pour devenir recruteur
+        try {
+            const organisations = await organisation.readall();
+            res.render('demande_recruteur', { organisations });
+        } catch (err) {
+            console.log(err);
+            res.status(500).send('Erreur lors de la récupération des organisations');
+        }
+    } else {
+        res.status(403).render('error', { message: "Accès refusé.", error: {} });
+    }
+});
+
+// Route pour traiter la demande de passage recruteur
+router.post('/demande_recruteur', async function(req, res) {
+    if (!req.session || req.session.role !== 'candidat') {
+        return res.status(403).render('error', { message: "Accès refusé.", error: {} });
+    }
+    const userId = req.session.userid;
+    const siren = req.body.siren;
+    try {
+        // Vérifier le rôle actuel de l'utilisateur
+        const users = await recruteur.read('id_user', userId);
+        const user = Array.isArray(users) ? users[0] : users;
+        if (!user) {
+            return res.status(404).render('error', { message: "Utilisateur non trouvé.", error: {} });
+        }
+        console.log('DEBUG role_recruteur:', user.role_recruteur); // Ajout debug
+        if ((user.role_recruteur || '').toLowerCase() === 'validé') {
+            return res.render('confirmation_postulation', { message: "Vous êtes déjà recruteur." });
+        }
+        if ((user.role_recruteur || '').toLowerCase() === 'attente') {
+            return res.render('confirmation_postulation', { message: "Votre demande pour devenir recruteur est déjà en attente de validation." });
+        }
+        // Si refusé ou jamais demandé (null), on autorise la demande
+        await recruteur.update(userId, { role_recruteur: 'attente', siren });
+        res.render('confirmation_postulation', { message: "Votre demande pour devenir recruteur a bien été envoyée. Elle sera validée par un administrateur." });
+    } catch (err) {
+        console.log('Erreur update recruteur:', err);
+        res.status(500).render('error', { message: "Erreur lors de la demande.", error: err });
+    }
+});
+
+// Route pour afficher le formulaire de demande pour devenir recruteur
+router.get('/devenir_recruteur', async function(req, res) {
+    console.log('Session:', req.session);
+    if (req.session && req.session.role === 'candidat') {
+        try {
+            const organisations = await organisation.readall();
+            res.render('demande_recruteur', { organisations });
+        } catch (err) {
+            console.log(err);
+            res.status(500).send('Erreur lors de la récupération des organisations');
+        }
+    } else {
+        res.status(403).render('error', { message: "Accès refusé.", error: {} });
+    }
+});
 
 
 

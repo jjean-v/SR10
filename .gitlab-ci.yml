@@ -1,0 +1,16 @@
+stages:
+  - mirror
+
+mirror_to_github:
+  stage: mirror
+  image: alpine/git
+  variables:
+    GIT_SUBMODULE_STRATEGY: recursive
+  script:
+    - git remote add github-origin https://$GITHUB_TOKEN@github.com/<TON_UTILISATEUR>/<NOM_DU_REPO>.git
+    - git push --all github-origin
+    - git push --tags github-origin
+  only:
+    - branches
+  except:
+    - schedules

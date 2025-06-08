@@ -3,6 +3,9 @@ const offre = require('../model/offre.js');
 const recruteur = require('../model/utilisateur');
 const fiche_de_poste = require('../model/fiche_de_poste');
 const organisation = require('../model/organisation');
+const multer = require('multer');
+const path = require('path');
+const pieceJointeModel = require('../model/pieceJointe');
 var router = express.Router();
 
 /* GET Organisation listing. */
@@ -57,63 +60,19 @@ router.post('/creation_offre', function(req, res, next) {
 
 });
 
-// Ajout d'une route pour l'espace recruteur
-router.get('/espace_recruteur', async function(req, res) {
-    const siren = req.session.siren;
-    console.log("siren :", siren);
-    if (req.session && req.session.role === 'recruteur') {
-        // Affiche la vue recruteur
-        promiseO = offre.read_recruteur(siren);
-        promiseO.then((data) => {
-            res.render('offre_recruteur', { title: 'Espace Recruteur', offre: data });
-        });
-        promiseO.catch((err) => {
-            console.log(err);
-            res.status(500).send('Erreur lors de la récupération des offres');
-        });
-    } else if (req.session && req.session.role === 'candidat') {
-        // Affiche le formulaire de demande pour devenir recruteur
-        try {
-            const organisations = await organisation.readall();
-            res.render('demande_recruteur', { organisations });
-        } catch (err) {
-            console.log(err);
-            res.status(500).send('Erreur lors de la récupération des organisations');
-        }
-    } else {
-        res.status(403).render('error', { message: "Accès refusé.", error: {} });
+// Configuration de Multer pour l'upload de fichiers
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, path.join(__dirname, '../public/assets/upload'));
+    },
+    filename: function (req, file, cb) {
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+        const extension = file.originalname.split('.').pop();
+        cb(null, file.fieldname + '-' + uniqueSuffix + '.' + extension);
     }
 });
+const upload = multer({ storage: storage });
 
-// Route pour traiter la demande de passage recruteur
-router.post('/demande_recruteur', async function(req, res) {
-    if (!req.session || req.session.role !== 'candidat') {
-        return res.status(403).render('error', { message: "Accès refusé.", error: {} });
-    }
-    const userId = req.session.userid;
-    const siren = req.body.siren;
-    try {
-        // Vérifier le rôle actuel de l'utilisateur
-        const users = await recruteur.read('id_user', userId);
-        const user = Array.isArray(users) ? users[0] : users;
-        if (!user) {
-            return res.status(404).render('error', { message: "Utilisateur non trouvé.", error: {} });
-        }
-        console.log('DEBUG role_recruteur:', user.role_recruteur); // Ajout debug
-        if ((user.role_recruteur || '').toLowerCase() === 'validé') {
-            return res.render('confirmation_postulation', { message: "Vous êtes déjà recruteur." });
-        }
-        if ((user.role_recruteur || '').toLowerCase() === 'attente') {
-            return res.render('confirmation_postulation', { message: "Votre demande pour devenir recruteur est déjà en attente de validation." });
-        }
-        // Si refusé ou jamais demandé (null), on autorise la demande
-        await recruteur.update(userId, { role_recruteur: 'attente', siren });
-        res.render('confirmation_postulation', { message: "Votre demande pour devenir recruteur a bien été envoyée. Elle sera validée par un administrateur." });
-    } catch (err) {
-        console.log('Erreur update recruteur:', err);
-        res.status(500).render('error', { message: "Erreur lors de la demande.", error: err });
-    }
-});
 
 // Route pour postuler à une offre
 router.post('/postuler', function(req, res) {
@@ -141,6 +100,65 @@ router.post('/postuler', function(req, res) {
         console.log(err);
         res.status(500).render('error', { message: "Erreur lors de la postulation.", error: err });
     });
+});
+
+// Route POST pour postuler à une offre avec upload de pièces jointes
+router.post('/postuler/:id_offre', upload.array('pieces'), async function(req, res) {
+    const id_offre = req.params.id_offre;
+    const id_user = req.session.userid;
+    const date_postulation = new Date();
+    if (!id_offre || !id_user) {
+        return res.status(400).render('error', { message: "Erreur : informations manquantes pour la candidature.", error: {} });
+    }
+    try {
+        // Création de la candidature
+        const candidatureModel = require('../model/candidature');
+        const result = await candidatureModel.create({
+            date_candidature: date_postulation,
+            utilisateur_id: id_user,
+            id_offre: id_offre
+        });
+        const id_candidature = result.insertId;
+        // Enregistrement des pièces jointes
+        if (req.files && req.files.length > 0) {
+            for (const file of req.files) {
+                await pieceJointeModel.create({
+                    nom: file.filename,
+                    type: file.mimetype,
+                    taille: file.size,
+                    candidature_id: id_candidature
+                });
+            }
+        }
+        res.render('confirmation_postulation', { id_offre });
+    } catch (err) {
+        console.log(err);
+        res.status(500).render('error', { message: "Erreur lors de la postulation.", error: err });
+    }
+});
+
+// Affiche le formulaire de postulation avec upload de pièces jointes
+router.get('/postuler/:id_offre', async function(req, res) {
+    const id_offre = req.params.id_offre;
+    const id_user = req.session.userid;
+    if (!id_user) {
+        return res.redirect('/');
+    }
+    try {
+        const offreData = await offre.readsingle(id_offre);
+        if (!offreData || !offreData[0]) {
+            return res.status(404).render('error', { message: "Offre non trouvée", error: {} });
+        }
+        res.render('postuler_offre', {
+            offre: offreData[0],
+            prenom: req.session.prenom,
+            nom: req.session.nom,
+            role: req.session.role
+        });
+    } catch (err) {
+        console.log(err);
+        res.status(500).render('error', { message: "Erreur lors du chargement de l'offre.", error: err });
+    }
 });
 
 module.exports = router;
