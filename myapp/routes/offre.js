@@ -49,7 +49,7 @@ router.post('/creation_offre', function(req, res, next) {
   promise = offre.createOffre({etat : 'publiée', date_validite, liste_piece_demande, nb_piece_demande, resp_hierarchique, id_fiche_poste})
   promise.then( (data) =>{
 
-    res.render('creation_X', { title: 'creation de l offre', user: data , objet : "offre", url : "/offre/espace_recruteur"});
+    res.render('creation_X', { title: 'creation de l offre', user: data , objet : "offre", url : "utilisateurs/espace_recruteur"});
 
   });
 
@@ -166,7 +166,7 @@ router.post('/delete/:id', async (req, res) => {
   try {
     const id = req.params.id;
     await offre.delete(id);
-    res.redirect('/offre/espace_recruteur');
+    res.redirect('/utilisateurs/espace_recruteur');
   } catch (err) {
     console.error(err);
     res.status(500).send('Erreur lors de la suppression de l\'offre');
@@ -192,7 +192,7 @@ router.post('/edit/:id', async (req, res) => {
     const id = req.params.id;
     const { date_validite, liste_piece_demande, nb_piece_demande, etat } = req.body;
     await offre.update(id, { date_validite, liste_piece_demande, nb_piece_demande, etat });
-    res.redirect('/offre/espace_recruteur');
+    res.redirect('/utilisateurs/espace_recruteur');
   } catch (err) {
     console.error(err);
     res.status(500).send('Erreur lors de la modification de l\'offre');

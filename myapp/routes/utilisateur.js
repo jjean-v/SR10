@@ -48,16 +48,16 @@ router.post('/creation_compte', function(req, res, next) {
 
 });
 
-// Ajout d'une route pour l'espace recruteur
+// Espace recruteur (affichage des offres pour le recruteur)
 router.get('/espace_recruteur', async function(req, res) {
-    if (req.session && req.session.role === 'candidat') {
-        // Affiche le formulaire de demande pour devenir recruteur
+    if (req.session && req.session.role === 'recruteur') {
         try {
-            const organisations = await organisation.readall();
-            res.render('demande_recruteur', { organisations });
+            const offreModel = require('../model/offre');
+            const offres = await offreModel.readall();
+            res.render('offre_recruteur', { offre: offres });
         } catch (err) {
             console.log(err);
-            res.status(500).send('Erreur lors de la récupération des organisations');
+            res.status(500).send('Erreur lors de la récupération des offres');
         }
     } else {
         res.status(403).render('error', { message: "Accès refusé.", error: {} });
