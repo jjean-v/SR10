@@ -58,11 +58,6 @@
                       <%= c.date_candidature.toISOString().split('T')[0] %>
                     </p>
                   </div>
-                  <div class="col-2">
-                    <h6 class="mb-0">
-                      <%= c.statut_poste %>
-                    </h6>
-                  </div>
                  
                   <div class="col-2">
                     <h6 class="mb-0">
@@ -75,12 +70,23 @@
                     </h6>
                   </div>
                   <div class="d-flex gap-3">
+                    <% if (c.etat_candidature === 'admis') { %>
+                      <form action="/candidatures/valider_offre" method="post" style="margin:0;">
+                          <input type="hidden" name="id_offre" value="<%= c.id_offre %>">
+                          <input type="hidden" name="id_user" value="<%= c.id_user %>">
+                          <button class="col with gx-4 gutters btn btn-success d-inline-flex align-items-center justify-content-center" type="submit">
+                              Accepter l'Offre
+                          </button>
+                      </form>
+                      <% } %>
+                       
                     <form action="/candidatures/visualiser_offre" method="post" style="margin:0;">
                         <input type="hidden" name="id_offre" value="<%= c.id_offre %>">
                         <button class="col with gx-4 gutters btn btn-primary d-inline-flex align-items-center justify-content-center" type="submit">
                             Visualiser l'Offre
                         </button>
                     </form>
+
                   </div>
                 </div>
                
