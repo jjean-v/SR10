@@ -1,20 +1,64 @@
-<%- include('component/header', { pageTitle: 'Postuler à une offre', current: 'offre', prenom: prenom, nom: nom, role: role }) %>
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="/assets/js/color-modes.js"></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="/stylesheets/style.css" rel="stylesheet">
+    <link href="/assets/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>Demande pour devenir recruteur</title>
+    <style>
+      body { background: #f8f9fa; }
+      .card-demande {
+        max-width: 500px;
+        margin: 40px auto;
+        border-radius: 18px;
+        box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+        background: #fff;
+        padding: 2.5rem 2rem 2rem 2rem;
+      }
+      .card-demande h1 {
+        font-size: 1.7rem;
+        font-weight: 700;
+        color: #0d6efd;
+      }
+      .form-floating label { left: 0.75rem; }
+      .btn-primary {
+        background: linear-gradient(90deg, #2563eb 0%, #1d4ed8 100%);
+        border: none;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+      }
+      .logo-demande {
+        display: block;
+        margin: 0 auto 1.2rem auto;
+        width: 64px;
+        height: 64px;
+      }
+    </style>
+  </head>
 
-<main class="form-signin w-100 m-auto">
-  <form action="/offre/postuler/<%= offre.id_offre %>" method="post" enctype="multipart/form-data">
-    <h1 class="h3 mb-3 fw-normal text-center text-primary">Postuler à l'offre : <%= offre.intitule %></h1>
-    <p class="text-center">Documents demandés : <%= offre.liste_piece_demande %></p>
-    <% const pieces = (offre.liste_piece_demande || '').split(',').map(p => p.trim()); %>
-    <% pieces.forEach(function(piece, i) { %>
-      <div class="form-floating mb-3">
-        <input type="file" class="form-control" name="pieces" required aria-label="<%= piece %>">
-        <label>Pièce jointe : <%= piece %></label>
+<div class="container marketing">
+  <div class="bg-body-tertiary p-5 rounded mt-4">
+    <h2 class="mb-4 text-primary text-center">Postuler à l'offre : <%= offre.intitule %></h2>
+    <form action="/offre/postuler/<%= offre.id_offre %>" method="post" enctype="multipart/form-data" class="row g-3 justify-content-center">
+      <div class="col-12 text-center mb-2">
+        <span class="fw-bold">Documents demandés :</span> <%= offre.liste_piece_demande %>
       </div>
-    <% }); %>
-    <button class="w-100 btn btn-lg btn-primary" type="submit">
-      <i class="bi bi-send me-2"></i>Envoyer la candidature
-    </button>
-  </form>
-</main>
+      <% const pieces = (offre.liste_piece_demande || '').split(',').map(p => p.trim()).filter(Boolean); %>
+      <% pieces.forEach(function(piece, i) { %>
+        <div class="col-md-6">
+          <label class="form-label">Pièce jointe : <%= piece %></label>
+          <input type="file" class="form-control" name="pieces[<%= piece.replace(/\s+/g, '_').toLowerCase() %>]" required aria-label="<%= piece %>" multiple>
+        </div>
+      <% }); %>
+      <div class="col-12 text-center mt-3">
+        <button class="btn btn-primary btn-lg px-4" type="submit">
+          <i class="bi bi-send me-2"></i>Envoyer la candidature
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
 
 <%- include('component/footer') %>
