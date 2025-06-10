@@ -6,13 +6,22 @@ const organisation = require('../model/organisation');
 
 
 
-// GET /utilisateurs (pagination)
+// GET /utilisateurs (pagination + recherche)
 router.get('/', async (req, res, next) => {
   try {
     const page = parseInt(req.query.page) || 1;
     const limit = 6;
     const offset = (page - 1) * limit;
-    const allUsers = await utilisateur.readAll();
+    const q = req.query.q ? req.query.q.trim() : '';
+    let allUsers = await utilisateur.readAll();
+    if (q) {
+      const qLower = q.toLowerCase();
+      allUsers = allUsers.filter(u =>
+        (u.nom && u.nom.toLowerCase().includes(qLower)) ||
+        (u.prenom && u.prenom.toLowerCase().includes(qLower)) ||
+        (u.email && u.email.toLowerCase().includes(qLower))
+      );
+    }
     const total = allUsers.length;
     const utilisateurs = allUsers.slice(offset, offset + limit);
     const totalPages = Math.ceil(total / limit);
@@ -20,7 +29,8 @@ router.get('/', async (req, res, next) => {
       title: 'Utilisateurs',
       utilisateurs,
       page,
-      totalPages
+      totalPages,
+      recherche: q
     });
   } catch (err) {
     console.error(err);
@@ -28,16 +38,35 @@ router.get('/', async (req, res, next) => {
   }
 });
 
-router.get('/recruteur',(req,res, next) => {
-    promiseO=utilisateur.readRecruteur()
-    
-      promiseO.then(data =>{
-        res.render('recruteur', {title:'Recruteurs', utilisateurs:data });
+router.get('/recruteur', async (req, res, next) => {
+    try {
+      const page = parseInt(req.query.page) || 1;
+      const limit = 6;
+      const offset = (page - 1) * limit;
+      const q = req.query.q ? req.query.q.trim() : '';
+      let allRecruteurs = await utilisateur.readRecruteur();
+      if (q) {
+        const qLower = q.toLowerCase();
+        allRecruteurs = allRecruteurs.filter(u =>
+          (u.nom && u.nom.toLowerCase().includes(qLower)) ||
+          (u.prenom && u.prenom.toLowerCase().includes(qLower)) ||
+          (u.email && u.email.toLowerCase().includes(qLower))
+        );
+      }
+      const total = allRecruteurs.length;
+      const utilisateurs = allRecruteurs.slice(offset, offset + limit);
+      const totalPages = Math.ceil(total / limit);
+      res.render('recruteur', {
+        title: 'Recruteurs',
+        utilisateurs,
+        page,
+        totalPages,
+        recherche: q
       });
-      promiseO.catch( (err) => {
-        console.log(err);
-        res.status(500).send("Erreur lors de la récupération des recruteur");
-      });
+    } catch (err) {
+      console.log(err);
+      res.status(500).send("Erreur lors de la récupération des recruteur");
+    }
   });
 
 router.get('/new_user', function(req, res, next) {
