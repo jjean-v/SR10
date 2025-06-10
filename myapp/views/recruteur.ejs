@@ -65,6 +65,14 @@
                 </div>
 
                 <div class="d-flex gap-3">
+                  <% if (utilisateurs.role_recruteur === 'attente') { %>
+                    <form action="/utilisateurs/valider_recruteur" method="post" style="display:inline;">
+                      <input type="hidden" name="id_user" value="<%= utilisateurs.id_user %>">
+                      <button class="btn btn-success d-inline-flex align-items-center justify-content-center" type="submit">
+                        Valider
+                      </button>
+                    </form>
+                  <% } %>
                   <button class="btn btn-primary d-inline-flex align-items-center justify-content-center" type="button">
                     Modifier
                   </button>

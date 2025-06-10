@@ -99,5 +99,15 @@ module.exports = {
         });
     },
 
+    updateEtat: function (siren, etat) {
+        return new Promise(function (resolve, reject) {
+            db.query("UPDATE Organisation SET etat_orga = ? WHERE siren = ?", [etat, siren], function (err, results) {
+                if (err) {
+                    return reject(err);
+                }
+                resolve(results);
+            });
+        });
+    },
 
     }

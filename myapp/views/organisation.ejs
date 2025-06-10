@@ -79,15 +79,19 @@
                       Modifier
                     </button>
                     <% } else { %>
-                      <button class="btn btn-primary d-inline-flex align-items-center justify-content-center"
-                          type="button">
-                        Accepter
-                      </button>
+                      <form action="/organisations/accepter" method="post" style="display:inline;">
+                        <input type="hidden" name="siren" value="<%= organisation.siren %>">
+                        <button class="btn btn-primary d-inline-flex align-items-center justify-content-center" type="submit">
+                          Accepter
+                        </button>
+                      </form>
                     <% } %>
-                  <button class="btn btn-primary d-inline-flex align-items-center justify-content-center"
-                          type="button">
-                    Supprimer
-                  </button>
+                  <form action="/organisations/supprimer" method="post" style="display:inline;">
+                    <input type="hidden" name="siren" value="<%= organisation.siren %>">
+                    <button class="btn btn-danger d-inline-flex align-items-center justify-content-center" type="submit">
+                      Supprimer
+                    </button>
+                  </form>
                 </div>
               </a>
             <% }) %>

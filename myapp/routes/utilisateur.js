@@ -123,6 +123,21 @@ router.get('/devenir_recruteur', async function(req, res) {
     }
 });
 
+// Validation d'une demande de recruteur par un administrateur
+router.post('/valider_recruteur', async function(req, res) {
+    if (!req.session || req.session.role !== 'admin') {
+        return res.status(403).render('error', { message: "Accès refusé.", error: {} });
+    }
+    const userId = req.body.id_user;
+    try {
+        await utilisateur.update(userId, { role_recruteur: 'validé', role: 'recruteur' });
+        res.redirect('/utilisateurs/recruteur');
+    } catch (err) {
+        console.log('Erreur validation recruteur:', err);
+        res.status(500).render('error', { message: "Erreur lors de la validation.", error: err });
+    }
+});
+
 // Déconnexion
 router.post('/logout', (req, res) => {
     req.session.destroy(() => {
