@@ -138,6 +138,42 @@ router.post('/valider_recruteur', async function(req, res) {
     }
 });
 
+// Supprimer un utilisateur (admin)
+router.post('/delete', async function(req, res) {
+    if (!req.session || req.session.role !== 'admin') {
+        return res.status(403).render('error', { message: "Accès refusé.", error: {} });
+    }
+    const userId = req.body.id_user;
+    try {
+        await utilisateur.delete(userId);
+        res.redirect('/utilisateurs');
+    } catch (err) {
+        console.log('Erreur suppression utilisateur:', err);
+        res.status(500).render('error', { message: "Erreur lors de la suppression.", error: err });
+    }
+});
+
+// Attribuer le rôle admin à un utilisateur
+router.post('/set_admin', async function(req, res) {
+    if (!req.session || req.session.role !== 'admin') {
+        return res.status(403).render('error', { message: "Accès refusé.", error: {} });
+    }
+    const userId = req.body.id_user;
+    try {
+        const user = await utilisateur.readById(userId);
+        if (user && user[0] && user[0].role === 'admin') {
+            // Récupérer la liste des utilisateurs pour réafficher la vue avec un message
+            const users = await utilisateur.readAll();
+            return res.render('utilisateurs', { title: 'Utilisateurs', utilisateurs: users, message: "Cet utilisateur est déjà administrateur." });
+        }
+        await utilisateur.update(userId, { role: 'admin' });
+        res.redirect('/utilisateurs');
+    } catch (err) {
+        console.log('Erreur attribution admin:', err);
+        res.status(500).render('error', { message: "Erreur lors de l'attribution du rôle admin.", error: err });
+    }
+});
+
 // Déconnexion
 router.post('/logout', (req, res) => {
     req.session.destroy(() => {
