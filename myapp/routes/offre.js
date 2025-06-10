@@ -28,7 +28,14 @@ router.get('/candidat', async function(req, res, next) {
             offre: offres,
             page,
             totalPages,
-            recherche: ''
+            recherche: '',
+            type_poste: '',
+            metier: '',
+            statut_poste: '',
+            teletravail: '',
+            salaire_min: '',
+            salaire_max: '',
+            tri: 'date'
         });
     } catch (err) {
         console.log(err);
@@ -213,30 +220,72 @@ router.get('/candidat/recherche', function(req, res, next) {
     if (!userid) {
         return res.redirect('/');
     }
+    // Récupération des paramètres de recherche/filtre/tri
     const q = req.query.q ? req.query.q.trim() : '';
-    if (!q) {
-        // Si pas de recherche, on renvoie la liste normale
-        return res.redirect('/offre/candidat');
-    }
-    // Recherche sur l'intitulé, le lieu ou la description
-    const sql = `SELECT DISTINCT Offre.id_offre, Offre.etat, Offre.date_validite, Offre.liste_piece_demande, Fiche_de_Poste.intitule, Fiche_de_Poste.lieu, Fiche_de_Poste.description
+    const metier = req.query.metier ? req.query.metier.trim() : '';
+    const type_poste = req.query.type_poste ? req.query.type_poste.trim() : '';
+    const salaire_min = req.query.salaire_min ? parseFloat(req.query.salaire_min) : null;
+    const salaire_max = req.query.salaire_max ? parseFloat(req.query.salaire_max) : null;
+    const tri = req.query.tri || 'date';
+    const statut_poste = req.query.statut_poste ? req.query.statut_poste.trim() : '';
+
+    // Construction dynamique de la requête SQL
+    let sql = `SELECT DISTINCT Offre.id_offre, Offre.etat, Offre.date_validite, Offre.liste_piece_demande, Fiche_de_Poste.intitule, Fiche_de_Poste.lieu, Fiche_de_Poste.description, Fiche_de_Poste.type_metier, Fiche_de_Poste.salaire, Fiche_de_Poste.statut_poste
         FROM Offre 
         INNER JOIN Fiche_de_Poste ON Offre.id_fiche_poste = Fiche_de_Poste.id_fiche 
         WHERE Offre.id_offre NOT IN ( SELECT id_offre FROM Candidature WHERE utilisateur_id = ? ) 
-        AND Offre.etat = 'publiée'
-        AND (
-            Fiche_de_Poste.intitule LIKE ? OR
-            Fiche_de_Poste.lieu LIKE ? OR
-            Fiche_de_Poste.description LIKE ?
-        )`;
-    const likeQ = `%${q}%`;
+        AND Offre.etat = 'publiée'`;
+    const params = [userid];
+
+    if (q) {
+        sql += ` AND (Fiche_de_Poste.intitule LIKE ? OR Fiche_de_Poste.lieu LIKE ? OR Fiche_de_Poste.description LIKE ?)`;
+        const likeQ = `%${q}%`;
+        params.push(likeQ, likeQ, likeQ);
+    }
+    if (metier) {
+        sql += ` AND Fiche_de_Poste.type_metier LIKE ?`;
+        params.push(`%${metier}%`);
+    }
+    if (type_poste) {
+        sql += ` AND Fiche_de_Poste.statut_poste LIKE ?`;
+        params.push(`%${type_poste}%`);
+    }
+    if (statut_poste) {
+        sql += ` AND Fiche_de_Poste.statut_poste LIKE ?`;
+        params.push(`%${statut_poste}%`);
+    }
+    if (salaire_min !== null && !isNaN(salaire_min)) {
+        sql += ` AND Fiche_de_Poste.salaire >= ?`;
+        params.push(salaire_min);
+    }
+    if (salaire_max !== null && !isNaN(salaire_max)) {
+        sql += ` AND Fiche_de_Poste.salaire <= ?`;
+        params.push(salaire_max);
+    }
+    // Tri
+    if (tri === 'salaire') {
+        sql += ` ORDER BY Fiche_de_Poste.salaire DESC`;
+    } else {
+        sql += ` ORDER BY Offre.date_validite DESC`;
+    }
+
     db = require('../model/db');
-    db.query(sql, [userid, likeQ, likeQ, likeQ], function(err, results) {
+    db.query(sql, params, function(err, results) {
         if (err) {
             console.log(err);
             return res.status(500).send('Erreur lors de la recherche d\'offres');
         }
-        res.render('offre_candidat', { title: 'Offre', offre: results, recherche: q });
+        res.render('offre_candidat', {
+            title: 'Offre',
+            offre: results,
+            recherche: q,
+            metier,
+            type_poste,
+            statut_poste,
+            salaire_min: req.query.salaire_min || '',
+            salaire_max: req.query.salaire_max || '',
+            tri
+        });
     });
 });
 

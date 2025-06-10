@@ -59,12 +59,35 @@
                     <h2>Liste des Offres d'Emploi</h2>
                 </div>
                 <form class="row g-3 mb-4" method="get" action="/offre/candidat/recherche">
-                    <div class="col-md-10">
-                        <input type="text" class="form-control" name="q" placeholder="Rechercher une offre (intitulé, lieu, description...)" value="<%= typeof recherche !== 'undefined' ? recherche : '' %>">
-                    </div>
-                    <div class="col-md-2">
-                        <button type="submit" class="btn btn-primary w-100">Rechercher</button>
-                    </div>
+                  <div class="col-md-4">
+                    <input type="text" class="form-control" name="q" placeholder="Mots-clés (intitulé, lieu, description...)" value="<%= typeof recherche !== 'undefined' ? recherche : '' %>">
+                  </div>
+                  <div class="col-md-2">
+                    <input type="text" class="form-control" name="metier" placeholder="Métier" value="<%= typeof metier !== 'undefined' ? metier : '' %>">
+                  </div>
+                  <div class="col-md-2">
+                    <input type="text" class="form-control" name="salaire_min" placeholder="Salaire min" value="<%= typeof salaire_min !== 'undefined' ? salaire_min : '' %>">
+                    <input type="text" class="form-control mt-1" name="salaire_max" placeholder="Salaire max" value="<%= typeof salaire_max !== 'undefined' ? salaire_max : '' %>">
+                  </div>
+                  <div class="col-md-2">
+                    <select class="form-select" name="tri">
+                      <option value="date">Date</option>
+                      <option value="salaire">Salaire</option>
+                    </select>
+                  </div>
+                  <div class="col-md-2">
+                    <select class="form-select" name="statut_poste">
+                        <option value="">Statut du poste</option>
+                        <option value="Cadre" <%= statut_poste === 'Cadre' ? 'selected' : '' %>>Cadre</option>
+                        <option value="Etam" <%= statut_poste === 'Etam' ? 'selected' : '' %>>Etam</option>
+                        <option value="Intermitant" <%= statut_poste === 'Intermitant' ? 'selected' : '' %>>Intermitant</option>
+                        <option value="Stagiaire" <%= statut_poste === 'Stagiaire' ? 'selected' : '' %>>Stagiaire</option>
+                        <option value="Alternant" <%= statut_poste === 'Alternant' ? 'selected' : '' %>>Alternant</option>
+                    </select>
+                  </div>
+                  <div class="col-md-2">
+                    <button type="submit" class="btn btn-primary w-100">Rechercher</button>
+                  </div>
                 </form>
                 <hr class="featurette-divider">
 
