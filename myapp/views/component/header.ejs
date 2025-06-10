@@ -1,12 +1,12 @@
 <div class="container">
   <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
-    <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
+    <a href="<% if (role === 'candidat') { %>/offre/candidat<% } else if (role === 'recruteur') { %>/utilisateurs/espace_recruteur<% } else if (role === 'admin') { %>/utilisateurs<% } else { %>/<% } %>" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
       <svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"/></svg>
       <span class="fs-4"><%= prenom %> <%= nom %></span>
     </a>
 
     <ul class="nav nav-pills">
-      <li class="nav-item"><a href="#" class="nav-link active" aria-current="page">Accueil</a></li>
+      <li class="nav-item"><a href="<% if (role === 'candidat') { %>/offre/candidat<% } else if (role === 'recruteur') { %>/utilisateurs/espace_recruteur<% } else if (role === 'admin') { %>/utilisateurs<% } else { %>/<% } %>" class="nav-link<%= (typeof pageTitle !== 'undefined' && pageTitle === 'Accueil') ? ' active' : '' %>" aria-current="page">Accueil</a></li>
       <li class="nav-item"><a href="/utilisateurs/mon_espace" class="nav-link">Mon Espace</a></li>
       <li class="nav-item"><a href="#" class="nav-link">FAQ</a></li>
       <li class="nav-item"><a href="#" class="nav-link">A Propos</a></li>
