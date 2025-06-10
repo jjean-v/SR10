@@ -199,4 +199,37 @@ router.post('/edit/:id', async (req, res) => {
   }
 });
 
+// Recherche d'offres pour le candidat
+router.get('/candidat/recherche', function(req, res, next) {
+    const userid = req.session.userid;
+    if (!userid) {
+        return res.redirect('/');
+    }
+    const q = req.query.q ? req.query.q.trim() : '';
+    if (!q) {
+        // Si pas de recherche, on renvoie la liste normale
+        return res.redirect('/offre/candidat');
+    }
+    // Recherche sur l'intitulé, le lieu ou la description
+    const sql = `SELECT DISTINCT Offre.id_offre, Offre.etat, Offre.date_validite, Offre.liste_piece_demande, Fiche_de_Poste.intitule, Fiche_de_Poste.lieu, Fiche_de_Poste.description
+        FROM Offre 
+        INNER JOIN Fiche_de_Poste ON Offre.id_fiche_poste = Fiche_de_Poste.id_fiche 
+        WHERE Offre.id_offre NOT IN ( SELECT id_offre FROM Candidature WHERE utilisateur_id = ? ) 
+        AND Offre.etat = 'publiée'
+        AND (
+            Fiche_de_Poste.intitule LIKE ? OR
+            Fiche_de_Poste.lieu LIKE ? OR
+            Fiche_de_Poste.description LIKE ?
+        )`;
+    const likeQ = `%${q}%`;
+    db = require('../model/db');
+    db.query(sql, [userid, likeQ, likeQ, likeQ], function(err, results) {
+        if (err) {
+            console.log(err);
+            return res.status(500).send('Erreur lors de la recherche d\'offres');
+        }
+        res.render('offre_candidat', { title: 'Offre', offre: results, recherche: q });
+    });
+});
+
 module.exports = router;

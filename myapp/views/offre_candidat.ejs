@@ -29,6 +29,14 @@
                 <div class="col-md-8">
                     <h2>Liste des Offres d'Emploi</h2>
                 </div>
+                <form class="row g-3 mb-4" method="get" action="/offre/candidat/recherche">
+                    <div class="col-md-10">
+                        <input type="text" class="form-control" name="q" placeholder="Rechercher une offre (intitulé, lieu, description...)" value="<%= typeof recherche !== 'undefined' ? recherche : '' %>">
+                    </div>
+                    <div class="col-md-2">
+                        <button type="submit" class="btn btn-primary w-100">Rechercher</button>
+                    </div>
+                </form>
                 <hr class="featurette-divider">
 
 
