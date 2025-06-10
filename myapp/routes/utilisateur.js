@@ -199,6 +199,41 @@ router.post('/logout', (req, res) => {
     });
 });
 
+// Mon espace : informations du compte connecté
+router.get('/mon_espace', async function(req, res) {
+    if (!req.session || !req.session.userid) {
+        return res.redirect('/');
+    }
+    const userId = req.session.userid;
+    try {
+        const utilisateurModel = require('../model/utilisateur');
+        const organisationModel = require('../model/organisation');
+        const offreModel = require('../model/offre');
+        // Récupérer infos utilisateur
+        const userArr = await utilisateurModel.readById(userId);
+        const user = userArr && userArr[0];
+        // Organisation (si rattaché)
+        let organisation = null;
+        if (user && user.siren) {
+            const orgaArr = await organisationModel.readBySiren(user.siren);
+            organisation = orgaArr && orgaArr[0];
+        }
+        // Offres dont il est responsable
+        let offres = [];
+        if (user && user.role === 'recruteur') {
+            offres = await offreModel.read_recruteur(user.siren);
+        }
+        res.render('mon_espace', {
+            user,
+            organisation,
+            offres
+        });
+    } catch (err) {
+        console.log(err);
+        res.status(500).render('error', { message: "Erreur lors de la récupération des infos du compte.", error: err });
+    }
+});
+
 
 module.exports = router;
 

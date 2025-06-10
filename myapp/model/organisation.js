@@ -110,4 +110,13 @@ module.exports = {
         });
     },
 
+    readBySiren(siren) {
+        return new Promise(function (resolve, reject) {
+            db.query("SELECT * FROM Organisation WHERE siren = ?", [siren], function (err, results) {
+                if (err) return reject(err);
+                resolve(results);
+            });
+        });
+    },
+
     }

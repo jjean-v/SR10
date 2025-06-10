@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="/assets/js/color-modes.js"></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="/stylesheets/style.css" rel="stylesheet">
+    <link href="/assets/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>Mon Espace</title>
+  </head>
+  <body>
+    <%- include('component/header') %>
+    <div class="container marketing">
+      <div class="bg-body-tertiary p-5 rounded mt-4">
+        <h2>Mon Espace</h2>
+        <hr>
+        <div class="row mb-4">
+          <div class="col-md-6">
+            <h4>Informations du compte</h4>
+            <ul class="list-group">
+              <li class="list-group-item"><strong>Nom :</strong> <%= user.nom %></li>
+              <li class="list-group-item"><strong>Prénom :</strong> <%= user.prenom %></li>
+              <li class="list-group-item"><strong>Email :</strong> <%= user.email %></li>
+              <li class="list-group-item"><strong>Statut :</strong> <%= user.role %></li>
+              <% if (user.role_recruteur) { %>
+                <li class="list-group-item"><strong>Statut Recruteur :</strong> <%= user.role_recruteur %></li>
+              <% } %>
+            </ul>
+          </div>
+          <div class="col-md-6">
+            <h4>Organisation</h4>
+            <% if (organisation) { %>
+              <ul class="list-group">
+                <li class="list-group-item"><strong>Nom :</strong> <%= organisation.nom %></li>
+                <li class="list-group-item"><strong>SIREN :</strong> <%= organisation.siren %></li>
+                <li class="list-group-item"><strong>Adresse :</strong> <%= organisation.adresse %></li>
+                <li class="list-group-item"><strong>Type :</strong> <%= organisation.type %></li>
+              </ul>
+            <% } else { %>
+              <div class="alert alert-secondary">Aucune organisation rattachée.</div>
+            <% } %>
+          </div>
+        </div>
+        <% if (offres && offres.length > 0) { %>
+          <h4>Offres dont vous êtes responsable</h4>
+          <ul class="list-group mb-4">
+            <% offres.forEach(function(offre) { %>
+              <li class="list-group-item">
+                <strong><%= offre.intitule %></strong> — <%= offre.date_validite ? offre.date_validite.toISOString ? offre.date_validite.toISOString().split('T')[0] : offre.date_validite : '' %> — <%= offre.etat %>
+              </li>
+            <% }) %>
+          </ul>
+        <% } %>
+      </div>
+    </div>
+    <%- include('component/dark_light_mode') %>
+    <%- include('component/footer') %>
+  </body>
+</html>
