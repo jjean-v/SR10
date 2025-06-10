@@ -103,7 +103,7 @@ router.post('/postuler', function(req, res) {
 });
 
 // Route POST pour postuler à une offre avec upload de pièces jointes
-router.post('/postuler/:id_offre', upload.array('pieces'), async function(req, res) {
+router.post('/postuler/:id_offre', upload.any(), async function(req, res) {
     const id_offre = req.params.id_offre;
     const id_user = req.session.userid;
     const date_postulation = new Date();
