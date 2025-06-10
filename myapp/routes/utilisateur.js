@@ -5,6 +5,7 @@ const session = require("../session");
 const organisation = require('../model/organisation');
 
 
+
 // GET /utilisateurs
 router.get('/', (req, res, next) => {
   utilisateur.readAll()
@@ -48,8 +49,7 @@ router.post('/creation_compte', function(req, res, next) {
 
   promise = utilisateur.create({nom ,prenom, email , motDePasse:password, role:'candidat',role_recruteur: null,etat_compte:'alive',siren:null})
   promise.then( (data) =>{
-
-    session.creatSession(req.session, email, 'candidat'); 
+    session.creatSession(req.session, data.insertId, nom, prenom, 'candidat', null); 
     res.render('creation_compte', { title: 'creation du compte', user: data });
 
   });
@@ -86,7 +86,7 @@ router.post('/demande_recruteur', async function(req, res) {
     const siren = req.body.siren;
     try {
         // Vérifier le rôle actuel de l'utilisateur
-        const users = await recruteur.read('id_user', userId);
+        const users = await utilisateur.read('id_user', userId);
         const user = Array.isArray(users) ? users[0] : users;
         if (!user) {
             return res.status(404).render('error', { message: "Utilisateur non trouvé.", error: {} });
@@ -99,7 +99,7 @@ router.post('/demande_recruteur', async function(req, res) {
             return res.render('confirmation_postulation', { message: "Votre demande pour devenir recruteur est déjà en attente de validation." });
         }
         // Si refusé ou jamais demandé (null), on autorise la demande
-        await recruteur.update(userId, { role_recruteur: 'attente', siren });
+        await utilisateur.update(userId, { role_recruteur: 'attente', siren });
         res.render('confirmation_postulation', { message: "Votre demande pour devenir recruteur a bien été envoyée. Elle sera validée par un administrateur." });
     } catch (err) {
         console.log('Erreur update recruteur:', err);
