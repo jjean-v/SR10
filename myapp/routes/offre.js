@@ -10,22 +10,30 @@ var router = express.Router();
 
 /* GET Organisation listing. */
 
-router.get('/candidat', function(req, res, next) {
+router.get('/candidat', async function(req, res, next) {
     const userid = req.session.userid;
     if (!userid) {
         return res.redirect('/'); 
     }
-
-
-    promiseO=offre.read_pas_postuler(userid);
-    promiseO.then( (data) =>{
-
-        res.render('offre_candidat', { title: 'Offre', offre: data });
-    });
-    promiseO.catch( (err) => {
+    const page = parseInt(req.query.page) || 1;
+    const limit = 6;
+    const offset = (page - 1) * limit;
+    try {
+        const allOffres = await offre.read_pas_postuler(userid);
+        const total = allOffres.length;
+        const offres = allOffres.slice(offset, offset + limit);
+        const totalPages = Math.ceil(total / limit);
+        res.render('offre_candidat', {
+            title: 'Offre',
+            offre: offres,
+            page,
+            totalPages,
+            recherche: ''
+        });
+    } catch (err) {
         console.log(err);
         res.status(500).send('Error retrieving Offre data');
-    }); 
+    }
 });
 
 

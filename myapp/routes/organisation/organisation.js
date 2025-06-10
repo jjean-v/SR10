@@ -4,17 +4,20 @@ var router = express.Router();
 
 /* GET Organisation listing. */
 
-router.get('/', function(req, res, next) {
-
-    promiseO=organisation.readall();
-    promiseO.then( (data) =>{
-
-        res.render('organisation', { title: 'Organisation', organisation: data });
-    });
-    promiseO.catch( (err) => {
+router.get('/', async function(req, res, next) {
+    const page = parseInt(req.query.page) || 1;
+    const limit = 6;
+    const offset = (page - 1) * limit;
+    try {
+        const allOrga = await organisation.readall();
+        const total = allOrga.length;
+        const organisations = allOrga.slice(offset, offset + limit);
+        const totalPages = Math.ceil(total / limit);
+        res.render('organisation', { title: 'Organisation', organisation: organisations, page, totalPages });
+    } catch (err) {
         console.log(err);
         res.status(500).send('Error retrieving organisation data');
-    }); 
+    }
 });
 
 // Accepter une organisation

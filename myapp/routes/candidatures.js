@@ -7,11 +7,19 @@ const offre = require('../model/offre');
 
 router.get('/', async (req, res) => {
   try {
+    const page = parseInt(req.query.page) || 1;
+    const limit = 6;
+    const offset = (page - 1) * limit;
     const siren = req.session.siren;
-    const candidatures = await candidature.readAllDetailed(siren);
+    const allCandidatures = await candidature.readAllDetailed(siren);
+    const total = allCandidatures.length;
+    const candidatures = allCandidatures.slice(offset, offset + limit);
+    const totalPages = Math.ceil(total / limit);
     res.render('candidatures', {
       title: 'Gestion des Candidatures',
-      candidatures
+      candidatures,
+      page,
+      totalPages
     });
   } catch (err) {
     console.error(err);
@@ -21,10 +29,18 @@ router.get('/', async (req, res) => {
 
 router.get('/candidat', async (req, res) => {
   try {
-    const candidatures = await candidature.readById(req.session.userid);
+    const page = parseInt(req.query.page) || 1;
+    const limit = 6;
+    const offset = (page - 1) * limit;
+    const allCandidatures = await candidature.readById(req.session.userid);
+    const total = allCandidatures.length;
+    const candidatures = allCandidatures.slice(offset, offset + limit);
+    const totalPages = Math.ceil(total / limit);
     res.render('candidatures_candidat', {
       title: 'Gestion des Candidatures',
-      candidatures
+      candidatures,
+      page,
+      totalPages
     });
   } catch (err) {
     console.error(err);

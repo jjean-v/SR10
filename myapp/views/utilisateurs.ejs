@@ -68,7 +68,7 @@
                   <form method="POST" action="/utilisateurs/set_admin" style="display:inline;">
                     <input type="hidden" name="id_user" value="<%= utilisateurs.id_user %>" />
                     <button class="btn btn-primary d-inline-flex align-items-center justify-content-center" type="submit">
-                      Attribuer Admin
+                      Admin
                     </button>
                   </form>
                   <form method="POST" action="/utilisateurs/delete" style="display:inline;" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?');">
@@ -82,7 +82,18 @@
             <% }) %>
           </div>
         </div>
-      </div>
+        <!-- Pagination -->
+        <% if (typeof totalPages !== 'undefined' && totalPages > 1) { %>
+          <nav aria-label="Pagination utilisateurs" class="mt-4">
+            <ul class="pagination justify-content-center">
+              <% for (let i = 1; i <= totalPages; i++) { %>
+                <li class="page-item <%= (i === page) ? 'active' : '' %>">
+                  <a class="page-link" href="?page=<%= i %>"><%= i %></a>
+                </li>
+              <% } %>
+            </ul>
+          </nav>
+        <% } %>
 
       <% if (typeof message !== 'undefined' && message) { %>
         <div class="alert alert-info mt-3" role="alert">

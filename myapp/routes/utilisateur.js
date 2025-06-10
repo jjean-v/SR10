@@ -6,14 +6,26 @@ const organisation = require('../model/organisation');
 
 
 
-// GET /utilisateurs
-router.get('/', (req, res, next) => {
-  utilisateur.readAll()
-    .then(data => res.render('utilisateurs', { title: 'Utilisateurs', utilisateurs: data }))
-    .catch(err => {
-      console.error(err);
-      res.status(500).send('Erreur lors de la récupération des utilisateurs');
+// GET /utilisateurs (pagination)
+router.get('/', async (req, res, next) => {
+  try {
+    const page = parseInt(req.query.page) || 1;
+    const limit = 6;
+    const offset = (page - 1) * limit;
+    const allUsers = await utilisateur.readAll();
+    const total = allUsers.length;
+    const utilisateurs = allUsers.slice(offset, offset + limit);
+    const totalPages = Math.ceil(total / limit);
+    res.render('utilisateurs', {
+      title: 'Utilisateurs',
+      utilisateurs,
+      page,
+      totalPages
     });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Erreur lors de la récupération des utilisateurs');
+  }
 });
 
 router.get('/recruteur',(req,res, next) => {
@@ -61,13 +73,19 @@ router.post('/creation_compte', function(req, res, next) {
 
 });
 
-// Espace recruteur (affichage des offres pour le recruteur)
+// Espace recruteur (affichage des offres pour le recruteur) avec pagination
 router.get('/espace_recruteur', async function(req, res) {
     if (req.session && req.session.role === 'recruteur') {
         try {
             const offreModel = require('../model/offre');
-            const offres = await offreModel.readall();
-            res.render('offre_recruteur', { offre: offres });
+            const page = parseInt(req.query.page) || 1;
+            const limit = 6;
+            const offset = (page - 1) * limit;
+            const allOffres = await offreModel.readall();
+            const total = allOffres.length;
+            const offres = allOffres.slice(offset, offset + limit);
+            const totalPages = Math.ceil(total / limit);
+            res.render('offre_recruteur', { offre: offres, page, totalPages });
         } catch (err) {
             console.log(err);
             res.status(500).send('Erreur lors de la récupération des offres');

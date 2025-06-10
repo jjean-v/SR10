@@ -90,6 +90,18 @@
 
                 </div>
             </div>
+            <!-- Pagination -->
+            <% if (typeof totalPages !== 'undefined' && totalPages > 1) { %>
+              <nav aria-label="Pagination fiches de poste" class="mt-4">
+                <ul class="pagination justify-content-center">
+                  <% for (let i = 1; i <= totalPages; i++) { %>
+                    <li class="page-item <%= (i === page) ? 'active' : '' %>">
+                      <a class="page-link" href="?page=<%= i %>"><%= i %></a>
+                    </li>
+                  <% } %>
+                </ul>
+              </nav>
+            <% } %>
         </div>
    
         <%- include('component/dark_light_mode') %>

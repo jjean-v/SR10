@@ -4,17 +4,20 @@ var router = express.Router();
 
 /* GET Organisation listing. */
 
-router.get('/', function(req, res, next) {
-
-    promiseO=fiche_de_poste.readAll();
-    promiseO.then( (data) =>{
-
-        res.render('fiche_de_poste', { title: 'Fiche_de_Poste', fiche_de_poste: data });
-    });
-    promiseO.catch( (err) => {
+router.get('/', async function(req, res, next) {
+    const page = parseInt(req.query.page) || 1;
+    const limit = 6;
+    const offset = (page - 1) * limit;
+    try {
+        const allFiches = await fiche_de_poste.readAll();
+        const total = allFiches.length;
+        const fiche_de_poste_list = allFiches.slice(offset, offset + limit);
+        const totalPages = Math.ceil(total / limit);
+        res.render('fiche_de_poste', { title: 'Fiche_de_Poste', fiche_de_poste: fiche_de_poste_list, page, totalPages });
+    } catch (err) {
         console.log(err);
         res.status(500).send('Error retrieving fiche de poste data');
-    }); 
+    }
 });
 
 // Suppression d'une fiche de poste
