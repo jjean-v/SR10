@@ -33,6 +33,19 @@ router.get('/new_user', function(req, res, next) {
 
 router.post('/creation_compte', function(req, res, next) {
   const { nom, prenom, password, email, zip } = req.body;
+
+  // Validation du mot de passe
+  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d]).{12,}$/;
+  if (!passwordRegex.test(password)) {
+    return res.status(400).render('new_user', {
+      error: "Le mot de passe doit contenir au moins 12 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial.",
+      nom,
+      prenom,
+      email,
+      zip
+    });
+  }
+
   promise = utilisateur.create({nom ,prenom, email , motDePasse:password, role:'candidat',role_recruteur: null,etat_compte:'alive',siren:null})
   promise.then( (data) =>{
 
