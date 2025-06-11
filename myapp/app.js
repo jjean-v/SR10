@@ -38,22 +38,44 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.all("*", function (req, res, next) {
 
   const nonSecurePaths = ["/","/utilisateurs/new_user","/authentification","/utilisateurs/creation_compte"]; //list des urls non sécurisées
-  const adminPaths = []; //list des urls admin
+  // Routes réservées aux admins
+  const adminPaths = [
+    "/utilisateurs/",
+    "/utilisateurs/recruteur",
+    "/utilisateurs/mon_espace",
+    "/utilisateurs/valider_recruteur",
+    "/utilisateurs/delete",
+    "/utilisateurs/set_admin",
+    "/organisations",
+    "/organisations/accepter",
+    "/organisations/supprimer"
+  ];
+  // Routes réservées aux recruteurs
+  const recruteurPaths = [
+    "/offre",
+    "/offre/new_offre",
+    "/offre/creation_offre",
+    "/utilisateurs/espace_recruteur",
+    "/fiche_de_poste",
+    "/fiche_de_poste/new_fiche_de_poste"
+  ];
+
   if (nonSecurePaths.includes(req.path)) return next();
 
-  //authenticate user
-  if (adminPaths.includes(req.path)) {
+  // Accès admin uniquement
+  if (adminPaths.some(adminPath => req.path === adminPath)) {
     if (session.isConnected(req.session, "admin")) return next();
-    else
-    res
-    .status(403)
-    .render("error", { message: " Unauthorized access", error: {} });
-  } else {
-
-    if (session.isConnected(req.session)) return next();
-    // not authenticated
-    else res.redirect("/");
+    return res.status(403).render("error", { message: "Accès réservé à l'administrateur.", error: {} });
   }
+  // Accès recruteur uniquement
+  if (recruteurPaths.some(recruteurPath => req.path === recruteurPath)) {
+    if (session.isConnected(req.session, "recruteur")) return next();
+    return res.status(403).render("error", { message: "Accès réservé au recruteur.", error: {} });
+  }
+  // Accès général (utilisateur connecté)
+  if (session.isConnected(req.session)) return next();
+  // Sinon, non authentifié
+  return res.redirect("/");
 });
 
 // Middleware global
