@@ -75,6 +75,13 @@
                 <%= data.liste_piece_demande %>
             </div>
 
+            <div class="text-center mt-4">
+                <form action="/offre/postuler/<%= data.id_offre %>" method="get" style="display:inline;">
+                    <button class="btn btn-success btn-lg px-4" type="submit">
+                        Postuler à cette offre
+                    </button>
+                </form>
+            </div>
 
         
 
