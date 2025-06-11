@@ -2,6 +2,7 @@ var createError = require('http-errors');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var apiRouter = require('./routes/api');
 
 const express = require('express'); 
 // gestion de session
@@ -24,6 +25,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+
+app.use('/api', apiRouter);
 
 // Initialisation de la session
 // check user before app.use (path, router)
