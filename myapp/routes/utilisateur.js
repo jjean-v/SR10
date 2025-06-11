@@ -106,11 +106,13 @@ router.post('/creation_compte', function(req, res, next) {
 router.get('/espace_recruteur', async function(req, res) {
     if (req.session && req.session.role === 'recruteur') {
         try {
+            const idsiren = req.session.siren;
+
             const offreModel = require('../model/offre');
             const page = parseInt(req.query.page) || 1;
             const limit = 6;
             const offset = (page - 1) * limit;
-            const allOffres = await offreModel.readall();
+            const allOffres = await offreModel.read_recruteur(idsiren);
             const total = allOffres.length;
             const offres = allOffres.slice(offset, offset + limit);
             const totalPages = Math.ceil(total / limit);
