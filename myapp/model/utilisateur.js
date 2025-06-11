@@ -30,7 +30,7 @@ module.exports = {
       etat_compte,
       siren = null
     } = user;
-
+    
     const sql = `
       INSERT INTO Utilisateur
         (nom, prenom, email, motDePasse, role, role_recruteur, etat_compte, siren)
@@ -88,6 +88,22 @@ module.exports = {
             reject(err);
           } else {
             resolve(row); // Renvoie l'utilisateur authentifié ou null
+          }
+        }
+      );
+    })
+  },
+
+  // Fonction pour récupérer le mot de passe Haché
+  getPasswdHach(email) {
+    return new Promise((resolve, reject) => {
+      db.query(`SELECT motDePasse FROM Utilisateur WHERE email = ? `,[email],
+        (err, row) => {
+          if (err) {
+            console.error("Erreur lors de la récupération :", err);
+            reject(err);
+          } else {
+            resolve(row); // Renvoie le mdp haché ou null
           }
         }
       );
