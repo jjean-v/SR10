@@ -2,6 +2,8 @@ const session = require("../session");
 const UserModel = require("../model/utilisateur");
 const bcrypt = require('bcrypt');
 
+const loginAttempts = {}; // Stocke les tentatives de connexion par utilisateur
+
 
 // Connexion utilisateur
 exports.login = async (req, res) => {
@@ -13,16 +15,26 @@ exports.login = async (req, res) => {
             return res.status(401).json({ message: "Identifiants incorrects." });
         }
 
+        if (!loginAttempts[email]) {
+            loginAttempts[email] = { attempts: 0, lockUntil: null };
+        }
+        
+        const userAttempts = loginAttempts[email];
+        // Vérifier si le compte est verrouillé
+        if (userAttempts.lockUntil && userAttempts.lockUntil > Date.now()) {
+            throw new Error(`Compte verrouillé jusqu'à ${new Date( userAttempts.lockUntil).toLocaleString()}. Veuillez réessayer plus tard.`);
+        }
+
         const isMatch = await bcrypt.compare(password, passwd[0].motDePasse);
         if (!isMatch) {
             userAttempts.attempts +=1;
             // Vérouiller le compte si 5 tentatives échouées
             if (userAttempts.attempts >= 5) {
-                userAttempts.locked = Date.now() + 5 * 60 * 1000; // verrouillage pour 5 minutes
+                userAttempts.lockUntil = Date.now() + 5 * 60 * 1000; // verrouillage pour 5 minutes
                 userAttempts.attempts = 0; // Rénitialiser les tentatives
                 return res.status(403).json({ message: "Compte verrouillé après 5 tentatives échouées." });
             }
-            throw new Error("Mot de passe incorrect");
+            throw new Error("Mot de passe incorrect. Tentatives restantes : " + (5 - userAttempts.attempts));
         }
         const user = await UserModel.authenticateUser(email, passwd[0].motDePasse);
         if (user) {
@@ -50,6 +62,6 @@ exports.login = async (req, res) => {
         }
     } catch (error) {
         console.error("Erreur lors de la connexion :", error);
-        res.status(500).json({ message: "Erreur serveur." });
+        res.status(500).json({ message: "Erreur serveur.", error:error.message });
     }
 }
