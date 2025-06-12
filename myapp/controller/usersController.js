@@ -14,6 +14,8 @@ exports.login = async (req, res) => {
         if (!passwd || passwd.length === 0) {
             return res.status(401).json({ message: "Identifiants incorrects." });
         }
+        passwdHash = await bcrypt.hash(passwd[0].motDePasse, 10);
+        console.log("mdp hash", passwdHash);
 
         if (!loginAttempts[email]) {
             loginAttempts[email] = { attempts: 0, lockUntil: null };

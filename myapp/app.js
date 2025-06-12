@@ -2,6 +2,7 @@ var createError = require('http-errors');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var apiRouter = require('./routes/api');
 
 const express = require('express'); 
 // gestion de session
@@ -99,6 +100,7 @@ app.use('/new_fiche_de_poste', new_fiche_de_posteRouter);
 app.use('/new_organisation', new_organisationRouter);
 
 app.use('/authentification', connexionRouter);
+app.use('/api', apiRouter);
 
 
 // Ajout de la vraie route de déconnexion
