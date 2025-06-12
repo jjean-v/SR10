@@ -40,7 +40,6 @@ app.all("*", function (req, res, next) {
   const nonSecurePaths = ["/","/utilisateurs/new_user","/authentification","/utilisateurs/creation_compte"]; //list des urls non sécurisées
   // Routes réservées aux admins
   const adminPaths = [
-    "/utilisateurs/",
     "/utilisateurs/recruteur",
     "/utilisateurs/mon_espace",
     "/utilisateurs/valider_recruteur",
