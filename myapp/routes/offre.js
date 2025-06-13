@@ -230,7 +230,9 @@ router.get('/candidat/recherche', function(req, res, next) {
     const statut_poste = req.query.statut_poste ? req.query.statut_poste.trim() : '';
 
     // Construction dynamique de la requête SQL
-    let sql = `SELECT DISTINCT Offre.id_offre, Offre.etat, Offre.date_validite, Offre.liste_piece_demande, Fiche_de_Poste.intitule, Fiche_de_Poste.lieu, Fiche_de_Poste.description, Fiche_de_Poste.type_metier, Fiche_de_Poste.salaire, Fiche_de_Poste.statut_poste
+    let sql = `SELECT DISTINCT Offre.id_offre, Offre.etat, Offre.date_validite, Offre.liste_piece_demande, 
+    Fiche_de_Poste.intitule, Fiche_de_Poste.lieu, Fiche_de_Poste.description, Fiche_de_Poste.type_metier, 
+    Fiche_de_Poste.salaire, Fiche_de_Poste.statut_poste
         FROM Offre 
         INNER JOIN Fiche_de_Poste ON Offre.id_fiche_poste = Fiche_de_Poste.id_fiche 
         WHERE Offre.id_offre NOT IN ( SELECT id_offre FROM Candidature WHERE utilisateur_id = ? ) 

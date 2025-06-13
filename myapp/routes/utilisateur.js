@@ -89,7 +89,7 @@ router.post('/creation_compte', async function(req, res, next) {
     }
     passwdHash = await bcrypt.hash(password,10);
 
-    console.log("mdp hash", passwdHash);
+    //console.log("mdp hash", passwdHash);
 
 
     promise = utilisateur.create({nom ,prenom, email , motDePasse:passwdHash, role:'candidat',role_recruteur: null,etat_compte:'alive',siren:null})
