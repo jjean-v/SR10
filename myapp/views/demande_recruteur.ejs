@@ -8,13 +8,12 @@
     <link href="/assets/dist/css/bootstrap.min.css" rel="stylesheet">
     <title>Demande pour devenir recruteur</title>
     <style>
-      body { background: #f8f9fa; }
-      .card-demande {
+      
+      .container.marketing {
         max-width: 500px;
         margin: 40px auto;
         border-radius: 18px;
         box-shadow: 0 4px 24px rgba(0,0,0,0.08);
-        background: #fff;
         padding: 2.5rem 2rem 2rem 2rem;
       }
       .card-demande h1 {
@@ -43,29 +42,29 @@
       current: 'demande',
       prenom: prenom, nom: nom, role: role
     }) %>
-
-<main>
-  <div class="card-demande">
-    <img src="/assets/brand/bootstrap-logo.svg" alt="Logo" class="logo-demande">
-    <h1 class="mb-4 text-center">Demande pour devenir recruteur</h1>
-    <form action="/utilisateurs/demande_recruteur" method="post">
-      <div class="form-floating mb-4">
-        <select class="form-select" id="organisation" name="siren" required aria-label="Organisation">
-          <option value="" disabled selected>Choisissez votre organisation</option>
-          <% organisations.forEach(orga => { %>
-            <option value="<%= orga.siren %>">
-              <%= orga.nom %> – <%= orga.adresse %>
-            </option>
-          <% }) %>
-        </select>
-        <label for="organisation">Organisation</label>
-      </div>
-      <button class="w-100 btn btn-lg btn-primary" type="submit">
-        <i class="bi bi-send me-2"></i>Envoyer la demande
-      </button>
-    </form>
+<div class ="container marketing">
+  <div class="bg-body-tertiary p-5 rounded mt-4">
+      <img src="/assets/brand/bootstrap-logo.svg" alt="Logo" class="logo-demande">
+      <h1 class="mb-4 text-center">Demande pour devenir recruteur</h1>
+      <form action="/utilisateurs/demande_recruteur" method="post">
+        <div class="form-floating mb-4">
+          <select class="form-select" id="organisation" name="siren" required aria-label="Organisation">
+            <option value="" disabled selected>Choisissez votre organisation</option>
+            <% organisations.forEach(orga => { %>
+              <option value="<%= orga.siren %>">
+                <%= orga.nom %> – <%= orga.adresse %>
+              </option>
+            <% }) %>
+          </select>
+          <label for="organisation">Organisation</label>
+        </div>
+        <button class="w-100 btn btn-lg btn-primary" type="submit">
+          <i class="bi bi-send me-2"></i>Envoyer la demande
+        </button>
+      </form>
   </div>
-</main>
+</div>
 <%- include('component/footer') %>
+<%- include('component/dark_light_mode') %>
   </body>
 </html>

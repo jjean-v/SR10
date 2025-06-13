@@ -6,6 +6,7 @@
     <link href="/assets/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
+    <%- include('component/header') %>
     <div class="container marketing">
         <div class="bg-body-tertiary p-5 rounded">
             <h2>Détail de la candidature</h2>
@@ -36,5 +37,9 @@
             <a href="/candidatures" class="btn btn-secondary mt-3">Retour</a>
         </div>
     </div>
+    <%- include('component/footer') %>
+    <%- include('component/dark_light_mode') %>
+
+    <script src="/assets/js/color-modes.js"></script>
 </body>
 </html>
