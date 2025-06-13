@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Détail de la candidature</title>
+    <link href="/stylesheets/style.css" rel="stylesheet">
+    <link href="/assets/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container marketing">
+        <div class="bg-body-tertiary p-5 rounded">
+            <h2>Détail de la candidature</h2>
+            <h4>Candidat</h4>
+            <ul>
+                <li><strong>Nom :</strong> <%= candidat.nom %></li>
+                <li><strong>Prénom :</strong> <%= candidat.prenom %></li>
+                <li><strong>Email :</strong> <%= candidat.email %></li>
+            </ul>
+            <h4>Informations sur la candidature</h4>
+            <ul>
+                <li><strong>Date de candidature :</strong> <%= candidature.date_candidature.toISOString().split('T')[0] %></li>
+                <li><strong>Intitulé du poste :</strong> <%= candidature.intitule_fiche_poste %></li>
+                <li><strong>Statut :</strong> <%= candidature.etat %></li>
+            </ul>
+            <h4>Pièces jointes</h4>
+            <% if (pieces && pieces.length > 0) { %>
+                <ul>
+                    <% pieces.forEach(function(piece) { %>
+                        <li>
+                            <a href="/assets/upload/<%= piece.nom %>" target="_blank"><%= piece.nom %></a>
+                        </li>
+                    <% }) %>
+                </ul>
+            <% } else { %>
+                <p>Aucune pièce jointe déposée.</p>
+            <% } %>
+            <a href="/candidatures" class="btn btn-secondary mt-3">Retour</a>
+        </div>
+    </div>
+</body>
+</html>

@@ -60,5 +60,10 @@ module.exports = {
       "DELETE FROM Piece_Jointe WHERE id_piece_jointe = ?",
       [id]
     );
+  },
+
+  /** Récupère les pièces jointes d'une candidature */
+  readByCandidature(id_candidature) {
+    return query("SELECT * FROM Piece_Jointe WHERE candidature_id = ?", [id_candidature]);
   }
 };

@@ -41,7 +41,6 @@ app.all("*", function (req, res, next) {
   // Routes réservées aux admins
   const adminPaths = [
     "/utilisateurs/recruteur",
-    "/utilisateurs/mon_espace",
     "/utilisateurs/valider_recruteur",
     "/utilisateurs/delete",
     "/utilisateurs/set_admin",
