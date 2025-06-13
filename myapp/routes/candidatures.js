@@ -4,6 +4,8 @@ const express    = require('express');
 const router     = express.Router();
 const candidature = require('../model/candidature');
 const offre = require('../model/offre');
+const utilisateur = require('../model/utilisateur');
+const pieceJointe = require('../model/pieceJointe');
 
 router.get('/', async (req, res) => {
   try {
@@ -111,6 +113,26 @@ router.post('/valider_offre', function(req, res, next) {
 
 router.get("/accepter_offre", function(req, res, next){
   res.render("accepter_offre", {title:"offre acceptée"});
+});
+
+// Visualisation d'une candidature (détail)
+router.get('/:id_candidature/visualiser', async function(req, res) {
+  const id_candidature = req.params.id_candidature;
+  try {
+    // Récupérer la candidature avec les infos du poste
+    const candidatureResult = await candidature.readByCandidatureId(id_candidature);
+    const candidatureData = candidatureResult && candidatureResult[0];
+    if (!candidatureData) return res.status(404).render('error', { message: "Candidature non trouvée", error: {} });
+    // Récupérer les infos du candidat
+    const candidatResult = await utilisateur.readById(candidatureData.utilisateur_id);
+    const candidat = candidatResult && candidatResult[0];
+    // Récupérer les pièces jointes
+    const pieces = await pieceJointe.readByCandidature(id_candidature);
+    res.render('visualiser_candidature', { candidature: candidatureData, candidat, pieces });
+  } catch (err) {
+    console.error(err);
+    res.status(500).render('error', { message: "Erreur lors de la récupération des détails de la candidature", error: err });
+  }
 });
 
 module.exports = router;

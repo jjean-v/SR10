@@ -140,9 +140,17 @@ admis(id_user,id_offre) {
             resolve(results);
         });
     });
+  },
+
+  /** Récupère une candidature par son id_candidature (pour visualisation) */
+  readByCandidatureId(id_candidature) {
+    const sql = `
+      SELECT c.*, f.intitule AS intitule_fiche_poste
+      FROM Candidature c
+      JOIN Offre o ON c.id_offre = o.id_offre
+      JOIN Fiche_de_Poste f ON o.id_fiche_poste = f.id_fiche
+      WHERE c.id_candidature = ?`;
+    return query(sql, [id_candidature]);
   }
-
-
-
 
 };
