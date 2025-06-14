@@ -36,10 +36,14 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 
 app.all("*", function (req, res, next) {
-
-  const nonSecurePaths = ["/","/utilisateurs/new_user","/authentification","/utilisateurs/creation_compte"]; //list des urls non sécurisées
-  // Routes réservées aux admins
+  const nonSecurePaths = [
+    "/",
+    "/utilisateurs/new_user",
+    "/authentification",
+    "/utilisateurs/creation_compte"
+  ];
   const adminPaths = [
+    "/utilisateurs",
     "/utilisateurs/recruteur",
     "/utilisateurs/valider_recruteur",
     "/utilisateurs/delete",
@@ -48,7 +52,6 @@ app.all("*", function (req, res, next) {
     "/organisations/accepter",
     "/organisations/supprimer"
   ];
-  // Routes réservées aux recruteurs
   const recruteurPaths = [
     "/offre",
     "/offre/new_offre",
@@ -57,24 +60,57 @@ app.all("*", function (req, res, next) {
     "/fiche_de_poste",
     "/fiche_de_poste/new_fiche_de_poste"
   ];
+  const candidatPaths = [
+    "/candidatures/candidat",
+    "/new_candidature",
+    "/candidatures",
+    "/offre/candidat"
+  ];
 
-  if (nonSecurePaths.includes(req.path)) return next();
+  // accès libre
+  if (nonSecurePaths.includes(req.path)) {
+    return next();
+  }
 
-  // Accès admin uniquement
-  if (adminPaths.some(adminPath => req.path === adminPath)) {
-    if (session.isConnected(req.session, "admin")) return next();
-    return res.status(403).render("error", { message: "Accès réservé à l'administrateur.", error: {} });
+  // accès admin
+  if (adminPaths.includes(req.path)) {
+    if (session.isConnected(req.session, "admin")) {
+      return next();
+    }
+    return res
+      .status(403)
+      .render("error", { message: "Accès réservé à l'administrateur.", error: {} });
   }
-  // Accès recruteur uniquement
-  if (recruteurPaths.some(recruteurPath => req.path === recruteurPath)) {
-    if (session.isConnected(req.session, "recruteur")) return next();
-    return res.status(403).render("error", { message: "Accès réservé au recruteur.", error: {} });
+
+  // accès recruteur
+  if (recruteurPaths.includes(req.path)) {
+    if (session.isConnected(req.session, "recruteur")) {
+      return next();
+    }
+    return res
+      .status(403)
+      .render("error", { message: "Accès réservé au recruteur.", error: {} });
   }
-  // Accès général (utilisateur connecté)
-  if (session.isConnected(req.session)) return next();
-  // Sinon, non authentifié
+
+  // accès candidat
+  if (candidatPaths.includes(req.path)) {
+    if (session.isConnected(req.session, "candidat")) {
+      return next();
+    }
+    return res
+      .status(403)
+      .render("error", { message: "Accès réservé au candidat.", error: {} });
+  }
+
+  // accès général (simple utilisateur connecté)
+  if (session.isConnected(req.session)) {
+    return next();
+  }
+
+  // non-authentifié → page publique
   return res.redirect("/");
 });
+
 
 // Middleware global
 app.use((req, res, next) => {
