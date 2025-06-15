@@ -43,9 +43,13 @@ Ce projet est une application web permettant la gestion des candidatures, des of
   - Accepter ou refuser des candidatures
   
 
-- **Fonctionnalitées pour les administrateurs** :
-  - Création, modification, suppression et visualisation des offres.
-  - Consultation des offres par les candidats.
+- **Fonctionnalités pour les administrateurs**
+
+  - Visualiser la liste de toutes les candidats, recruteurs et organisations
+  - Faire passer un utilisateur au statut de admin
+  - Supprimer des utilisateurs et des organisations (avec suppression en cascade des dépendances)
+  - Gérer la validation ou le refus des organisations et des comptes recruteurs
+  - Consulter les statistiques globales de la plateforme (nombre d’offres, candidatures, utilisateurs, etc.)
 
 
 - **Gestion des organisations** :

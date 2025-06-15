@@ -146,5 +146,10 @@ module.exports = {
         }
       );
     })
-  }
+  },
+
+  // Compter tous les utilisateurs
+  countAll() {
+    return query('SELECT COUNT(*) AS nbUtilisateurs FROM Utilisateur');
+  },
 };

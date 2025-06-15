@@ -286,6 +286,38 @@ router.get('/mon_espace', async function(req, res) {
     }
 });
 
+// Statistiques globales (admin)
+router.get('/statistiques', async function(req, res) {
+    if (!req.session || !req.session.userid) {
+        return res.redirect('/');
+    }
+    const utilisateurModel = require('../model/utilisateur');
+    const offreModel = require('../model/offre');
+    const organisationModel = require('../model/organisation');
+    const candidatureModel = require('../model/candidature');
+    // Vérifier que l'utilisateur est admin
+    const userArr = await utilisateurModel.readById(req.session.userid);
+    const user = userArr && userArr[0];
+    if (!user || user.role !== 'admin') {
+        return res.status(403).render('error', { message: "Accès réservé à l'administrateur." });
+    }
+    try {
+        const [{ nbUtilisateurs }] = await utilisateurModel.countAll();
+        const [{ nbOffres }] = await offreModel.countAll();
+        const [{ nbOrganisations }] = await organisationModel.countAll();
+        const [{ nbCandidatures }] = await candidatureModel.countAll();
+        res.render('statistiques', {
+            nbUtilisateurs,
+            nbOffres,
+            nbOrganisations,
+            nbCandidatures
+        });
+    } catch (err) {
+        console.log(err);
+        res.status(500).render('error', { message: "Erreur lors de la récupération des statistiques.", error: err });
+    }
+});
+
 
 module.exports = router;
 

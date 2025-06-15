@@ -168,6 +168,11 @@ admis(id_user,id_offre) {
       JOIN Fiche_de_Poste f ON o.id_fiche_poste = f.id_fiche
       WHERE c.id_candidature = ?`;
     return query(sql, [id_candidature]);
+  },
+
+  // Compter toutes les candidatures
+  countAll() {
+    return query('SELECT COUNT(*) AS nbCandidatures FROM Candidature');
   }
 
 };

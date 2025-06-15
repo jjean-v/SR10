@@ -198,7 +198,11 @@ module.exports = {
             }
         });
     });
+},
+
+// Compter toutes les offres
+countAll: function() {
+    return query('SELECT COUNT(*) AS nbOffres FROM Offre');
 }
 
-
-}
+};

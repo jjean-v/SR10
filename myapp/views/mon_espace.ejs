@@ -51,6 +51,9 @@
             <% }) %>
           </ul>
         <% } %>
+        <% if (user.role === 'admin') { %>
+          <a href="/utilisateurs/statistiques" class="btn btn-info mb-3">Voir les statistiques globales</a>
+        <% } %>
       </div>
     </div>
     <%- include('component/dark_light_mode') %>

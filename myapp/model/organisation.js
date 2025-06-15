@@ -123,4 +123,8 @@ module.exports = {
         });
     },
 
+    // Compter toutes les organisations
+    countAll: function () {
+        return query('SELECT COUNT(*) AS nbOrganisations FROM Organisation');
+    },
     }
