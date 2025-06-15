@@ -40,6 +40,9 @@ router.get('/', async (req, res, next) => {
 
 router.get('/recruteur', async (req, res, next) => {
     try {
+      const page = parseInt(req.query.page) || 1;
+      const limit = 6;
+      const offset = (page - 1) * limit;
       const q = req.query.q ? req.query.q.trim() : '';
       let allRecruteurs = await utilisateur.readRecruteur();
       if (q) {
@@ -50,12 +53,14 @@ router.get('/recruteur', async (req, res, next) => {
           (u.email && u.email.toLowerCase().includes(qLower))
         );
       }
-      // Désactivation de la pagination : on affiche tous les utilisateurs
+      const total = allRecruteurs.length;
+      const utilisateurs = allRecruteurs.slice(offset, offset + limit);
+      const totalPages = Math.ceil(total / limit);
       res.render('recruteur', {
         title: 'Recruteurs',
-        utilisateurs: allRecruteurs,
-        page: 1,
-        totalPages: 1,
+        utilisateurs,
+        page,
+        totalPages,
         recherche: q
       });
     } catch (err) {

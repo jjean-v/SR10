@@ -50,7 +50,6 @@
 
         <div class="align-items-center justify-content-center">
           <div class="list-group">
-            <p><strong>Total utilisateurs affichés :</strong> <%= utilisateurs.length %></p>
             <% utilisateurs.forEach((utilisateurs) => { %>
               <a href="#" class="list-group-item list-group-item-action d-flex gap-3 py-3" aria-current="true">
                 <div class="d-flex gap-2 w-100">
@@ -86,6 +85,19 @@
             <% }) %>
           </div>
         </div>
+
+        <!-- Pagination -->
+        <% if (typeof totalPages !== 'undefined' && totalPages > 1) { %>
+          <nav aria-label="Pagination recruteurs" class="mt-4">
+            <ul class="pagination justify-content-center">
+              <% for (let i = 1; i <= totalPages; i++) { %>
+                <li class="page-item <%= (i === page) ? 'active' : '' %>">
+                  <a class="page-link" href="?page=<%= i %>"><%= i %></a>
+                </li>
+              <% } %>
+            </ul>
+          </nav>
+        <% } %>
       </div>
 
       <%- include('component/dark_light_mode') %>
