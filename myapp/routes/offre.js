@@ -64,7 +64,7 @@ router.post('/creation_offre', function(req, res, next) {
   promise = offre.createOffre({etat : 'publiée', date_validite, liste_piece_demande, nb_piece_demande, resp_hierarchique, id_fiche_poste})
   promise.then( (data) =>{
 
-    res.render('creation_X', { title: 'creation de l offre', user: data , objet : "offre", url : "utilisateurs/espace_recruteur"});
+    res.render('creation_X', { title: 'creation de l offre', user: data , objet : "offre", url : "/utilisateurs/espace_recruteur"});
 
   });
 

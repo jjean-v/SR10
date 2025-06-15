@@ -142,6 +142,17 @@ admis(id_user,id_offre) {
     });
   },
 
+  delete_by_user(id_offre) {
+    return new Promise(function (resolve, reject) {
+        db.query("DELETE FROM Candidature WHERE id_offre = ?", [id_offre], function (err, results) {
+            if (err) {
+                return reject(err);
+            }
+            resolve(results);
+        });
+    });
+  },
+
   /** Récupère une candidature par son id_candidature (pour visualisation) */
   readByCandidatureId(id_candidature) {
     const sql = `

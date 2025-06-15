@@ -56,15 +56,18 @@ app.all("*", function (req, res, next) {
     "/offre",
     "/offre/new_offre",
     "/offre/creation_offre",
+    "offre/delete",
     "/utilisateurs/espace_recruteur",
     "/fiche_de_poste",
-    "/fiche_de_poste/new_fiche_de_poste"
+    "/fiche_de_poste/new_fiche_de_poste",
+    "/candidatures"
+
   ];
   const candidatPaths = [
     "/candidatures/candidat",
     "/new_candidature",
-    "/candidatures",
-    "/offre/candidat"
+    "/offre/candidat",
+    "offre/postuler"
   ];
 
   // accès libre
