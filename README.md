@@ -6,15 +6,47 @@ Ce projet est une application web permettant la gestion des candidatures, des of
 
 ## Fonctionnalités principales
 
-- **Authentification et gestion des sessions** :
+- **Fonctionnalitées communes à tous les utilisateurs**
+
+  - Espace dédié pour chaque utilisateur selon son rôle (candidat, recruteur, administrateur).
   - Connexion et création de compte pour les différents types d'utilisateurs.
-  - Gestion des sessions utilisateurs.
+  - Visualiser son espace personnelle
+  - Deconnexion
+  
+
+
+- **Fonctionnalités pour les candidats**
+
+  - Consulter la liste des offres publiées
+  - Rechercher des offres par mots-clés
+  - Visualiser les détails d’une offre
+  - Postuler à une offre
+  - Joindre un CV ou une lettre de motivation à une candidature
+  - Suivre la liste et l’avancement de ses candidatures
+  - En cas d’acceptation, accepter ou refuser l’offre
+  - Devenir recruteur
+
+- **Fonctionnalités pour les recruteurs**
+
+  - Lister les offres de leur entreprise
+  - Rechercher parmi les offres
+  - Visualiser les détails d’une offre
+  - Lister les différentes fiches de poste
+  - Rechercher parmi les fiches de poste
+  - Visualiser les fiches de poste en détail
+  - Modifier ou supprimer une offre
+  - Modifier ou supprimer une fiche de poste
+  - Créer une nouvelle offre
+  - Créer une nouvelle fiche de poste
+  - Consulter les candidatures reçues pour leurs offres
+  - Accepter ou refuser des candidatures
+  
 
 - **Gestion des utilisateurs** :
   - Création, visualisation et gestion des comptes utilisateurs (candidats, recruteurs, administrateurs).
   - Visualisation de la liste des utilisateurs.
 
-- **Gestion des offres d'emploi** :
+- **Fonctionnalitées pour les administrateurs** :
   - Création, modification, suppression et visualisation des offres.
   - Consultation des offres par les candidats.
 
@@ -30,7 +62,7 @@ Ce projet est une application web permettant la gestion des candidatures, des of
   - Ajout et gestion de documents lors de la candidature (CV, lettre de motivation, etc.).
 
 - **Espace personnel** :
-  - Espace dédié pour chaque utilisateur selon son rôle (candidat, recruteur, administrateur).
+  
 
 - **Interface utilisateur** :
   - Utilisation de EJS pour le rendu des vues côté serveur.
@@ -48,12 +80,14 @@ Ce projet est une application web permettant la gestion des candidatures, des of
    ```bash
    cd myapp
    npm install
+   npm install express-session
+   npm install multer
    ```
 2. Démarrer le serveur :
    ```bash
    npm start
    ```
-3. Accéder à l'application via `http://localhost:3000` (ou le port configuré).
+3. Accéder à l'application via `http://localhost:3000`
 
 ## Tests
 
