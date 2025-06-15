@@ -62,9 +62,47 @@ module.exports = {
     return query(sql, vals);
   },
 
-  // Supprimer un utilisateur
+  // Suppression complète d'un utilisateur et de ses dépendances (sans transaction explicite)
   delete(id) {
-    return query("DELETE FROM Utilisateur WHERE id_user = ?", [id]);
+    return new Promise(async (resolve, reject) => {
+      try {
+        // 1. Supprimer les pièces jointes liées à ses candidatures
+        await new Promise((res, rej) => {
+          db.query(
+            `DELETE pj FROM Piece_Jointe pj JOIN Candidature c ON pj.candidature_id = c.id_candidature WHERE c.utilisateur_id = ?`,
+            [id],
+            (err) => (err ? rej(err) : res())
+          );
+        });
+        // 2. Supprimer ses candidatures
+        await new Promise((res, rej) => {
+          db.query(
+            'DELETE FROM Candidature WHERE utilisateur_id = ?',
+            [id],
+            (err) => (err ? rej(err) : res())
+          );
+        });
+        // 3. Supprimer les offres dont il est responsable
+        await new Promise((res, rej) => {
+          db.query(
+            'DELETE FROM Offre WHERE resp_hierarchique = ?',
+            [id],
+            (err) => (err ? rej(err) : res())
+          );
+        });
+        // 4. Supprimer l'utilisateur
+        await new Promise((res, rej) => {
+          db.query(
+            'DELETE FROM Utilisateur WHERE id_user = ?',
+            [id],
+            (err) => (err ? rej(err) : res())
+          );
+        });
+        resolve({ statusCode: 200 });
+      } catch (err) {
+        reject(err);
+      }
+    });
   },
 
   // Lire un utilisateur par un champ spécifique

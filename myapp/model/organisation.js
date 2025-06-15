@@ -90,15 +90,17 @@ module.exports = {
         });
     },
 
-    deleteOrga: function (nom) {
-        return new Promise(function (resolve,reject) {
-            db.query("Delete FROM Organisation WHERE nom = ? ",[nom], function(err,results){
-                if (err) {
-                    return reject(err);
-                }
-                resolve(results);
-            });
-        });
+    // Suppression complète d'une organisation et de ses dépendances (par siren)
+    deleteOrga: async function (siren) {
+        // 1. Récupérer les utilisateurs liés à l'organisation
+        const users = await query("SELECT id_user FROM Utilisateur WHERE siren = ?", [siren]);
+        for (const user of users) {
+            // Suppression complète de chaque utilisateur (candidatures, offres, etc.)
+            await require('./utilisateur.js').delete(user.id_user);
+        }
+        // 2. Supprimer l'organisation
+        await query("DELETE FROM Organisation WHERE siren = ?", [siren]);
+        return { statusCode: 200 };
     },
 
     updateEtat: function (siren, etat) {
