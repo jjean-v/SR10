@@ -25,6 +25,7 @@ Ce projet est une application web permettant la gestion des candidatures, des of
   - Suivre la liste et l’avancement de ses candidatures
   - En cas d’acceptation, accepter ou refuser l’offre
   - Devenir recruteur
+  - Créer une Organisation (lorsqu'il devient recruteur)
 
 - **Fonctionnalités pour les recruteurs**
 
@@ -42,31 +43,14 @@ Ce projet est une application web permettant la gestion des candidatures, des of
   - Accepter ou refuser des candidatures
   
 
-- **Gestion des utilisateurs** :
-  - Création, visualisation et gestion des comptes utilisateurs (candidats, recruteurs, administrateurs).
-  - Visualisation de la liste des utilisateurs.
-
 - **Fonctionnalitées pour les administrateurs** :
   - Création, modification, suppression et visualisation des offres.
   - Consultation des offres par les candidats.
 
-- **Gestion des candidatures** :
-  - Postulation à une offre par un candidat.
-  - Visualisation et gestion des candidatures par les recruteurs.
-  - Acceptation ou refus des candidatures.
 
 - **Gestion des organisations** :
   - Création et gestion des organisations (entreprises, écoles, etc.).
   
-- **Gestion des pièces jointes** :
-  - Ajout et gestion de documents lors de la candidature (CV, lettre de motivation, etc.).
-
-- **Espace personnel** :
-  
-
-- **Interface utilisateur** :
-  - Utilisation de EJS pour le rendu des vues côté serveur.
-  - Maquettes et prototypes disponibles dans le dossier `Livrable2`.
 
 ## Structure du projet
 
