@@ -86,6 +86,22 @@ router.post('/accepter', function(req, res, next) {
 
 });
 
+router.post('/refuser', function(req, res, next) {
+  const {id_offre, id_user} = req.body;
+
+  promise = candidature.refuse(id_user, id_offre)
+  promise.then( (data) =>{
+    console.log(data[0]);
+    res.render('refuser_candidature', { title: 'Candidature refusée'});
+  });
+
+  promise.catch( (err) => {
+      console.log(err);
+      res.status(500).send('Error retrieving  offre data');
+  }); 
+
+});
+
 
 router.post('/valider_offre', function(req, res, next) {
   const {id_offre, id_user} = req.body;

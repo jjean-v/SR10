@@ -3,6 +3,7 @@ const offre = require('../model/offre.js');
 const recruteur = require('../model/utilisateur');
 const fiche_de_poste = require('../model/fiche_de_poste');
 const organisation = require('../model/organisation');
+const candidature = require('../model/candidature');
 const multer = require('multer');
 const path = require('path');
 const pieceJointeModel = require('../model/pieceJointe');
@@ -180,6 +181,7 @@ router.get('/postuler/:id_offre', async function(req, res) {
 router.post('/delete/:id', async (req, res) => {
   try {
     const id = req.params.id;
+    await candidature.delete_by_offre(id); // on supprime d'abord les candidatures associées
     await offre.delete(id);
     res.redirect('/utilisateurs/espace_recruteur');
   } catch (err) {

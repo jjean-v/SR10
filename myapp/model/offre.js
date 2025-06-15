@@ -151,6 +151,54 @@ module.exports = {
         const vals = [...Object.values(fields), id];
         const sql = `UPDATE Offre SET ${cols} WHERE id_offre = ?`;
         return query(sql, vals);
-    }
+    },
 
-    }
+  delete_by_fiche_de_poste(id_fiche_poste) {
+    // On souhaite récupérer toutes les offres liées à une fiche de poste pour pouvoir les supprimer ainsi que les candidatures associées
+    return new Promise((resolve, reject) => {
+        db.query("SELECT id_offre FROM Offre WHERE id_fiche_poste = ?", [id_fiche_poste], async function (err, results) {
+            if (err) {
+                return reject(err);
+            }
+
+            try {
+                for (let i = 0; i < results.length; i++) {
+                    const id_offre = results[i].id_offre;
+                    console.log(`Suppression de l'offre avec id: ${id_offre}`);
+
+                    // Supprimer les pièces jointes liées aux candidatures
+                    await new Promise((res, rej) => {
+                        db.query(
+                            `DELETE Piece_Jointe 
+                             FROM Candidature 
+                             INNER JOIN Piece_Jointe ON Candidature.id_candidature = Piece_Jointe.candidature_id 
+                             WHERE Candidature.id_offre = ?`,
+                            [id_offre],
+                            (err) => (err ? rej(err) : res())
+                        );
+                    });
+
+                    // Supprimer les candidatures
+                    await new Promise((res, rej) => {
+                        db.query(
+                            "DELETE FROM Candidature WHERE id_offre = ?",
+                            [id_offre],
+                            (err) => (err ? rej(err) : res())
+                        );
+                    });
+                    console.log('suppresion des candidatrures et pices jointe terminée');
+                }
+                await new Promise((res, rej) => {
+                    db.query("DELETE FROM Offre WHERE id_fiche_poste = ?", [id_fiche_poste], (err) => (err ? rej(err) : res()));
+                });
+
+                resolve("Suppression terminée.");
+            } catch (err) {
+                reject(err);
+            }
+        });
+    });
+}
+
+
+}

@@ -133,7 +133,7 @@ admis(id_user,id_offre) {
 
   delete_by_user_offre(id_user,id_offre) {
     return new Promise(function (resolve, reject) {
-        db.query("DELETE FROM Candidature WHERE utilisateur_id = ? AND id_offre = ?", [id_user,id_offre], function (err, results) {
+        db.query("DELETE FROM Candidature INNER JOIN Piece_jointe ON Candidature.id_candidature = PieceJointe.candidature_id WHERE utilisateur_id = ? AND id_offre = ?", [id_user,id_offre], function (err, results) {
             if (err) {
                 return reject(err);
             }
@@ -142,13 +142,19 @@ admis(id_user,id_offre) {
     });
   },
 
-  delete_by_user(id_offre) {
+  delete_by_offre(id_offre) {
     return new Promise(function (resolve, reject) {
-        db.query("DELETE FROM Candidature WHERE id_offre = ?", [id_offre], function (err, results) {
+        db.query("DELETE Piece_Jointe FROM Candidature INNER JOIN Piece_Jointe ON Candidature.id_candidature = Piece_Jointe.candidature_id WHERE Candidature.id_offre = ?", [id_offre], function (err, results) {
             if (err) {
                 return reject(err);
             }
-            resolve(results);
+            db.query("DELETE FROM Candidature WHERE id_offre = ?", [id_offre], function (err, results) {
+                if (err) {
+                    return reject(err);
+                }
+                resolve(results);
+            });
+   
         });
     });
   },

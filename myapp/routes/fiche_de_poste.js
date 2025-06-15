@@ -1,5 +1,7 @@
 var express = require('express');
 const fiche_de_poste = require('../model/fiche_de_poste');
+const offre = require('../model/offre');
+
 var router = express.Router();
 
 /* GET Organisation listing. */
@@ -24,6 +26,8 @@ router.get('/', async function(req, res, next) {
 router.post('/delete/:id', async (req, res) => {
   try {
     const id = req.params.id;
+    await offre.delete_by_fiche_de_poste(id); // on supprimer d'abord les offres associées
+    // puis on supprime la fiche de poste
     await fiche_de_poste.delete(id);
     res.redirect('/fiche_de_poste');
   } catch (err) {
