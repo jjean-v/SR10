@@ -1,4 +1,6 @@
 var db = require('./db.js');
+const { promisify } = require('util');
+const query = promisify(db.query).bind(db);
 
 module.exports = {
     read: function (nom) {
