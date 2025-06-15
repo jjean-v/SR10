@@ -40,9 +40,6 @@ router.get('/', async (req, res, next) => {
 
 router.get('/recruteur', async (req, res, next) => {
     try {
-      const page = parseInt(req.query.page) || 1;
-      const limit = 6;
-      const offset = (page - 1) * limit;
       const q = req.query.q ? req.query.q.trim() : '';
       let allRecruteurs = await utilisateur.readRecruteur();
       if (q) {
@@ -53,14 +50,12 @@ router.get('/recruteur', async (req, res, next) => {
           (u.email && u.email.toLowerCase().includes(qLower))
         );
       }
-      const total = allRecruteurs.length;
-      const utilisateurs = allRecruteurs.slice(offset, offset + limit);
-      const totalPages = Math.ceil(total / limit);
+      // Désactivation de la pagination : on affiche tous les utilisateurs
       res.render('recruteur', {
         title: 'Recruteurs',
-        utilisateurs,
-        page,
-        totalPages,
+        utilisateurs: allRecruteurs,
+        page: 1,
+        totalPages: 1,
         recherche: q
       });
     } catch (err) {
@@ -136,7 +131,7 @@ router.post('/demande_recruteur', async function(req, res) {
         return res.status(403).render('error', { message: "Accès refusé.", error: {} });
     }
     const userId = req.session.userid;
-    const siren = req.body.siren;
+    let siren = req.body.siren;
     try {
         // Vérifier le rôle actuel de l'utilisateur
         const users = await utilisateur.read('id_user', userId);
@@ -144,14 +139,31 @@ router.post('/demande_recruteur', async function(req, res) {
         if (!user) {
             return res.status(404).render('error', { message: "Utilisateur non trouvé.", error: {} });
         }
-        console.log('DEBUG role_recruteur:', user.role_recruteur); // Ajout debug
         if ((user.role_recruteur || '').toLowerCase() === 'validé') {
             return res.render('confirmation_postulation', { message: "Vous êtes déjà recruteur." });
         }
         if ((user.role_recruteur || '').toLowerCase() === 'attente') {
             return res.render('confirmation_postulation', { message: "Votre demande pour devenir recruteur est déjà en attente de validation." });
         }
-        // Si refusé ou jamais demandé (null), on autorise la demande
+        // Cas création nouvelle organisation
+        if (siren === 'new') {
+            const { nom_orga, type_orga, adresse_orga, siren_orga } = req.body;
+            // Vérifier si l'organisation existe déjà
+            const orgExist = await organisation.read(nom_orga);
+            if (orgExist && orgExist.length > 0) {
+                return res.render('confirmation_postulation', { message: "Cette organisation existe déjà. Veuillez la sélectionner dans la liste." });
+            }
+            // Créer l'organisation en attente
+            await organisation.create({
+                siren: siren_orga,
+                nom: nom_orga,
+                type_orga: type_orga,
+                adresse: adresse_orga,
+                etat_orga: 'attente'
+            });
+            siren = siren_orga;
+        }
+        // Mettre à jour l'utilisateur (recruteur en attente, lier au SIREN)
         await utilisateur.update(userId, { role_recruteur: 'attente', siren });
         res.render('confirmation_postulation', { message: "Votre demande pour devenir recruteur a bien été envoyée. Elle sera validée par un administrateur." });
     } catch (err) {

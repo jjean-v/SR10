@@ -46,22 +46,60 @@
   <div class="bg-body-tertiary p-5 rounded mt-4">
       <img src="/assets/brand/bootstrap-logo.svg" alt="Logo" class="logo-demande">
       <h1 class="mb-4 text-center">Demande pour devenir recruteur</h1>
-      <form action="/utilisateurs/demande_recruteur" method="post">
+      <form action="/utilisateurs/demande_recruteur" method="post" id="form-recruteur">
         <div class="form-floating mb-4">
-          <select class="form-select" id="organisation" name="siren" required aria-label="Organisation">
+          <select class="form-select" id="organisation" name="siren" aria-label="Organisation">
             <option value="" disabled selected>Choisissez votre organisation</option>
             <% organisations.forEach(orga => { %>
               <option value="<%= orga.siren %>">
                 <%= orga.nom %> – <%= orga.adresse %>
               </option>
             <% }) %>
+            <option value="new">Créer une nouvelle organisation</option>
           </select>
           <label for="organisation">Organisation</label>
+        </div>
+        <div id="new-organisation-fields" style="display:none;">
+          <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="nom_orga" name="nom_orga" placeholder="Nom de l'organisation">
+            <label for="nom_orga">Nom de l'organisation</label>
+          </div>
+          <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="type_orga" name="type_orga" placeholder="Type d'organisation">
+            <label for="type_orga">Type d'organisation</label>
+          </div>
+          <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="adresse_orga" name="adresse_orga" placeholder="Adresse">
+            <label for="adresse_orga">Adresse</label>
+          </div>
+          <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="siren_orga" name="siren_orga" placeholder="SIREN">
+            <label for="siren_orga">SIREN</label>
+          </div>
         </div>
         <button class="w-100 btn btn-lg btn-primary" type="submit">
           <i class="bi bi-send me-2"></i>Envoyer la demande
         </button>
       </form>
+      <script>
+        const orgaSelect = document.getElementById('organisation');
+        const newOrgaFields = document.getElementById('new-organisation-fields');
+        orgaSelect.addEventListener('change', function() {
+          if (this.value === 'new') {
+            newOrgaFields.style.display = 'block';
+            document.getElementById('nom_orga').required = true;
+            document.getElementById('type_orga').required = true;
+            document.getElementById('adresse_orga').required = true;
+            document.getElementById('siren_orga').required = true;
+          } else {
+            newOrgaFields.style.display = 'none';
+            document.getElementById('nom_orga').required = false;
+            document.getElementById('type_orga').required = false;
+            document.getElementById('adresse_orga').required = false;
+            document.getElementById('siren_orga').required = false;
+          }
+        });
+      </script>
   </div>
 </div>
 <%- include('component/footer') %>

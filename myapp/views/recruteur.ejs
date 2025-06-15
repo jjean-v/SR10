@@ -50,15 +50,14 @@
 
         <div class="align-items-center justify-content-center">
           <div class="list-group">
+            <p><strong>Total utilisateurs affichés :</strong> <%= utilisateurs.length %></p>
             <% utilisateurs.forEach((utilisateurs) => { %>
               <a href="#" class="list-group-item list-group-item-action d-flex gap-3 py-3" aria-current="true">
-
-              
-               
                 <div class="d-flex gap-2 w-100">
                   <div class="col-3">
                       <h6 class="mb-0"> <%= utilisateurs.prenom %> <%= utilisateurs.nom %> </h6>
                       <p class="mb-0 opacity-75"><%= utilisateurs.etat_compte %>  </p>
+                      <p class="mb-0"><strong>role_recruteur :</strong> <%= utilisateurs.role_recruteur %></p>
                   </div>
                   <div class = "col-3">
                       <h6 class="mb-0"><%= utilisateurs.email %></h6>
@@ -66,9 +65,7 @@
                   <div class = "col-2">
                       <h6 class="mb-0"> <%= utilisateurs.role %></h6>
                   </div>
-                 
                 </div>
-
                 <div class="d-flex gap-3">
                   <% if (utilisateurs.role_recruteur === 'attente') { %>
                     <form action="/utilisateurs/valider_recruteur" method="post" style="display:inline;">
