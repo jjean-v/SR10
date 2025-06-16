@@ -82,14 +82,17 @@ module.exports = {
             (err) => (err ? rej(err) : res())
           );
         });
-        // 3. Supprimer les offres dont il est responsable
-        await new Promise((res, rej) => {
-          db.query(
-            'DELETE FROM Offre WHERE resp_hierarchique = ?',
-            [id],
-            (err) => (err ? rej(err) : res())
-          );
-        });
+        // 3. Supprimer les offres dont il est responsable et leurs candidatures associées
+        const offres = await query('SELECT id_offre FROM Offre WHERE resp_hierarchique = ?', [id]);
+        for (const offre of offres) {
+          await new Promise((res, rej) => {
+            db.query(
+              'CALL delete_by_user_offre(?, ?)',
+              [id, offre.id_offre],
+              (err) => (err ? rej(err) : res())
+            );
+          });
+        }
         // 4. Supprimer l'utilisateur
         await new Promise((res, rej) => {
           db.query(
