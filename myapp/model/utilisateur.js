@@ -1,6 +1,7 @@
 // model/utilisateur.js
 const db = require('./db.js');
 const { promisify } = require('util');
+const offreModel = require('./offre.js');
 
 // Promisify pour les méthodes génériques
 const query = promisify(db.query).bind(db);
@@ -106,6 +107,32 @@ module.exports = {
         reject(err);
       }
     });
+  },
+
+  // Supprimer un recruteur : le passer en candidat, supprimer le siren et toutes ses offres
+  async delete_recruteur(id) {
+    try {
+      // 1. Récupérer toutes les offres dont il est responsable
+      const offres = await query('SELECT id_offre FROM Offre WHERE resp_hierarchique = ?', [id]);
+      for (const offre of offres) {
+        // 2. Supprimer les pièces jointes liées aux candidatures de cette offre
+        await query(`DELETE pj FROM Piece_Jointe pj 
+          JOIN Candidature c ON pj.candidature_id = c.id_candidature 
+          WHERE c.id_offre = ?`, [offre.id_offre]);
+        // 3. Supprimer les candidatures de cette offre
+        await query('DELETE FROM Candidature WHERE id_offre = ?', [offre.id_offre]);
+        // 4. Supprimer l'offre
+        await offreModel.delete(offre.id_offre);
+      }
+      // 5. Mettre à jour l'utilisateur : role -> 'candidat', siren -> NULL, role_recruteur -> NULL
+      await query(
+        'UPDATE Utilisateur SET role = ?, siren = NULL, role_recruteur = NULL WHERE id_user = ?',
+        ['candidat', id]
+      );
+      return { statusCode: 200 };
+    } catch (err) {
+      throw err;
+    }
   },
 
   // Lire un utilisateur par un champ spécifique

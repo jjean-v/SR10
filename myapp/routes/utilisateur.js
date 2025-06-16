@@ -223,6 +223,21 @@ router.post('/delete', async function(req, res) {
     }
 });
 
+// Supprimer un recruteur (admin)
+router.post('/delete_recruteur', async function(req, res) {
+    if (!req.session || req.session.role !== 'admin') {
+        return res.status(403).render('error', { message: "Accès refusé.", error: {} });
+    }
+    const userId = req.body.id_user;
+    try {
+        await utilisateur.delete_recruteur(userId);
+        res.redirect('/utilisateurs/recruteur');
+    } catch (err) {
+        console.log('Erreur suppression recruteur:', err);
+        res.status(500).render('error', { message: "Erreur lors de la suppression du recruteur.", error: err });
+    }
+});
+
 // Attribuer le rôle admin à un utilisateur
 router.post('/set_admin', async function(req, res) {
     if (!req.session || req.session.role !== 'admin') {

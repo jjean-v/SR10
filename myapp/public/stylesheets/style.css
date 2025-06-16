@@ -74,3 +74,9 @@
 .bd-mode-toggle .dropdown-menu .active .bi {
   display: block !important;
 }
+
+.actions-btns {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}

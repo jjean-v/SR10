@@ -92,11 +92,11 @@ module.exports = {
 
     // Suppression complète d'une organisation et de ses dépendances (par siren)
     deleteOrga: async function (siren) {
-        // 1. Récupérer les utilisateurs liés à l'organisation
+        // 1. Récupérer les recruteurs liés à l'organisation
         const users = await query("SELECT id_user FROM Utilisateur WHERE siren = ?", [siren]);
         for (const user of users) {
             // Suppression complète de chaque utilisateur (candidatures, offres, etc.)
-            await require('./utilisateur.js').delete(user.id_user);
+            await require('./utilisateur.js').delete_recruteur(user.id_user);
         }
         // 2. Supprimer l'organisation
         await query("DELETE FROM Organisation WHERE siren = ?", [siren]);

@@ -69,11 +69,22 @@
                   <% if (utilisateurs.role_recruteur === 'attente') { %>
                     <form action="/utilisateurs/valider_recruteur" method="post" style="display:inline;">
                       <input type="hidden" name="id_user" value="<%= utilisateurs.id_user %>">
-                      <button class="btn btn-success d-inline-flex align-items-center justify-content-center" type="submit">
-                        Valider
-                      </button>
+                      <div class="actions-btns">
+                        <button class="btn btn-success d-inline-flex align-items-center justify-content-center" type="submit">
+                          Valider
+                        </button>
+                      </div>
+                      <input type="hidden" name="id_user" value="<%= utilisateurs.id_user %>">
                     </form>
                   <% } %>
+                  <form action="/utilisateurs/delete_recruteur" method="post" style="display:inline;">
+                    <input type="hidden" name="id_user" value="<%= utilisateurs.id_user %>">
+                    <div class="actions-btns">
+                      <button class="btn btn-danger d-inline-flex align-items-center justify-content-center ms-2" type="submit" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce recruteur ?');">
+                        Supprimer
+                      </button>
+                    </div>
+                  </form>
                 </div>
               </a>
             <% }) %>
