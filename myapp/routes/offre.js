@@ -224,8 +224,6 @@ router.get('/candidat/recherche', function(req, res, next) {
     }
     // Récupération des paramètres de recherche/filtre/tri
     const q = req.query.q ? req.query.q.trim() : '';
-    const metier = req.query.metier ? req.query.metier.trim() : '';
-    const type_poste = req.query.type_poste ? req.query.type_poste.trim() : '';
     const salaire_min = req.query.salaire_min ? parseFloat(req.query.salaire_min) : null;
     const salaire_max = req.query.salaire_max ? parseFloat(req.query.salaire_max) : null;
     const tri = req.query.tri || 'date';
@@ -244,14 +242,7 @@ router.get('/candidat/recherche', function(req, res, next) {
         const likeQ = `%${q}%`;
         params.push(likeQ, likeQ, likeQ);
     }
-    if (metier) {
-        sql += ` AND Fiche_de_Poste.type_metier LIKE ?`;
-        params.push(`%${metier}%`);
-    }
-    if (type_poste) {
-        sql += ` AND Fiche_de_Poste.statut_poste LIKE ?`;
-        params.push(`%${type_poste}%`);
-    }
+   
     if (statut_poste) {
         sql += ` AND Fiche_de_Poste.statut_poste LIKE ?`;
         params.push(`%${statut_poste}%`);
@@ -281,8 +272,6 @@ router.get('/candidat/recherche', function(req, res, next) {
             title: 'Offre',
             offre: results,
             recherche: q,
-            metier,
-            type_poste,
             statut_poste,
             salaire_min: req.query.salaire_min || '',
             salaire_max: req.query.salaire_max || '',

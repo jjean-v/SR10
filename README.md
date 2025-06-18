@@ -10,7 +10,7 @@ Ce projet est une application web permettant la gestion des candidatures, des of
 
   - Espace dédié pour chaque utilisateur selon son rôle (candidat, recruteur, administrateur).
   - Connexion et création de compte pour les différents types d'utilisateurs.
-  - Visualiser son espace personnelle
+  - Visualiser son espace personel
   - Deconnexion
   
 
