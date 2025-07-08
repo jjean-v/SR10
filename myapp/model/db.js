@@ -1,10 +1,10 @@
 const mysql = require("mysql2");
 
 const pool = mysql.createPool({
-  host: "tuxa.sme.utc", // ou localhost
-  user: "sr10p010",
-  password: "GtsU8cu10zjG",
-  database: "sr10p010"
+  host: "localhost", // ou localhost
+  user: "root",
+  password: "Jean2004,",
+  database: "sr10"
 });
 
 // Vérification de la connexion
